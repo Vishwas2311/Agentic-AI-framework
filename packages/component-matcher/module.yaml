@@ -1,0 +1,4 @@
+name: component-matcher
+purpose: Maps visual/layout nodes to registry components such as buttons, inputs, tables, nav, charts, and cards.
+status: scaffold
+

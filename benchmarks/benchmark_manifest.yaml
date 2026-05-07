@@ -1,0 +1,44 @@
+version: 3.1.0
+name: Genesis Benchmark Suite
+
+benchmarks:
+  - id: powerapps-expense
+    source_type: powerapps
+    goal: Expense tracker migration with formulas, screens, data source, and approval-ish states.
+    required_dirs: [input, expected_ir, expected_output_summary, expected_tests, expected_visuals]
+
+  - id: mendix-crm
+    source_type: mendix
+    goal: CRM migration with entities, pages, microflows, roles, and list/detail/forms.
+    required_dirs: [input, expected_ir, expected_output_summary, expected_tests, expected_visuals]
+
+  - id: appian-approval
+    source_type: appian
+    goal: Approval workflow migration with records, interfaces, process model, and role decisions.
+    required_dirs: [input, expected_ir, expected_output_summary, expected_tests, expected_visuals]
+
+  - id: outsystems-dashboard
+    source_type: outsystems
+    goal: Dashboard migration using export plus runtime evidence.
+    required_dirs: [input, expected_ir, expected_output_summary, expected_tests, expected_visuals]
+
+  - id: figma-saas
+    source_type: figma
+    goal: Figma SaaS dashboard to React/Tailwind/shadcn app.
+    required_dirs: [input, expected_ir, expected_output_summary, expected_tests, expected_visuals]
+
+  - id: website-clone
+    source_type: website
+    goal: Existing website to modern frontend with content and interaction evidence.
+    required_dirs: [input, expected_ir, expected_output_summary, expected_tests, expected_visuals]
+
+  - id: screenshot-to-app
+    source_type: screenshot
+    goal: Screenshot to UI-IR to production React app.
+    required_dirs: [input, expected_ir, expected_output_summary, expected_tests, expected_visuals]
+
+  - id: api-first
+    source_type: openapi
+    goal: OpenAPI to backend/frontend/test app.
+    required_dirs: [input, expected_ir, expected_output_summary, expected_tests]
+

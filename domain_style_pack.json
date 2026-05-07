@@ -1,0 +1,12 @@
+{
+  "name": "healthcare",
+  "density": "calm_compact",
+  "motion": "subtle",
+  "components": [
+    "patient_summary",
+    "appointment_card",
+    "forms",
+    "alerts",
+    "tables"
+  ]
+}

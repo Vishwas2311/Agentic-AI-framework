@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nocode2procode.local/schemas/design_decision.schema.json",
+  "title": "Genesis Design Decision",
+  "type": "object",
+  "required": ["schema_version", "source_type", "source_material", "decision", "tool_sequence", "tool_selection_explanation", "domain_style_pack", "component_pattern_selection", "magic_selection", "ui_ux_pro_max", "motion_plan", "quality_gates"],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "source_type": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "fidelity_mode": {
+      "enum": ["exact_fidelity", "modernized_fidelity"]
+    },
+    "source_material": {
+      "type": "object",
+      "required": ["kind", "usage"],
+      "properties": {
+        "kind": {
+          "enum": ["uploaded_image", "url", "figma_url", "logo", "text_brief", "existing_code_or_uploaded_image", "lowcode_export"]
+        },
+        "usage": {
+          "enum": [
+            "primary_visual_evidence",
+            "primary_website_evidence_or_style_reference",
+            "style_dna_reference",
+            "brand_system_seed",
+            "product_brief",
+            "layout_intent",
+            "ux_audit_baseline",
+            "application_source_truth"
+          ]
+        },
+        "reference_url": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "required": ["build_scope", "rebuild_mode", "improve_by_default"],
+      "properties": {
+        "build_scope": {
+          "enum": ["component", "website"]
+        },
+        "rebuild_mode": {
+          "enum": [
+            "exact_rebuild",
+            "modernized_rebuild",
+            "inspired_redesign",
+            "improve_and_modernize",
+            "polished_interpretation",
+            "brand_matched_design_system",
+            "from_brief_best_practice"
+          ]
+        },
+        "improve_by_default": {
+          "type": "boolean"
+        },
+        "improvement_guardrail": {
+          "type": "string"
+        }
+      }
+    },
+    "tool_sequence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tool_selection_explanation": {
+      "type": "object"
+    },
+    "domain_style_pack": {
+      "type": "object",
+      "required": ["name", "density", "motion", "components"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "density": {
+          "type": "string"
+        },
+        "motion": {
+          "type": "string"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "component_pattern_selection": {
+      "type": "object",
+      "required": ["name", "pattern", "reason"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "magic_selection": {
+      "type": "object",
+      "required": ["project_type", "creation_type", "website_goal"],
+      "properties": {
+        "project_type": {
+          "enum": ["component", "website"]
+        },
+        "creation_type": {
+          "enum": ["from_scratch", "get_inspired"]
+        },
+        "website_goal": {
+          "enum": ["lead_generation", "drive_sales", "interactive_quiz", "subscriptions", "custom"]
+        },
+        "reference_url": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "ui_ux_pro_max": {
+      "type": "object"
+    },
+    "motion_plan": {
+      "type": "object",
+      "required": ["intensity", "library", "accessibility", "bundle_policy"],
+      "properties": {
+        "intensity": {
+          "enum": ["none", "subtle", "standard", "expressive"]
+        },
+        "library": {
+          "type": "string"
+        },
+        "accessibility": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bundle_policy": {
+          "type": "string"
+        },
+        "purpose_contract": {
+          "type": "object"
+        }
+      }
+    },
+    "quality_gates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

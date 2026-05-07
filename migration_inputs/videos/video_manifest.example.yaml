@@ -1,0 +1,12 @@
+videos:
+  - file: patient-booking-flow.mp4
+    flow: Book Consultation
+    purpose: runtime_walkthrough
+    priority: high
+    notes: "Shows login, dashboard, booking, and confirmation."
+
+  - file: completed-prescription-demo.mp4
+    flow: Prescription Review
+    purpose: happy_path_demo
+    priority: medium
+    notes: "Shows completed consultation and prescription visibility."

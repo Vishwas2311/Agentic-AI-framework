@@ -1,0 +1,9 @@
+name: compliance
+purpose: Compliance packs and report templates for regulated migration runs.
+status: scaffold
+packs:
+  - eu-ai-act
+  - gdpr
+  - hipaa
+  - soc2
+

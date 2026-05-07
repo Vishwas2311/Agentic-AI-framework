@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://genesis.local/schemas/visual_layout_tree.schema.json",
+  "title": "Genesis Visual Layout Tree",
+  "type": "object",
+  "required": ["schema_version", "screens"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "screens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["screen_id", "viewport", "nodes"],
+        "properties": {
+          "screen_id": { "type": "string" },
+          "viewport": {
+            "type": "object",
+            "required": ["width", "height"],
+            "properties": {
+              "width": { "type": "number" },
+              "height": { "type": "number" }
+            }
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "kind", "bbox"],
+              "properties": {
+                "id": { "type": "string" },
+                "kind": { "type": "string" },
+                "text": { "type": "string" },
+                "bbox": {
+                  "type": "object",
+                  "required": ["x", "y", "width", "height"],
+                  "properties": {
+                    "x": { "type": "number" },
+                    "y": { "type": "number" },
+                    "width": { "type": "number" },
+                    "height": { "type": "number" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

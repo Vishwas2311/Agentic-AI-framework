@@ -1,0 +1,39 @@
+version: 3.1.0
+name: Genesis Evaluation Plan
+
+metrics:
+  ir_accuracy:
+    description: Percent of expected entities, screens, workflows, APIs, roles, and design tokens correctly extracted.
+    target: 0.90
+  build_success:
+    description: Generated app builds without manual intervention.
+    target: 0.95
+  test_pass_rate:
+    description: Generated tests pass after deterministic generation and repair.
+    target: 0.90
+  visual_parity:
+    description: Source vs generated UI parity across required breakpoints.
+    target: 0.90
+  security_findings:
+    description: Critical/high findings after repair.
+    target: 0
+  manual_review_count:
+    description: Number of required human decisions.
+    target: minimize
+  cost_usd:
+    description: Total tool/model/sandbox cost.
+    target: within genesis.cost.yaml
+  cycle_time_minutes:
+    description: End-to-end migration time.
+    target: benchmark-specific
+
+eval_sets:
+  prompt_evals:
+    path: evals/prompt_evals
+  model_evals:
+    path: evals/model_evals
+  adapter_evals:
+    path: evals/adapter_evals
+  generator_evals:
+    path: evals/generator_evals
+

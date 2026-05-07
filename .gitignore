@@ -1,0 +1,44 @@
+# Virtual environments
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Genesis generated output (keep manifest only)
+genesis_apps/*/backend/
+genesis_apps/*/frontend/
+genesis_apps/*/database/
+genesis_apps/*/assets/
+genesis_apps/*/deploy/
+genesis_apps/*/sbom/
+!genesis_apps/*/migration_manifest.json
+
+# Genesis runtime state
+.genesis_runtime/
+
+# Node / frontend build
+node_modules/
+.next/
+.nuxt/
+out/
+
+# Secrets & environment
+*.secret
+*.env
+.env
+.env.*
+*.key
+*.pem
+
+# OS
+.DS_Store
+Thumbs.db

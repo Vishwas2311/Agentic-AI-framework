@@ -1,0 +1,15 @@
+name: visual-fidelity
+purpose: Converts visual sources into a testable contract and drives closed-loop UI polish.
+status: scaffold
+inputs:
+  - screenshots
+  - figma frames
+  - stitch design DNA
+  - website screenshots
+outputs:
+  - visual_layout_tree.json
+  - visual_lock_spec.json
+  - geometry_diff.json
+  - pixel_diff_report.json
+  - ui_polish_report.md
+

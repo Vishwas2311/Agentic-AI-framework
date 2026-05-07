@@ -1,0 +1,4 @@
+name: ui-polish-loop
+purpose: Runs iterative Playwright screenshot, pixel/geometry diff, Claude UI patch, and re-test loops.
+status: scaffold
+

@@ -1,0 +1,5 @@
+{
+  "name": "dashboard",
+  "pattern": "sidebar_topbar_metric_cards_filters_data_table_detail_panel",
+  "reason": "Best fit for admin, portal, analytics, and record workflows."
+}

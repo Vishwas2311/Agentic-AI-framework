@@ -1,0 +1,8 @@
+name: generators
+purpose: Deterministic code, test, deploy, observability, and documentation generators.
+status: scaffold
+contract:
+  input: canonical_app_spec.json + design tokens + templates
+  output: generated files + generated_file_manifest.json
+principle: AI reasons and repairs; generators create repeatable structure.
+

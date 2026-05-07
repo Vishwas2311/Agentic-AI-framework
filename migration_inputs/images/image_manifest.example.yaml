@@ -1,0 +1,17 @@
+images:
+  - file: dashboard.png
+    screen: Dashboard
+    purpose: exact_ui_reference
+    priority: high
+    notes: "Use this layout closely for the migrated dashboard."
+
+  - file: brand-colors.png
+    purpose: brand_reference
+    priority: medium
+    notes: "Use similar colors and tone, not exact layout."
+
+  - file: consultation-table.png
+    screen: Consultation List
+    purpose: component_reference
+    priority: high
+    notes: "Use this table/card style for consultation rows."

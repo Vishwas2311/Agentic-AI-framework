@@ -1,0 +1,10 @@
+name: agents
+purpose: Claude Code specialist agent roles, prompts, context boundaries, and ownership rules.
+status: scaffold
+primary_runtime: Claude Code Agent Teams
+optional_review_agents:
+  - Codex CLI
+  - Aider
+  - Cline
+  - Devin
+

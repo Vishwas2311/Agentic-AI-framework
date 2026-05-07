@@ -1,0 +1,105 @@
+{
+  "schema_version": "3.1.0",
+  "source_type": "screenshot",
+  "domain": "healthcare app",
+  "fidelity_mode": "modernized_fidelity",
+  "source_material": {
+    "kind": "uploaded_image",
+    "usage": "primary_visual_evidence",
+    "reference_url": null
+  },
+  "decision": {
+    "build_scope": "website",
+    "rebuild_mode": "modernized_rebuild",
+    "improve_by_default": true,
+    "improvement_guardrail": "Preserve source truth and requested fidelity while improving UX, accessibility, responsiveness, states, and polish."
+  },
+  "tool_sequence": [
+    "vision_model",
+    "ui_ux_pro_max",
+    "magic_21st",
+    "motion_after_rebuild",
+    "playwright_qa"
+  ],
+  "tool_selection_explanation": {
+    "source_material_reason": "Input is treated as uploaded_image for primary_visual_evidence.",
+    "build_scope_reason": "Build scope is website because the detected/requested UI scope maps to that Magic project type.",
+    "magic_project_type_reason": "Use Magic website to avoid generating the wrong UI surface.",
+    "magic_creation_type_reason": "Use from_scratch; from_scratch means no URL flow, get_inspired means URL-derived evidence or inspiration.",
+    "website_goal_reason": "Use custom to pick the right conversion/workflow pattern.",
+    "ui_ux_pro_max_mode_reason": "UI/UX Pro Max must improve the UI beyond the source while respecting fidelity and source truth.",
+    "motion_intensity_reason": "Use subtle motion after UI rebuild only, with purpose and reduced-motion fallback.",
+    "qa_gate_reason": "Design quality, visual parity, accessibility, responsiveness, and motion purpose gates must approve the output."
+  },
+  "domain_style_pack": {
+    "name": "healthcare",
+    "density": "calm_compact",
+    "motion": "subtle",
+    "components": [
+      "patient_summary",
+      "appointment_card",
+      "forms",
+      "alerts",
+      "tables"
+    ]
+  },
+  "component_pattern_selection": {
+    "name": "dashboard",
+    "pattern": "sidebar_topbar_metric_cards_filters_data_table_detail_panel",
+    "reason": "Best fit for admin, portal, analytics, and record workflows."
+  },
+  "magic_selection": {
+    "project_type": "website",
+    "creation_type": "from_scratch",
+    "website_goal": "custom",
+    "reference_url": null
+  },
+  "ui_ux_pro_max": {
+    "mode": "design_director",
+    "must_create": [
+      "DESIGN.md",
+      "design_tokens.json",
+      "component_registry.json",
+      "visual_acceptance_criteria.md"
+    ],
+    "must_persist": [
+      "design-system/MASTER.md",
+      "design-system/pages/{page_id}.md"
+    ]
+  },
+  "motion_plan": {
+    "intensity": "subtle",
+    "library": "motion",
+    "accessibility": [
+      "MotionConfig reducedMotion=user",
+      "useReducedMotion for bespoke motion"
+    ],
+    "bundle_policy": "Prefer LazyMotion and motion/react-m; load domMax only when layout/drag is required.",
+    "purpose_contract": {
+      "enabled": true,
+      "intensity": "subtle",
+      "animations": [
+        {
+          "component": "interactive_controls",
+          "trigger": "hover_focus_tap",
+          "purpose": "Give immediate feedback without distracting from task completion.",
+          "duration_ms": 120,
+          "easing_or_spring": "easeOut",
+          "reduced_motion_fallback": "color_or_opacity_change_only",
+          "qa_assertion": "No layout shift and reduced-motion mode disables transforms."
+        }
+      ]
+    }
+  },
+  "quality_gates": [
+    "desktop_screenshot",
+    "mobile_screenshot",
+    "visual_diff",
+    "axe_accessibility",
+    "motion_reduced_mode_check",
+    "no_text_overlap",
+    "no_content_clipping",
+    "design_quality_score",
+    "visual_rejection_gate"
+  ]
+}

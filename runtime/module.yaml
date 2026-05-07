@@ -1,0 +1,4 @@
+name: runtime
+purpose: Runtime evidence collection, sandbox execution, Playwright automation, and Firecrawl integration helpers.
+status: scaffold
+

@@ -1,0 +1,5 @@
+name: benchmarks
+purpose: Golden migration fixtures used to prove adapters, generators, agents, QA, and replay behavior.
+status: scaffold
+required_before_production: true
+

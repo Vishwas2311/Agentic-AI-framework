@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://genesis.local/schemas/visual_lock_spec.schema.json",
+  "title": "Genesis Visual Lock Spec",
+  "type": "object",
+  "required": ["schema_version", "mode", "screens"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "mode": {
+      "type": "string",
+      "enum": ["exact_fidelity", "modernized_fidelity"]
+    },
+    "screens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["screen_id", "source_refs", "must_match", "allowed_changes", "blocked_changes", "thresholds"],
+        "properties": {
+          "screen_id": { "type": "string" },
+          "source_refs": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "must_match": {
+            "type": "object",
+            "properties": {
+              "layout": { "type": "boolean" },
+              "spacing": { "type": "boolean" },
+              "typography": { "type": "boolean" },
+              "colors": { "type": "boolean" },
+              "component_positions": { "type": "boolean" },
+              "visible_content": { "type": "boolean" }
+            }
+          },
+          "allowed_changes": { "type": "object" },
+          "blocked_changes": { "type": "object" },
+          "thresholds": {
+            "type": "object",
+            "properties": {
+              "minor_spacing_tolerance_px": { "type": "number" },
+              "max_unexplained_pixel_diff_ratio": { "type": "number" },
+              "min_visual_parity_score": { "type": "number" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

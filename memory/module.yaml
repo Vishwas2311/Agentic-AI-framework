@@ -1,0 +1,11 @@
+name: memory
+purpose: Verified vector memory, graph memory, trusted patterns, failed mappings, and agent cost lessons.
+status: scaffold
+stores:
+  vector:
+    - Qdrant
+    - pgvector
+  graph:
+    - Neo4j
+    - Postgres graph tables
+

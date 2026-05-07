@@ -1,0 +1,4 @@
+name: design-token-engine
+purpose: Extracts and normalizes colors, typography, spacing, radius, shadows, and breakpoint tokens.
+status: scaffold
+

@@ -1,0 +1,4 @@
+name: layout-compiler
+purpose: Converts source visuals into layout geometry trees and responsive layout intent.
+status: scaffold
+

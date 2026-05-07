@@ -1,0 +1,2373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nocode2Procode-Genesis</title>
+  <meta name="description" content="Nocode2Procode-Genesis turns no-code inputs into production-ready software through a multi-agent migration pipeline.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#050716;
+      --bg-soft:#0b1028;
+      --panel:rgba(255,255,255,.06);
+      --panel-strong:rgba(12,18,43,.86);
+      --border:rgba(255,255,255,.12);
+      --text:#f4f7ff;
+      --muted:#98a4c7;
+      --primary:#00d4ff;
+      --secondary:#7c3aed;
+      --accent:#06b6d4;
+      --success:#22c55e;
+      --warning:#fbbf24;
+      --danger:#ef4444;
+      --shadow:0 24px 80px rgba(0,0,0,.45);
+      --glow:0 0 0 1px rgba(0,212,255,.2), 0 0 32px rgba(0,212,255,.22), 0 0 64px rgba(124,58,237,.2);
+      --radius:24px;
+      --radius-sm:18px;
+      --grid:minmax(0,1fr);
+      --content:min(1220px, calc(100vw - 32px));
+      --nav-height:76px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,sans-serif;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0,212,255,.18), transparent 24%),
+        radial-gradient(circle at 80% 0%, rgba(124,58,237,.2), transparent 28%),
+        radial-gradient(circle at 80% 80%, rgba(6,182,212,.14), transparent 22%),
+        linear-gradient(180deg, #040611 0%, #070b1d 50%, #050716 100%);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+    a{text-decoration:none;color:inherit}
+    button{font:inherit}
+    canvas#particles{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:-2;
+    }
+    .grid-bg{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size:48px 48px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.15));
+      opacity:.26;
+      animation:grid-pan 26s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes grid-pan{
+      from{transform:translate3d(0,0,0)}
+      to{transform:translate3d(-48px,-48px,0)}
+    }
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(24px);
+      background:rgba(5,7,22,.62);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .nav-inner{
+      width:var(--content);
+      margin:0 auto;
+      height:var(--nav-height);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-family:"Space Grotesk",sans-serif;
+      font-weight:700;
+      letter-spacing:0;
+    }
+    .brand-mark{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(0,212,255,.35), rgba(124,58,237,.5));
+      box-shadow:var(--glow);
+      display:grid;
+      place-items:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .brand-mark::before,
+    .brand-mark::after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      background:rgba(255,255,255,.2);
+      filter:blur(4px);
+    }
+    .brand-mark::before{width:18px;height:18px;left:6px;top:8px}
+    .brand-mark::after{width:12px;height:12px;right:8px;bottom:7px}
+    .nav-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .nav-links a:hover{color:var(--text)}
+    .nav-actions{display:flex;gap:12px;align-items:center}
+    .btn{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      padding:12px 18px;
+      border-radius:999px;
+      cursor:pointer;
+      transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      backdrop-filter:blur(18px);
+    }
+    .btn:hover{
+      transform:translateY(-2px);
+      border-color:rgba(0,212,255,.45);
+      box-shadow:0 12px 40px rgba(0,212,255,.18);
+    }
+    .btn-primary{
+      background:linear-gradient(90deg, rgba(0,212,255,.25), rgba(124,58,237,.26));
+      border-color:rgba(0,212,255,.45);
+      box-shadow:0 0 24px rgba(0,212,255,.2);
+      animation:pulse-glow 2.6s ease-in-out infinite;
+    }
+    @keyframes pulse-glow{
+      0%,100%{box-shadow:0 0 18px rgba(0,212,255,.18)}
+      50%{box-shadow:0 0 36px rgba(124,58,237,.3)}
+    }
+    .page{
+      width:var(--content);
+      margin:0 auto;
+      padding:24px 0 100px;
+    }
+    section{
+      padding:84px 0;
+      position:relative;
+    }
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:24px;
+      margin-bottom:28px;
+    }
+    .eyebrow{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:#d8edff;
+      background:rgba(255,255,255,.06);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      font-size:13px;
+      margin-bottom:18px;
+    }
+    h1,h2,h3,h4{
+      margin:0;
+      font-family:"Space Grotesk",sans-serif;
+      letter-spacing:0;
+    }
+    h1{
+      font-size:clamp(42px, 7vw, 88px);
+      line-height:.98;
+      max-width:11ch;
+    }
+    h2{
+      font-size:clamp(30px, 4vw, 54px);
+      line-height:1.02;
+      max-width:13ch;
+    }
+    h3{
+      font-size:20px;
+      line-height:1.2;
+    }
+    p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+    }
+    .lede{font-size:18px;max-width:68ch}
+    .gradient{
+      background:linear-gradient(90deg, #f4f7ff 0%, #7dd3fc 25%, #00d4ff 55%, #c084fc 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .glass{
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.035));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(22px);
+    }
+    .hero{
+      padding-top:42px;
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:32px;
+      align-items:center;
+      min-height:calc(100vh - var(--nav-height));
+    }
+    .hero-copy{
+      display:flex;
+      flex-direction:column;
+      gap:24px;
+    }
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+    }
+    .trust-strip{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    .trust-pill{
+      padding:14px 16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      color:#e5ecff;
+      font-size:14px;
+    }
+    .hero-visual{
+      padding:18px;
+      position:relative;
+      min-height:680px;
+      overflow:hidden;
+    }
+    .hero-panel-grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      grid-template-rows:auto auto 1fr;
+      gap:16px;
+      height:100%;
+    }
+    .panel{
+      background:var(--panel-strong);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .panel::after{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      border-radius:inherit;
+      border:1px solid rgba(255,255,255,.03);
+      pointer-events:none;
+    }
+    .panel-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:14px;
+      font-size:13px;
+      color:#dbe7ff;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .folder-stack,
+    .artifact-stack,
+    .stage-mini-grid{
+      display:grid;
+      gap:10px;
+    }
+    .folder-item,
+    .artifact-item,
+    .stage-mini{
+      padding:12px 14px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .folder-item span:last-child,
+    .artifact-item span:last-child{
+      color:#8ad8ff;
+      font-family:"JetBrains Mono",monospace;
+      font-size:12px;
+    }
+    .beam{
+      position:absolute;
+      height:2px;
+      background:linear-gradient(90deg, transparent, rgba(0,212,255,.8), rgba(124,58,237,.8), transparent);
+      filter:drop-shadow(0 0 12px rgba(0,212,255,.55));
+      animation:beam-run 4s linear infinite;
+      opacity:.8;
+    }
+    .beam.b1{top:160px;left:42%;width:46%}
+    .beam.b2{top:330px;left:14%;width:70%;animation-delay:-1.8s}
+    .beam.b3{top:520px;left:16%;width:62%;animation-delay:-2.5s}
+    @keyframes beam-run{
+      0%{transform:translateX(-12%) scaleX(.92);opacity:.35}
+      50%{opacity:1}
+      100%{transform:translateX(12%) scaleX(1.02);opacity:.35}
+    }
+    .terminal{
+      font-family:"JetBrains Mono",monospace;
+      display:grid;
+      gap:12px;
+      min-height:220px;
+    }
+    .terminal-line{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      color:#b9f2ff;
+      font-size:13px;
+    }
+    .prompt{color:#22c55e}
+    .typing-caret{
+      width:10px;
+      height:18px;
+      display:inline-block;
+      background:#9af1ff;
+      vertical-align:-3px;
+      animation:caret .9s steps(1) infinite;
+    }
+    @keyframes caret{50%{opacity:0}}
+    .chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .chip{
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.05);
+      color:#e7f6ff;
+      font-size:13px;
+    }
+    .float{
+      animation:float 8s ease-in-out infinite;
+    }
+    .float-delayed{animation:float 8.7s ease-in-out infinite .8s}
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-10px)}
+    }
+    .section-grid{
+      display:grid;
+      grid-template-columns:repeat(12,minmax(0,1fr));
+      gap:18px;
+    }
+    .card{
+      padding:22px;
+      border-radius:24px;
+      background:rgba(255,255,255,.045);
+      border:1px solid rgba(255,255,255,.09);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+      transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:auto -30% -45% auto;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(0,212,255,.16), transparent 72%);
+      pointer-events:none;
+    }
+    .card:hover{
+      transform:translateY(-6px);
+      border-color:rgba(0,212,255,.3);
+      box-shadow:0 26px 72px rgba(0,0,0,.45), 0 0 28px rgba(0,212,255,.12);
+    }
+    .span-4{grid-column:span 4}
+    .span-6{grid-column:span 6}
+    .span-8{grid-column:span 8}
+    .span-12{grid-column:span 12}
+    .icon{
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      font-size:26px;
+      background:linear-gradient(135deg, rgba(0,212,255,.18), rgba(124,58,237,.2));
+      border:1px solid rgba(255,255,255,.1);
+      margin-bottom:16px;
+      box-shadow:inset 0 0 18px rgba(255,255,255,.04);
+    }
+    .meta{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .meta span{
+      color:#d4edff;
+      font-size:12px;
+      font-family:"JetBrains Mono",monospace;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .terminal-shell{
+      padding:0;
+      overflow:hidden;
+    }
+    .terminal-header{
+      padding:14px 18px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      background:rgba(255,255,255,.04);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      display:inline-block;
+    }
+    .dot.red{background:#fb7185}
+    .dot.yellow{background:#fbbf24}
+    .dot.green{background:#22c55e}
+    .terminal-body{
+      padding:18px;
+      min-height:280px;
+      background:linear-gradient(180deg, rgba(4,8,19,.96), rgba(6,12,28,.84));
+    }
+    .logs{
+      display:grid;
+      gap:10px;
+      font-family:"JetBrains Mono",monospace;
+      font-size:13px;
+      color:#b8cbef;
+      max-height:320px;
+      overflow:auto;
+      padding-right:4px;
+    }
+    .logs .ok{color:#7bf7b3}
+    .logs .warn{color:#f7d97b}
+    .logs .run{color:#8ad8ff}
+    .progress-shell{
+      margin-top:16px;
+      background:rgba(255,255,255,.06);
+      border-radius:999px;
+      overflow:hidden;
+      height:10px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .progress-bar{
+      width:0;
+      height:100%;
+      background:linear-gradient(90deg, var(--primary), var(--secondary));
+      transition:width .4s ease;
+      box-shadow:0 0 20px rgba(0,212,255,.35);
+    }
+    .orbit-shell{
+      position:relative;
+      min-height:760px;
+      border-radius:32px;
+      background:
+        radial-gradient(circle at center, rgba(0,212,255,.12), transparent 24%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      overflow:hidden;
+    }
+    .orbit-center{
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      width:240px;
+      height:240px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      background:radial-gradient(circle, rgba(0,212,255,.18), rgba(124,58,237,.16) 62%, rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 0 60px rgba(0,212,255,.22), inset 0 0 36px rgba(255,255,255,.05);
+      padding:24px;
+      z-index:2;
+    }
+    .orbit-ring{
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:min(74vw, 720px);
+      height:min(74vw, 720px);
+      transform:translate(-50%,-50%);
+      border-radius:50%;
+      border:1px dashed rgba(255,255,255,.12);
+      animation:spin 36s linear infinite;
+    }
+    .orbit-ring.r2{
+      width:min(58vw, 560px);
+      height:min(58vw, 560px);
+      animation-duration:28s;
+      animation-direction:reverse;
+      opacity:.8;
+    }
+    @keyframes spin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+    .agent-node{
+      position:absolute;
+      width:180px;
+      padding:14px;
+      border-radius:20px;
+      background:rgba(8,13,31,.88);
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow:0 18px 46px rgba(0,0,0,.4);
+      cursor:pointer;
+      transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+    }
+    .agent-node:hover{
+      transform:translateY(-4px) scale(1.02);
+      border-color:rgba(0,212,255,.4);
+      box-shadow:0 22px 58px rgba(0,0,0,.48), 0 0 18px rgba(0,212,255,.18);
+    }
+    .agent-node .name{
+      font-size:13px;
+      color:#d9efff;
+      font-family:"JetBrains Mono",monospace;
+      margin-bottom:8px;
+    }
+    .agent-node .role{
+      color:#7dd3fc;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:8px;
+    }
+    .agent-node .purpose{
+      font-size:13px;
+      line-height:1.55;
+    }
+    .agent-node:nth-of-type(1){top:6%;left:50%;transform:translateX(-50%)}
+    .agent-node:nth-of-type(2){top:15%;right:7%}
+    .agent-node:nth-of-type(3){top:34%;right:1%}
+    .agent-node:nth-of-type(4){top:56%;right:5%}
+    .agent-node:nth-of-type(5){bottom:11%;right:17%}
+    .agent-node:nth-of-type(6){bottom:3%;left:50%;transform:translateX(-50%)}
+    .agent-node:nth-of-type(7){bottom:11%;left:17%}
+    .agent-node:nth-of-type(8){top:56%;left:5%}
+    .agent-node:nth-of-type(9){top:34%;left:1%}
+    .agent-node:nth-of-type(10){top:15%;left:7%}
+    .pipeline-row{
+      display:grid;
+      grid-template-columns:repeat(16, minmax(220px, 1fr));
+      gap:14px;
+      overflow-x:auto;
+      padding-bottom:8px;
+      scroll-snap-type:x mandatory;
+    }
+    .pipeline-block{
+      scroll-snap-align:start;
+      min-height:220px;
+      cursor:pointer;
+      position:relative;
+    }
+    .pipeline-block::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      right:-12px;
+      width:24px;
+      height:2px;
+      background:linear-gradient(90deg, rgba(0,212,255,.6), rgba(124,58,237,.7));
+      box-shadow:0 0 16px rgba(0,212,255,.4);
+    }
+    .pipeline-block:last-child::after{display:none}
+    .pipeline-label{
+      margin-bottom:14px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .step-number{
+      min-width:34px;
+      height:34px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, rgba(0,212,255,.18), rgba(124,58,237,.22));
+      border:1px solid rgba(255,255,255,.1);
+      color:#f1fbff;
+      font-family:"JetBrains Mono",monospace;
+    }
+    .confidence-table{
+      overflow:hidden;
+      padding:0;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:14px;
+    }
+    th,td{
+      text-align:left;
+      padding:16px 18px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      vertical-align:top;
+    }
+    th{
+      color:#dcecff;
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      background:rgba(255,255,255,.04);
+    }
+    tbody tr:hover{background:rgba(255,255,255,.03)}
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      font-size:12px;
+    }
+    .status-high{color:#9af1c7}
+    .status-mid{color:#ffe088}
+    .status-low{color:#f8a4a4}
+    .code-window{
+      background:rgba(5,9,22,.92);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:26px;
+      overflow:hidden;
+    }
+    .code-toolbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 18px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.035);
+    }
+    .code-body{
+      padding:22px;
+      min-height:420px;
+      font-family:"JetBrains Mono",monospace;
+      font-size:13px;
+      color:#d5e3ff;
+      white-space:pre-wrap;
+      word-break:break-word;
+      line-height:1.7;
+    }
+    .factory-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:16px;
+    }
+    .folder-tree{
+      display:grid;
+      gap:8px;
+      font-family:"JetBrains Mono",monospace;
+      font-size:13px;
+      color:#d7ebff;
+    }
+    .folder-tree div{padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.04)}
+    .loop-shell{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .loop-diagram{
+      position:relative;
+      min-height:420px;
+      display:grid;
+      place-items:center;
+      padding:28px;
+    }
+    .loop-circle{
+      width:min(68vw, 360px);
+      height:min(68vw, 360px);
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.1);
+      position:relative;
+      animation:spin 28s linear infinite;
+    }
+    .loop-step{
+      position:absolute;
+      width:140px;
+      min-height:64px;
+      padding:12px;
+      background:rgba(9,14,31,.88);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      text-align:center;
+      display:grid;
+      place-items:center;
+      font-size:13px;
+      line-height:1.35;
+      box-shadow:var(--shadow);
+    }
+    .loop-step.active{
+      border-color:rgba(0,212,255,.35);
+      box-shadow:0 0 24px rgba(0,212,255,.18), var(--shadow);
+    }
+    .loop-step.s1{top:-10px;left:50%;transform:translateX(-50%)}
+    .loop-step.s2{top:52px;right:-28px}
+    .loop-step.s3{top:50%;right:-48px;transform:translateY(-50%)}
+    .loop-step.s4{bottom:52px;right:-28px}
+    .loop-step.s5{bottom:-10px;left:50%;transform:translateX(-50%)}
+    .loop-step.s6{bottom:52px;left:-28px}
+    .loop-step.s7{top:50%;left:-48px;transform:translateY(-50%)}
+    .loop-step.s8{top:52px;left:-28px}
+    .qa-console{
+      padding:0;
+      overflow:hidden;
+    }
+    .console-body{
+      padding:18px;
+      min-height:420px;
+      background:linear-gradient(180deg, rgba(5,8,19,.95), rgba(8,13,31,.9));
+      font-family:"JetBrains Mono",monospace;
+      font-size:13px;
+      line-height:1.7;
+      color:#d6e4ff;
+      display:grid;
+      gap:8px;
+    }
+    .console-row.fail{color:#ff9ca3}
+    .console-row.pass{color:#83f6b7}
+    .console-row.run{color:#86dbff}
+    .timeline{
+      display:grid;
+      grid-template-columns:repeat(10, minmax(220px, 1fr));
+      gap:14px;
+      overflow-x:auto;
+      padding-bottom:8px;
+    }
+    .timeline-card{
+      min-height:220px;
+      position:relative;
+      cursor:pointer;
+    }
+    .timeline-card::before{
+      content:"";
+      position:absolute;
+      left:-8px;
+      top:32px;
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      background:linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow:0 0 18px rgba(0,212,255,.45);
+    }
+    .timeline-card::after{
+      content:"";
+      position:absolute;
+      left:0;
+      top:39px;
+      width:120%;
+      height:2px;
+      background:linear-gradient(90deg, rgba(0,212,255,.5), rgba(124,58,237,.5), transparent);
+      z-index:-1;
+    }
+    .timeline-card:last-child::after{display:none}
+    .command-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:16px;
+    }
+    .command-card{
+      padding:20px;
+      cursor:pointer;
+    }
+    .command{
+      display:block;
+      font-family:"JetBrains Mono",monospace;
+      font-size:14px;
+      margin-bottom:14px;
+      color:#a9ebff;
+      word-break:break-word;
+    }
+    .command-row{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .action-mini{
+      min-width:78px;
+      text-align:center;
+      padding:10px 12px;
+      border-radius:999px;
+      color:#e7f8ff;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(90deg, rgba(0,212,255,.18), rgba(124,58,237,.18));
+    }
+    .deployment-flow{
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:14px;
+      align-items:center;
+    }
+    .deploy-node{
+      padding:20px;
+      min-height:170px;
+      position:relative;
+      cursor:pointer;
+    }
+    .deploy-node::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      right:-12px;
+      width:24px;
+      height:2px;
+      background:linear-gradient(90deg, rgba(0,212,255,.55), rgba(124,58,237,.55));
+      box-shadow:0 0 14px rgba(0,212,255,.32);
+    }
+    .deploy-node:last-child::after{display:none}
+    .deploy-node.active{
+      border-color:rgba(34,197,94,.45);
+      box-shadow:0 0 28px rgba(34,197,94,.18), var(--shadow);
+    }
+    .memory-shell{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+    }
+    .memory-stream{
+      display:grid;
+      gap:12px;
+      max-height:460px;
+      overflow:auto;
+      padding-right:4px;
+    }
+    .memory-packet{
+      padding:16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.045);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .memory-packet .trust{
+      font-size:12px;
+      font-family:"JetBrains Mono",monospace;
+      color:#8ad8ff;
+      margin-bottom:8px;
+      display:block;
+    }
+    .integrations{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:18px;
+    }
+    .integration{
+      padding:12px 14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      color:#dff6ff;
+      font-size:13px;
+    }
+    .cta-shell{
+      text-align:center;
+      padding:52px;
+      position:relative;
+      overflow:hidden;
+    }
+    .cta-shell::before{
+      content:"";
+      position:absolute;
+      inset:-20% 10%;
+      background:radial-gradient(circle, rgba(0,212,255,.15), transparent 50%);
+      animation:float 8s ease-in-out infinite;
+      pointer-events:none;
+    }
+    .reveal{
+      opacity:0;
+      transform:translateY(22px);
+      transition:opacity .7s ease, transform .7s ease;
+    }
+    .reveal.in{
+      opacity:1;
+      transform:none;
+    }
+    .drawer,
+    .modal{
+      position:fixed;
+      inset:0;
+      z-index:80;
+      display:none;
+    }
+    .drawer.open,
+    .modal.open{display:block}
+    .backdrop{
+      position:absolute;
+      inset:0;
+      background:rgba(2,4,12,.68);
+      backdrop-filter:blur(10px);
+    }
+    .drawer-panel{
+      position:absolute;
+      top:0;
+      right:0;
+      height:100%;
+      width:min(560px, 100vw);
+      background:linear-gradient(180deg, rgba(6,11,26,.97), rgba(8,14,34,.95));
+      border-left:1px solid rgba(255,255,255,.08);
+      box-shadow:-30px 0 80px rgba(0,0,0,.42);
+      padding:26px;
+      overflow:auto;
+      transform:translateX(100%);
+      transition:transform .35s ease;
+    }
+    .drawer.open .drawer-panel{transform:translateX(0)}
+    .drawer-head,
+    .modal-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:18px;
+    }
+    .close{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      cursor:pointer;
+    }
+    .drawer-body{
+      display:grid;
+      gap:18px;
+    }
+    .info-list{
+      display:grid;
+      gap:10px;
+    }
+    .info-item{
+      padding:12px 14px;
+      border-radius:14px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .modal-panel{
+      position:relative;
+      width:min(920px, calc(100vw - 24px));
+      margin:5vh auto;
+      background:linear-gradient(180deg, rgba(8,13,31,.96), rgba(6,10,26,.96));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:24px;
+      overflow:hidden;
+    }
+    .modal-grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:18px;
+    }
+    .modal-visual{
+      min-height:420px;
+      border-radius:22px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .modal-logs{
+      display:grid;
+      gap:8px;
+      max-height:420px;
+      overflow:auto;
+      font-family:"JetBrains Mono",monospace;
+      font-size:13px;
+      color:#dcecff;
+    }
+    .spark{
+      position:absolute;
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:radial-gradient(circle, #fff, rgba(255,255,255,.1));
+      opacity:0;
+      pointer-events:none;
+    }
+    .footer-note{
+      text-align:center;
+      color:#9bb1d1;
+      font-size:13px;
+      padding:32px 0 10px;
+    }
+    @media (max-width:1150px){
+      .hero{grid-template-columns:1fr}
+      .hero-visual{min-height:640px}
+      .factory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .loop-shell,.memory-shell,.modal-grid{grid-template-columns:1fr}
+      .command-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .deployment-flow{grid-template-columns:1fr}
+      .deploy-node::after{display:none}
+      .orbit-shell{min-height:unset;padding:24px}
+      .orbit-center,.orbit-ring,.orbit-ring.r2{position:relative;top:auto;left:auto;transform:none;margin:0 auto}
+      .orbit-center{margin-bottom:24px}
+      .orbit-ring,.orbit-ring.r2{display:none}
+      .agent-node{
+        position:relative !important;
+        inset:auto !important;
+        width:auto;
+        transform:none !important;
+        margin-bottom:14px;
+      }
+      .hero-panel-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:860px){
+      .nav-inner{height:auto;padding:16px 0;align-items:flex-start;flex-direction:column}
+      .nav-links,.nav-actions{width:100%}
+      .nav-links{gap:12px}
+      section{padding:70px 0}
+      .section-head{flex-direction:column;align-items:flex-start}
+      .span-4,.span-6,.span-8{grid-column:span 12}
+      .trust-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .command-grid,.factory-grid{grid-template-columns:1fr}
+      h1{max-width:12ch}
+      .modal-panel{margin:2vh auto;padding:18px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{
+        animation:none !important;
+        transition:none !important;
+        scroll-behavior:auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <div class="grid-bg"></div>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#hero">
+        <span class="brand-mark"></span>
+        <span>Nocode2Procode-Genesis</span>
+      </a>
+      <div class="nav-links">
+        <a href="#platform">Platform</a>
+        <a href="#inputs">Inputs</a>
+        <a href="#agents">Agents</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#commands">Commands</a>
+        <a href="#qa-loop">QA Loop</a>
+        <a href="#replay">Replay</a>
+        <a href="#deploy">Deploy</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn" data-scroll="#replay">Watch Replay</button>
+        <button class="btn btn-primary" id="navRun">Run Migration</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page">
+    <section id="hero" class="reveal">
+      <div class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">Production migration studio / multi-agent / evidence-first / one command</div>
+          <h1><span class="gradient">From No-Code Input to Production Pro-Code</span></h1>
+          <p class="lede">Nocode2Procode-Genesis reads your <code>migration_inputs/</code> folder, classifies source evidence, extracts UI and workflows, resolves source truth, builds a canonical app spec, generates code, runs QA, prepares deployment, and saves verified learning.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="heroRun">Run Migration</button>
+            <button class="btn" data-scroll="#architecture">View Architecture</button>
+            <button class="btn" data-scroll="#replay">Watch Replay</button>
+          </div>
+          <div class="trust-strip">
+            <div class="trust-pill">PowerApps / websites / docs / videos / schemas</div>
+            <div class="trust-pill">Canonical app spec / ULC-IR / design IR</div>
+            <div class="trust-pill">Frontend / backend / DB / tests / deploy</div>
+            <div class="trust-pill">Replay dashboard / approval / verified memory</div>
+          </div>
+        </div>
+        <div class="hero-visual glass float-delayed">
+          <div class="beam b1"></div>
+          <div class="beam b2"></div>
+          <div class="beam b3"></div>
+          <div class="hero-panel-grid">
+            <div class="panel float">
+              <div class="panel-title">
+                <span>migration_inputs / source evidence</span>
+                <span>live</span>
+              </div>
+              <div class="folder-stack">
+                <div class="folder-item"><span>powerapps_export.zip</span><span>platform_ast</span></div>
+                <div class="folder-item"><span>website_reference.txt</span><span>website_ast</span></div>
+                <div class="folder-item"><span>BRD.docx</span><span>document_intent</span></div>
+                <div class="folder-item"><span>walkthrough.mp4</span><span>runtime_plan</span></div>
+                <div class="folder-item"><span>schema.sql</span><span>db_ast</span></div>
+              </div>
+            </div>
+            <div class="panel float-delayed">
+              <div class="panel-title">
+                <span>runtime session</span>
+                <span>tracked</span>
+              </div>
+              <div class="artifact-stack">
+                <div class="artifact-item"><span>runtime_session.json</span><span>active</span></div>
+                <div class="artifact-item"><span>session_events.jsonl</span><span>stream</span></div>
+                <div class="artifact-item"><span>agent_execution_plan.json</span><span>swarm</span></div>
+                <div class="artifact-item"><span>memory_context.json</span><span>reused</span></div>
+              </div>
+            </div>
+            <div class="panel terminal-shell" style="grid-column:span 2">
+              <div class="terminal-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span style="margin-left:12px;color:#bed4ff;font-size:13px;">Genesis Command Terminal</span>
+              </div>
+              <div class="terminal-body">
+                <div class="terminal">
+                  <div class="terminal-line"><span class="prompt">$</span><span id="heroCommandText"></span><span class="typing-caret" id="heroCaret"></span></div>
+                  <div class="stage-mini-grid">
+                    <div class="stage-mini"><span>Input Intake</span><span style="color:#8ad8ff">classified</span></div>
+                    <div class="stage-mini"><span>Source Truth</span><span style="color:#8ad8ff">resolved</span></div>
+                    <div class="stage-mini"><span>Canonical Spec</span><span style="color:#8ad8ff">frozen</span></div>
+                    <div class="stage-mini"><span>QA + Replay</span><span style="color:#8ad8ff">ready</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel" style="grid-column:span 2">
+              <div class="panel-title">
+                <span>generated outputs</span>
+                <span>production scaffold</span>
+              </div>
+              <div class="chip-row">
+                <span class="chip">frontend/</span>
+                <span class="chip">backend/</span>
+                <span class="chip">database/</span>
+                <span class="chip">tests/</span>
+                <span class="chip">deploy/</span>
+                <span class="chip">docs/</span>
+                <span class="chip">genesis_replay_dashboard.html</span>
+                <span class="chip">verified_memory_packet.json</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="platform" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Platform overview / actual project capabilities</div>
+          <h2>One pipeline. Many evidence sources. Reviewable software output.</h2>
+        </div>
+        <p class="lede">Genesis is built as a controlled migration factory. It does not jump directly from input to code. It extracts, resolves, plans, generates, tests, replays, and learns.</p>
+      </div>
+      <div class="section-grid">
+        <article class="card span-4">
+          <div class="icon">⟲</div>
+          <h3>Single command runtime</h3>
+          <p>The main command is <code>nocode2procode migrate</code>. It drives intake, extraction, planning, generation, QA, replay, approval, and learning.</p>
+          <div class="meta"><span>migrate</span><span>runtime session</span><span>checkpointed</span></div>
+        </article>
+        <article class="card span-4">
+          <div class="icon">🧠</div>
+          <h3>Evidence-first migration</h3>
+          <p>Exports, websites, docs, videos, screenshots, APIs, and schemas are treated as source evidence and reconciled before code generation begins.</p>
+          <div class="meta"><span>source truth</span><span>confidence scores</span><span>human review gates</span></div>
+        </article>
+        <article class="card span-4">
+          <div class="icon">⚙️</div>
+          <h3>Production output structure</h3>
+          <p>Genesis produces frontend, backend, database, tests, deployment assets, documentation, replay outputs, and verified learning artifacts.</p>
+          <div class="meta"><span>frontend</span><span>backend</span><span>deploy</span></div>
+        </article>
+      </div>
+      <div class="integrations">
+        <span class="integration">Power Platform / PowerApps</span>
+        <span class="integration">Websites / DOM / screenshots</span>
+        <span class="integration">BRD / DOCX / PDF / notes</span>
+        <span class="integration">SQL / CSV / Excel / OpenAPI</span>
+        <span class="integration">Playwright-ready runtime plan</span>
+        <span class="integration">Firecrawl-ready capture plan</span>
+        <span class="integration">Vector + graph memory model</span>
+        <span class="integration">GitHub / Docker / staging artifacts</span>
+      </div>
+    </section>
+
+    <section id="inputs" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Input layer / migration_inputs</div>
+          <h2>Drop everything into <span class="gradient">migration_inputs/</span></h2>
+        </div>
+        <p class="lede">Genesis accepts real migration inputs and treats them as evidence that specialized agents can classify, extract, and reconcile.</p>
+      </div>
+      <div class="section-grid" id="inputCards"></div>
+    </section>
+
+    <section id="one-command" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">One command flow</div>
+          <h2>The whole migration starts with one glowing command.</h2>
+        </div>
+        <p class="lede"><code>nocode2procode migrate</code> reads all input files from <code>migration_inputs</code>, classifies and extracts evidence, resolves source truth, builds BRD + IR + canonical spec, plans agents + runtime + memory, generates app scaffold, runs QA and replay outputs, prepares approval and deployment, and saves verified learning.</p>
+      </div>
+      <div class="section-grid">
+        <article class="card span-6 terminal-shell">
+          <div class="terminal-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span style="margin-left:12px;color:#bed4ff;font-size:13px;">nocode2procode migrate</span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line"><span class="prompt">$</span><span>nocode2procode migrate</span></div>
+            <div class="logs" id="commandPreviewLogs"></div>
+            <div class="progress-shell"><div class="progress-bar" id="commandPreviewProgress"></div></div>
+          </div>
+        </article>
+        <article class="card span-6">
+          <div class="icon">▶</div>
+          <h3>Interactive execution</h3>
+          <p>Click Run Migration anywhere on the page to open a terminal-style modal with step-by-step progress, pipeline activation, QA pass flow, and final success state.</p>
+          <div class="meta"><span>step logs</span><span>progress bar</span><span>success badge</span></div>
+          <div style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn btn-primary" id="inlineRun">Run Migration</button>
+            <button class="btn" data-scroll="#commands">View Command Center</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="agents" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Agent orbit architecture</div>
+          <h2>Sixteen agents. One orchestrated migration engine.</h2>
+        </div>
+        <p class="lede">Genesis uses extractor, planning, design, build, QA, security, deployment, and memory agents. Click any agent to see role, purpose, outputs, and stage ownership.</p>
+      </div>
+      <div class="orbit-shell glass">
+        <div class="orbit-ring"></div>
+        <div class="orbit-ring r2"></div>
+        <div class="orbit-center">
+          <div>
+            <div class="eyebrow" style="margin:0 auto 14px;">Genesis Orchestrator</div>
+            <h3 style="font-size:30px;margin-bottom:8px;">migrate</h3>
+            <p>Coordinates input intake, source truth, planning, generation, QA, deployment, and verified memory.</p>
+          </div>
+        </div>
+        <div id="agentOrbitNodes"></div>
+      </div>
+    </section>
+
+    <section id="architecture" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Pipeline architecture</div>
+          <h2>Full end-to-end migration pipeline</h2>
+        </div>
+        <p class="lede">Every block is interactive. Click a stage to see the responsible agent, the artifact it produces, and what happens next.</p>
+      </div>
+      <div class="pipeline-row" id="pipelineBlocks"></div>
+    </section>
+
+    <section id="source-truth" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Source truth resolver</div>
+          <h2>Genesis compares evidence before it trusts it.</h2>
+        </div>
+        <p class="lede">Exports, runtime behavior, documents, API evidence, database hints, website references, and visual signals are compared in one confidence model.</p>
+      </div>
+      <div class="card confidence-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Evidence Source</th>
+              <th>What It Says</th>
+              <th>Conflict Found</th>
+              <th>Confidence</th>
+              <th>Final Decision</th>
+            </tr>
+          </thead>
+          <tbody id="sourceTruthRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="blueprint" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Blueprint / canonical app spec</div>
+          <h2>All extracted knowledge becomes one structured migration blueprint.</h2>
+        </div>
+        <p class="lede">Frontend, backend, database, QA, docs, deployment, and memory all consume the same canonical app specification.</p>
+      </div>
+      <div class="code-window">
+        <div class="code-toolbar">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span style="margin-left:12px;color:#bed4ff;font-size:13px;">canonical_app_spec.json</span>
+          </div>
+          <button class="btn btn-primary" id="blueprintButton">Generate Blueprint</button>
+        </div>
+        <div class="code-body" id="blueprintCode"></div>
+      </div>
+    </section>
+
+    <section id="factory" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Code generation factory</div>
+          <h2>Production code factory, not just a visual mockup.</h2>
+        </div>
+        <p class="lede">Click an output tile to open folder-level detail and see what Genesis generates for that layer.</p>
+      </div>
+      <div class="factory-grid" id="factoryCards"></div>
+    </section>
+
+    <section id="qa-loop" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">QA + repair loop</div>
+          <h2>Generate. Test. Fail fast. Repair. Pass. Approve.</h2>
+        </div>
+        <p class="lede">Click the QA console to simulate a failure, watch the repair loop react, and see the build move back to passing state.</p>
+      </div>
+      <div class="loop-shell">
+        <div class="card loop-diagram">
+          <div class="loop-circle">
+            <div class="loop-step s1 active">Generate App</div>
+            <div class="loop-step s2">Unit Tests</div>
+            <div class="loop-step s3">API Tests</div>
+            <div class="loop-step s4">Visual QA</div>
+            <div class="loop-step s5">Security Review</div>
+            <div class="loop-step s6">Repair Agent</div>
+            <div class="loop-step s7">Re-run</div>
+            <div class="loop-step s8">Approve Build</div>
+          </div>
+        </div>
+        <div class="card qa-console" id="qaConsoleCard">
+          <div class="terminal-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span style="margin-left:12px;color:#bed4ff;font-size:13px;">QA Console Simulation</span>
+          </div>
+          <div class="console-body" id="qaConsole"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="replay" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Runtime replay dashboard</div>
+          <h2>Replay what Genesis understood, generated, tested, and approved.</h2>
+        </div>
+        <p class="lede">Click a replay card to inspect the exact event, responsible agent, output artifact, and confidence context.</p>
+      </div>
+      <div class="timeline" id="replayTimeline"></div>
+    </section>
+
+    <section id="commands" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Command center</div>
+          <h2>Actual framework commands, visualized.</h2>
+        </div>
+        <p class="lede">This command center reflects the current NoCode2ProCode command surface from the real project. Click any command to see what it does.</p>
+      </div>
+      <div class="command-grid" id="commandGrid"></div>
+    </section>
+
+    <section id="deploy" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Approval / staging / delivery</div>
+          <h2>From generated app to deployment-ready handoff.</h2>
+        </div>
+        <p class="lede">Click the deployment flow to animate GitHub Actions, Docker packaging, staging rollout, approval, and delivery readiness.</p>
+      </div>
+      <div class="deployment-flow" id="deploymentFlow"></div>
+    </section>
+
+    <section id="memory" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Verified memory / pattern learning</div>
+          <h2>Every migration can make the next one stronger.</h2>
+        </div>
+        <p class="lede">Genesis saves reusable learning only after the pipeline has enough confidence. Generated-only patterns stay lower-trust until they are validated.</p>
+      </div>
+      <div class="memory-shell">
+        <div class="card">
+          <h3 style="margin-bottom:14px;">Memory packet stream</h3>
+          <div class="memory-stream" id="memoryPackets"></div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:14px;">Why this matters</h3>
+          <p>Verified memory lets Genesis reuse migration patterns, output structures, UI conventions, and repair lessons without treating every past run as equally trustworthy.</p>
+          <div class="meta" style="margin-top:18px">
+            <span>generated_only</span>
+            <span>build_passed</span>
+            <span>test_passed</span>
+            <span>human_approved</span>
+            <span>deployed_stable</span>
+          </div>
+          <div class="folder-tree" style="margin-top:22px">
+            <div>memory_retrieval_plan.json</div>
+            <div>memory_context.json</div>
+            <div>verified_memory_packet.json</div>
+            <div>migration_learning_report.json</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cta" class="reveal">
+      <div class="cta-shell glass">
+        <div class="eyebrow" style="margin:0 auto 18px;">Final CTA</div>
+        <h2 style="max-width:none;margin-bottom:14px;">Run your first Genesis migration.</h2>
+        <p class="lede" style="margin:0 auto 24px;max-width:64ch;">Drop your package into <code>migration_inputs/</code>, run one command, and watch Genesis turn no-code evidence into production-ready software with planning, generation, QA, replay, and learning.</p>
+        <div class="hero-actions" style="justify-content:center">
+          <button class="btn btn-primary" id="finalRun">Run nocode2procode migrate</button>
+          <button class="btn" data-scroll="#agents">View Agent Architecture</button>
+          <button class="btn" data-scroll="#factory">See Generated Output</button>
+        </div>
+      </div>
+      <div class="footer-note">Nocode2Procode-Genesis / Convert No-Code Packages into Production Pro-Code</div>
+    </section>
+  </main>
+
+  <aside class="drawer" id="detailDrawer" aria-hidden="true">
+    <div class="backdrop" data-close="drawer"></div>
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <div>
+          <div class="eyebrow" id="drawerEyebrow">Details</div>
+          <h3 id="drawerTitle">Genesis details</h3>
+        </div>
+        <button class="close" data-close="drawer">✕</button>
+      </div>
+      <div class="drawer-body">
+        <p id="drawerDescription"></p>
+        <div class="info-list" id="drawerInfo"></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="modal" id="commandModal" aria-hidden="true">
+    <div class="backdrop" data-close="modal"></div>
+    <div class="modal-panel">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">Live command execution</div>
+          <h3 style="font-size:28px;">nocode2procode migrate</h3>
+        </div>
+        <button class="close" data-close="modal">✕</button>
+      </div>
+      <div class="modal-grid">
+        <div class="modal-visual" id="modalPipelineVisual">
+          <div class="terminal-header" style="margin:-18px -18px 18px;border-radius:22px 22px 0 0;">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span style="margin-left:12px;color:#bed4ff;font-size:13px;">Migration progress</span>
+          </div>
+          <div class="folder-tree" id="modalStageView"></div>
+          <div class="progress-shell" style="margin-top:18px"><div class="progress-bar" id="modalProgress"></div></div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="terminal-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span style="margin-left:12px;color:#bed4ff;font-size:13px;">Execution logs</span>
+          </div>
+          <div class="terminal-body">
+            <div class="modal-logs" id="modalLogs"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const inputItems = [
+      {
+        icon: "📦",
+        title: "PowerApps Export",
+        description: "Reads Power Platform packages, screens, formulas, connectors, and data-source hints.",
+        meta: ["platform_ast.json", "screens", "connectors"],
+        detail: {
+          eyebrow: "Input evidence / PowerApps",
+          title: "PowerApps export intake",
+          description: "PowerApps source artifacts feed the PowerApps extractor so Genesis can recover UI surfaces, workflow hints, connector hints, and platform structure before migration planning.",
+          items: ["Reads .zip / .msapp / .pa.yaml style artifacts", "Builds platform_ast.json", "Feeds source truth and ULC-IR planning"]
+        }
+      },
+      {
+        icon: "🌐",
+        title: "Website Reference",
+        description: "Reads website references and extracts page structure, navigation, and UI hints.",
+        meta: ["website_ast.json", "navigation", "page map"],
+        detail: {
+          eyebrow: "Input evidence / Web",
+          title: "Website evidence intake",
+          description: "Website references are normalized into page-level structure, navigation hints, and runtime-ready targets that can later be used by browser evidence capture.",
+          items: ["Reads website reference files and URLs", "Builds website_ast.json", "Creates runtime capture targets"]
+        }
+      },
+      {
+        icon: "📄",
+        title: "BRD / Notes / Docs",
+        description: "Extracts business intent, mockups, functional rules, and workflow expectations.",
+        meta: ["document_intent.json", "BRD intent", "mockups"],
+        detail: {
+          eyebrow: "Input evidence / Documents",
+          title: "Document evidence intake",
+          description: "Documents become structured intent so business rules and design references influence the migration before code generation begins.",
+          items: ["Builds brd_design_intent.json", "Builds brd_mockup_inventory.json", "Builds document_intent.json"]
+        }
+      },
+      {
+        icon: "🎥",
+        title: "Runtime Video / Screenshots",
+        description: "Plans browser evidence capture, walkthroughs, screenshots, and runtime replay evidence.",
+        meta: ["runtime_capture_contract.json", "browser plan", "replay"],
+        detail: {
+          eyebrow: "Input evidence / Runtime",
+          title: "Runtime evidence planning",
+          description: "Videos and screenshots help Genesis identify the visible flows that should be captured, preserved, and later replayed in the migration dashboard.",
+          items: ["Builds browser_runtime_plan.json", "Builds runtime_capture_contract.json", "Feeds replay and QA expectations"]
+        }
+      },
+      {
+        icon: "🧩",
+        title: "Existing Config / Schema / API",
+        description: "Reads config, schema, API, workflow, and application logic evidence.",
+        meta: ["api_ast.json", "db_ast.json", "structured inputs"],
+        detail: {
+          eyebrow: "Input evidence / Structured files",
+          title: "Structured input intake",
+          description: "Schemas, OpenAPI files, SQL, XML, YAML, CSV, and related assets help Genesis recover data models and integration contracts alongside UI evidence.",
+          items: ["Builds api_ast.json", "Builds db_ast.json", "Strengthens canonical spec generation"]
+        }
+      }
+    ];
+
+    const agents = [
+      {
+        name: "solution_intake_agent",
+        role: "source intake",
+        purpose: "Reads input files and classifies source types.",
+        stages: ["validate_inputs", "discover_sources"],
+        outputs: ["input_intake_manifest.json", "source_baseline.json"]
+      },
+      {
+        name: "powerapps_extractor_agent",
+        role: "platform extractor",
+        purpose: "Extracts PowerApps source structure.",
+        stages: ["extract_native_ast"],
+        outputs: ["platform_ast.json"]
+      },
+      {
+        name: "website_extractor_agent",
+        role: "website extractor",
+        purpose: "Extracts website URLs and page structure.",
+        stages: ["discover_sources", "extract_native_ast"],
+        outputs: ["website_ast.json"]
+      },
+      {
+        name: "document_extractor_agent",
+        role: "document extractor",
+        purpose: "Extracts BRD, notes, mockups, and business intent.",
+        stages: ["extract_brd_design_intent", "extract_brd_mockups", "extract_native_ast"],
+        outputs: ["brd_design_intent.json", "brd_mockup_inventory.json", "document_intent.json"]
+      },
+      {
+        name: "runtime_evidence_agent",
+        role: "runtime capture",
+        purpose: "Plans screenshots, network traces, role sessions, and browser capture.",
+        stages: ["record_runtime_evidence"],
+        outputs: ["runtime_evidence.json", "browser_runtime_plan.json", "runtime_capture_contract.json"]
+      },
+      {
+        name: "swarm_coordinator_agent",
+        role: "swarm coordinator",
+        purpose: "Plans which agents run, in what order, and how they coordinate.",
+        stages: ["discover_sources"],
+        outputs: ["agent_execution_plan.json", "swarm_topology.json"]
+      },
+      {
+        name: "source_truth_agent",
+        role: "source truth resolver",
+        purpose: "Decides what source is authoritative.",
+        stages: ["resolve_source_truth", "validate_ir"],
+        outputs: ["source_truth_report.json", "source_conflict_report.json", "confidence_scores.json", "migration_contract.json"]
+      },
+      {
+        name: "migration_brd_agent",
+        role: "migration planner",
+        purpose: "Builds migration spec, IR, and canonical app plan.",
+        stages: ["build_ulc_ir", "resolve_conflicts", "build_canonical_app_spec", "human_review_gate"],
+        outputs: ["ulc_ir/", "design_ir/", "canonical_app_spec.json"]
+      },
+      {
+        name: "memory_curator_agent",
+        role: "verified memory curator",
+        purpose: "Reuses and saves verified migration memory.",
+        stages: ["validate_inputs", "learn_verified_patterns"],
+        outputs: ["memory_retrieval_plan.json", "memory_context.json", "verified_memory_packet.json", "migration_learning_report.json"]
+      },
+      {
+        name: "ui_ux_pro_max",
+        role: "design director",
+        purpose: "Defines design system, UX direction, and motion quality.",
+        stages: ["generate_design_system", "run_visual_design_qa", "run_agent_repair_loop"],
+        outputs: ["DESIGN.md", "design_tokens.json", "component_registry.json", "visual_acceptance_criteria.md"]
+      },
+      {
+        name: "frontend_agent",
+        role: "frontend builder",
+        purpose: "Generates frontend scaffold and UI routes.",
+        stages: ["generate_code", "run_agent_repair_loop"],
+        outputs: ["frontend/"]
+      },
+      {
+        name: "backend_agent",
+        role: "backend builder",
+        purpose: "Generates backend scaffold, APIs, and integration contracts.",
+        stages: ["generate_code", "run_agent_repair_loop"],
+        outputs: ["backend/", "integration_contracts/"]
+      },
+      {
+        name: "test_repair_agent",
+        role: "test and repair",
+        purpose: "Handles tests and repair loop work.",
+        stages: ["run_agent_repair_loop", "run_quality_gates"],
+        outputs: ["tests/", "test_report.json"]
+      },
+      {
+        name: "security_agent",
+        role: "security reviewer",
+        purpose: "Handles security and compliance review.",
+        stages: ["run_quality_gates", "final_approval"],
+        outputs: ["security_review_report.md", "compliance_report.md", "eu_ai_act_report.md"]
+      },
+      {
+        name: "deploy_agent",
+        role: "deploy builder",
+        purpose: "Prepares deployment, staging, and delivery artifacts.",
+        stages: ["generate_code", "deploy_staging", "deliver_github_pr"],
+        outputs: ["deploy/", ".github/", "deployment_report.md"]
+      },
+      {
+        name: "documentation_agent",
+        role: "documentation writer",
+        purpose: "Writes docs, README, and architecture outputs.",
+        stages: ["generate_code", "deliver_github_pr"],
+        outputs: ["docs/", "README.md", "ARCHITECTURE.md"]
+      }
+    ];
+
+    const pipeline = [
+      { step: "migration_inputs", description: "User drops packages, documents, websites, recordings, and configs.", agent: "solution_intake_agent", artifact: "migration_inputs/" },
+      { step: "Input Intake", description: "Classifies all source types and builds the baseline.", agent: "solution_intake_agent", artifact: "input_intake_manifest.json / source_baseline.json" },
+      { step: "Source Discovery", description: "Finds platform evidence, website evidence, document intent, and runtime entry points.", agent: "swarm_coordinator_agent", artifact: "asset_inventory.json / agent_execution_plan.json" },
+      { step: "Extractor Agents", description: "Specialized agents extract native AST, website AST, and document intent.", agent: "powerapps_extractor_agent + website_extractor_agent + document_extractor_agent", artifact: "platform_ast.json / website_ast.json / document_intent.json" },
+      { step: "Runtime Evidence Plan", description: "Plans screenshots, traces, sessions, and walkthrough capture.", agent: "runtime_evidence_agent", artifact: "browser_runtime_plan.json / runtime_capture_contract.json" },
+      { step: "Source Truth Resolver", description: "Compares conflicting evidence and decides authoritative source truth.", agent: "source_truth_agent", artifact: "source_truth_report.json / confidence_scores.json" },
+      { step: "Migration BRD / Planning", description: "Builds migration brief, ULC-IR, Design IR, and planning intent.", agent: "migration_brd_agent", artifact: "ulc_ir/ / design_ir/" },
+      { step: "ULC-IR + Design IR", description: "Turns extracted evidence into structured, buildable intermediate representation.", agent: "migration_brd_agent", artifact: "ulc_ir.json / design_ir.json" },
+      { step: "Canonical App Spec", description: "Freezes the migration blueprint used by every downstream generator.", agent: "migration_brd_agent", artifact: "canonical_app_spec.json" },
+      { step: "Design System + UI Strategy", description: "Defines layout, tokens, motion rules, and component strategy.", agent: "ui_ux_pro_max", artifact: "DESIGN.md / design_tokens.json / component_registry.json" },
+      { step: "Frontend / Backend / DB Generation", description: "Generates scaffolded software outputs and contracts.", agent: "frontend_agent + backend_agent", artifact: "frontend/ / backend/ / database/" },
+      { step: "Agent Repair Loop", description: "Detects failures, routes repair work, and replays fixes.", agent: "test_repair_agent", artifact: "agent_patch_log.jsonl / agent_cost_report.json" },
+      { step: "QA / Security / Visual QA", description: "Runs quality checks, security review, and visual review artifacts.", agent: "test_repair_agent + security_agent + ui_ux_pro_max", artifact: "test_report.json / security_review_report.md / design_quality_score.json" },
+      { step: "Replay Dashboard", description: "Shows what happened during migration with evidence and outcomes.", agent: "runtime_evidence_agent + documentation_agent", artifact: "genesis_replay_dashboard.html" },
+      { step: "Approval / Staging / Delivery", description: "Prepares staging, deployment, GitHub PR, and delivery status.", agent: "deploy_agent + security_agent", artifact: "deployment_report.md / approval.json / github_delivery_report.md" },
+      { step: "Verified Memory / Pattern Learning", description: "Saves trusted migration packets for future runs.", agent: "memory_curator_agent", artifact: "verified_memory_packet.json / migration_learning_report.json" }
+    ];
+
+    const sourceTruthRows = [
+      { source: "PowerApps Export", says: "Approval status has Draft, Submitted, Approved, Rejected", conflict: "No", confidence: "High", decision: "Use as workflow enum" },
+      { source: "Runtime Video", says: "User sees Submit and Cancel buttons", conflict: "No", confidence: "High", decision: "Generate UI actions" },
+      { source: "BRD Document", says: "Manager approval required", conflict: "Partial", confidence: "Medium", decision: "Ask human review or mark assumption" }
+    ];
+
+    const blueprintObject = {
+      project: "Nocode2Procode-Genesis",
+      input_sources: ["powerapps_export", "website_reference", "brd_document", "runtime_video", "screenshots"],
+      source_truth_status: "resolved_with_confidence_scores",
+      screens: ["Login", "Dashboard", "Request Form", "Approval Queue", "Admin Settings"],
+      entities: ["User", "Request", "Approval", "Attachment", "Notification"],
+      workflows: ["Login Flow", "Submit Request", "Manager Approval", "Notification Trigger", "Audit Trail"],
+      generated_outputs: {
+        frontend: "frontend/",
+        backend: "backend/",
+        tests: "tests/",
+        docs: "docs/",
+        deployment: "deploy/",
+        github_actions: ".github/"
+      },
+      quality_gates: ["unit_tests", "api_tests", "playwright_ui_tests", "visual_qa", "security_review"],
+      final_state: "production_ready_after_approval"
+    };
+
+    const factoryItems = [
+      { icon: "⚛️", title: "Frontend", folder: "frontend/", description: "React or Next.js UI, routes, components, forms, dashboards, and responsive layouts." },
+      { icon: "⚡", title: "Backend", folder: "backend/", description: "FastAPI or Node backend, APIs, services, validation, and integration contracts." },
+      { icon: "🗄️", title: "Database", folder: "database/", description: "Schema, migrations, relationships, indexes, and seed data." },
+      { icon: "🧪", title: "Tests", folder: "tests/", description: "Playwright UI tests, API tests, backend tests, and repair-loop artifacts." },
+      { icon: "🛡️", title: "Security", folder: "security_review_report.md", description: "Security review, compliance report, privacy checks, and approval readiness." },
+      { icon: "🚀", title: "Deployment", folder: "deploy/", description: "Docker, staging config, GitHub Actions, deployment report, and delivery pipeline." },
+      { icon: "📚", title: "Documentation", folder: "docs/", description: "README, architecture docs, handoff notes, and migration report." },
+      { icon: "🧠", title: "Verified Memory", folder: "verified_memory_packet.json", description: "Reusable migration patterns saved after successful migration." }
+    ];
+
+    const replayEvents = [
+      { title: "Input Intake", agent: "solution_intake_agent", artifact: "input_intake_manifest.json", confidence: "0.92", description: "Classified migration evidence and created the baseline." },
+      { title: "Platform Extraction", agent: "powerapps_extractor_agent", artifact: "platform_ast.json", confidence: "0.81", description: "Recovered screens, connector hints, and platform structure." },
+      { title: "Website Extraction", agent: "website_extractor_agent", artifact: "website_ast.json", confidence: "0.76", description: "Mapped referenced pages and navigation hints." },
+      { title: "Source Truth", agent: "source_truth_agent", artifact: "source_truth_report.json", confidence: "0.84", description: "Resolved which evidence sources to trust for UI and data." },
+      { title: "Canonical Spec", agent: "migration_brd_agent", artifact: "canonical_app_spec.json", confidence: "0.88", description: "Frozen migration blueprint generated for downstream agents." },
+      { title: "Frontend Build", agent: "frontend_agent", artifact: "frontend/", confidence: "0.79", description: "Generated frontend scaffold, routes, and UI surface." },
+      { title: "Backend Build", agent: "backend_agent", artifact: "backend/", confidence: "0.79", description: "Generated backend structure and integration contracts." },
+      { title: "QA Artifacts", agent: "test_repair_agent", artifact: "test_report.json", confidence: "0.72", description: "Prepared quality gate artifacts and repair-loop plan." },
+      { title: "Deployment Prep", agent: "deploy_agent", artifact: "deployment_report.md", confidence: "0.68", description: "Prepared staging and delivery scaffolding." },
+      { title: "Verified Learning", agent: "memory_curator_agent", artifact: "verified_memory_packet.json", confidence: "0.74", description: "Saved reusable migration packet with trust status." }
+    ];
+
+    const commands = [
+      { command: "nocode2procode validate", does: "Validate the framework YAML and pipeline config." },
+      { command: "nocode2procode plan", does: "Show the ordered migration stages." },
+      { command: "nocode2procode install-plan", does: "Show tool installation expectations and setup hints." },
+      { command: "nocode2procode check-tool <stage> <tool>", does: "Check whether a tool is allowed in a given stage." },
+      { command: "nocode2procode route <signal>", does: "Show how a routing signal maps to tools, stages, and prompts." },
+      { command: "nocode2procode init-workspace \"App Name\"", does: "Create a migration workspace and prepare the input folder." },
+      { command: "nocode2procode estimate \"App Name\"", does: "Create a dry-run estimate placeholder." },
+      { command: "nocode2procode visual-lock <screen_id>", does: "Create a starter visual lock contract." },
+      { command: "nocode2procode design-strategy", does: "Create design strategy, Magic selection, and motion plan." },
+      { command: "nocode2procode design-quality", does: "Create a design quality evaluation output." },
+      { command: "nocode2procode stack-resolve \"prompt\"", does: "Resolve delivery mode and target stack." },
+      { command: "nocode2procode discover", does: "Run intake, discovery, extraction, and runtime-evidence planning." },
+      { command: "nocode2procode plan-run", does: "Run source truth, IR validation, canonical spec, and visual-contract setup." },
+      { command: "nocode2procode generate", does: "Generate the deterministic scaffold." },
+      { command: "nocode2procode qa", does: "Run scaffold QA, visual QA placeholders, and design quality reporting." },
+      { command: "nocode2procode replay", does: "Build replay dashboard and traceability outputs." },
+      { command: "nocode2procode migrate", does: "Run the full end-to-end migration pipeline." },
+      { command: "nocode2procode genesis-migrate", does: "Compatibility alias for migrate." },
+      { command: "nocode2procode sessions", does: "List runtime sessions and their status." },
+      { command: "nocode2procode status \"C:\\path\\to\\workspace\"", does: "Show session status, last stage, and approval state." }
+    ];
+
+    const deploymentSteps = [
+      { title: "Generate Artifacts", text: "frontend / backend / tests / deploy / docs" },
+      { title: "GitHub Actions", text: "CI workflow and delivery structure" },
+      { title: "Docker Package", text: "Container assets and runtime shape" },
+      { title: "Staging Approval", text: "Human approval + deployment report" },
+      { title: "Delivery", text: "PR / staging URL / handoff package" }
+    ];
+
+    const memoryPackets = [
+      { trust: "generated_only", title: "PowerApps approval flow", text: "Captured enum statuses and screen mapping but still awaiting full QA promotion." },
+      { trust: "build_passed", title: "Portal navigation scaffold", text: "Reusable route shell and sidebar structure validated at scaffold level." },
+      { trust: "test_passed", title: "CRUD service naming pattern", text: "Reusable backend naming and endpoint grouping for data-heavy apps." },
+      { trust: "human_approved", title: "Operational dashboard layout", text: "Dense enterprise layout pattern approved for admin and workflow surfaces." }
+    ];
+
+    const commandLogSequence = [
+      "Scanning migration_inputs/",
+      "Classifying source types",
+      "Extracting PowerApps source structure",
+      "Extracting website/page structure",
+      "Extracting BRD and business intent",
+      "Planning runtime/browser evidence",
+      "Coordinating agent execution",
+      "Resolving source truth",
+      "Building ULC-IR and Design IR",
+      "Generating canonical_app_spec.json",
+      "Creating design system",
+      "Generating frontend scaffold",
+      "Generating backend scaffold",
+      "Generating tests",
+      "Running QA and repair loop",
+      "Running security review",
+      "Preparing deployment artifacts",
+      "Writing documentation",
+      "Saving verified migration memory",
+      "Migration completed successfully"
+    ];
+
+    const drawer = document.getElementById("detailDrawer");
+    const drawerEyebrow = document.getElementById("drawerEyebrow");
+    const drawerTitle = document.getElementById("drawerTitle");
+    const drawerDescription = document.getElementById("drawerDescription");
+    const drawerInfo = document.getElementById("drawerInfo");
+    const modal = document.getElementById("commandModal");
+    const modalLogs = document.getElementById("modalLogs");
+    const modalProgress = document.getElementById("modalProgress");
+    const modalStageView = document.getElementById("modalStageView");
+    const heroCommandText = document.getElementById("heroCommandText");
+    const heroCaret = document.getElementById("heroCaret");
+    const blueprintCode = document.getElementById("blueprintCode");
+    const commandPreviewLogs = document.getElementById("commandPreviewLogs");
+    const commandPreviewProgress = document.getElementById("commandPreviewProgress");
+    const qaConsole = document.getElementById("qaConsole");
+
+    function openDrawer(data){
+      drawerEyebrow.textContent = data.eyebrow || "Details";
+      drawerTitle.textContent = data.title || "Details";
+      drawerDescription.textContent = data.description || "";
+      drawerInfo.innerHTML = "";
+      (data.items || []).forEach(item => {
+        const div = document.createElement("div");
+        div.className = "info-item";
+        div.textContent = item;
+        drawerInfo.appendChild(div);
+      });
+      drawer.classList.add("open");
+      drawer.setAttribute("aria-hidden", "false");
+    }
+
+    function closePanels(kind){
+      if(!kind || kind === "drawer"){
+        drawer.classList.remove("open");
+        drawer.setAttribute("aria-hidden", "true");
+      }
+      if(!kind || kind === "modal"){
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+      }
+    }
+
+    document.querySelectorAll("[data-close]").forEach(btn => {
+      btn.addEventListener("click", () => closePanels(btn.dataset.close));
+    });
+
+    document.querySelectorAll("[data-scroll]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const target = document.querySelector(btn.dataset.scroll);
+        if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+      });
+    });
+
+    function renderInputs(){
+      const shell = document.getElementById("inputCards");
+      inputItems.forEach(item => {
+        const card = document.createElement("article");
+        card.className = "card span-4";
+        card.innerHTML = `
+          <div class="icon">${item.icon}</div>
+          <h3>${item.title}</h3>
+          <p>${item.description}</p>
+          <div class="meta">${item.meta.map(text => `<span>${text}</span>`).join("")}</div>
+        `;
+        card.addEventListener("click", () => openDrawer(item.detail));
+        shell.appendChild(card);
+      });
+    }
+
+    function renderAgents(){
+      const shell = document.getElementById("agentOrbitNodes");
+      agents.forEach(agent => {
+        const node = document.createElement("button");
+        node.type = "button";
+        node.className = "agent-node";
+        node.innerHTML = `
+          <div class="role">${agent.role}</div>
+          <div class="name">${agent.name}</div>
+          <div class="purpose">${agent.purpose}</div>
+        `;
+        node.addEventListener("click", () => openDrawer({
+          eyebrow: "Agent details",
+          title: agent.name,
+          description: `${agent.role} / ${agent.purpose}`,
+          items: [
+            `Stages: ${agent.stages.join(", ")}`,
+            `Outputs: ${agent.outputs.join(", ")}`,
+            "This agent is part of the full nocode2procode migrate execution path."
+          ]
+        }));
+        shell.appendChild(node);
+      });
+    }
+
+    function renderPipeline(){
+      const shell = document.getElementById("pipelineBlocks");
+      pipeline.forEach((item, index) => {
+        const card = document.createElement("article");
+        card.className = "card pipeline-block";
+        card.innerHTML = `
+          <div class="pipeline-label">
+            <div class="step-number">${String(index + 1).padStart(2,"0")}</div>
+            <div>
+              <h3>${item.step}</h3>
+              <p style="margin-top:10px">${item.description}</p>
+            </div>
+          </div>
+          <div class="meta">
+            <span>${item.agent}</span>
+            <span>${item.artifact}</span>
+          </div>
+        `;
+        card.addEventListener("click", () => openDrawer({
+          eyebrow: "Pipeline stage",
+          title: item.step,
+          description: item.description,
+          items: [
+            `Responsible: ${item.agent}`,
+            `Primary artifact: ${item.artifact}`,
+            "This block is part of the end-to-end migrate execution graph."
+          ]
+        }));
+        shell.appendChild(card);
+      });
+    }
+
+    function renderSourceTruth(){
+      const tbody = document.getElementById("sourceTruthRows");
+      sourceTruthRows.forEach(row => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${row.source}</td>
+          <td>${row.says}</td>
+          <td>${row.conflict}</td>
+          <td><button class="status ${row.confidence === "High" ? "status-high" : row.confidence === "Medium" ? "status-mid" : "status-low"}">${row.confidence}</button></td>
+          <td>${row.decision}</td>
+        `;
+        tr.querySelector("button").addEventListener("click", () => openDrawer({
+          eyebrow: "Confidence details",
+          title: `${row.source} / ${row.confidence} confidence`,
+          description: "Genesis compares multiple evidence sources before it decides what should drive the migration.",
+          items: [
+            `Evidence: ${row.source}`,
+            `Observed: ${row.says}`,
+            `Conflict: ${row.conflict}`,
+            `Decision: ${row.decision}`
+          ]
+        }));
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderFactory(){
+      const shell = document.getElementById("factoryCards");
+      factoryItems.forEach(item => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="icon">${item.icon}</div>
+          <h3>${item.title}</h3>
+          <p>${item.description}</p>
+          <div class="meta"><span>${item.folder}</span></div>
+        `;
+        card.addEventListener("click", () => openDrawer({
+          eyebrow: "Generated output",
+          title: item.title,
+          description: item.description,
+          items: [
+            `Primary output: ${item.folder}`,
+            "Generated from canonical_app_spec.json",
+            "Shown as part of the production code factory"
+          ]
+        }));
+        shell.appendChild(card);
+      });
+    }
+
+    function renderReplay(){
+      const shell = document.getElementById("replayTimeline");
+      replayEvents.forEach(event => {
+        const card = document.createElement("article");
+        card.className = "card timeline-card";
+        card.innerHTML = `
+          <div class="eyebrow" style="margin-bottom:12px;">${event.agent}</div>
+          <h3>${event.title}</h3>
+          <p style="margin-top:10px">${event.description}</p>
+          <div class="meta">
+            <span>${event.artifact}</span>
+            <span>confidence ${event.confidence}</span>
+          </div>
+        `;
+        card.addEventListener("click", () => openDrawer({
+          eyebrow: "Replay event",
+          title: event.title,
+          description: event.description,
+          items: [
+            `Agent: ${event.agent}`,
+            `Artifact: ${event.artifact}`,
+            `Confidence: ${event.confidence}`
+          ]
+        }));
+        shell.appendChild(card);
+      });
+    }
+
+    function renderCommands(){
+      const shell = document.getElementById("commandGrid");
+      commands.forEach(item => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "card command-card";
+        card.innerHTML = `
+          <div class="command-row">
+            <div>
+              <span class="command">${item.command}</span>
+              <p>${item.does}</p>
+            </div>
+            <span class="action-mini">Open</span>
+          </div>
+        `;
+        card.addEventListener("click", () => openDrawer({
+          eyebrow: "Command center",
+          title: item.command,
+          description: item.does,
+          items: [
+            "Part of the current NoCode2ProCode CLI surface",
+            "Can be run from the project root",
+            "Use migrate for the full end-to-end flow"
+          ]
+        }));
+        shell.appendChild(card);
+      });
+    }
+
+    function renderDeployment(){
+      const shell = document.getElementById("deploymentFlow");
+      deploymentSteps.forEach((step, index) => {
+        const node = document.createElement("button");
+        node.type = "button";
+        node.className = "card deploy-node";
+        node.innerHTML = `
+          <div class="eyebrow" style="margin-bottom:12px;">Stage ${index + 1}</div>
+          <h3>${step.title}</h3>
+          <p style="margin-top:10px">${step.text}</p>
+        `;
+        node.addEventListener("click", () => playDeployment(index, step));
+        shell.appendChild(node);
+      });
+    }
+
+    function renderMemory(){
+      const shell = document.getElementById("memoryPackets");
+      memoryPackets.forEach(packet => {
+        const node = document.createElement("button");
+        node.type = "button";
+        node.className = "memory-packet";
+        node.innerHTML = `
+          <span class="trust">${packet.trust}</span>
+          <h3 style="font-size:18px;margin-bottom:8px;">${packet.title}</h3>
+          <p>${packet.text}</p>
+        `;
+        node.addEventListener("click", () => openDrawer({
+          eyebrow: "Verified memory",
+          title: packet.title,
+          description: packet.text,
+          items: [
+            `Trust status: ${packet.trust}`,
+            "Stored as part of the verified memory flow",
+            "Reusable in future migration planning"
+          ]
+        }));
+        shell.appendChild(node);
+      });
+    }
+
+    function typeHeroCommand(){
+      const command = "nocode2procode migrate";
+      let index = 0;
+      const timer = setInterval(() => {
+        heroCommandText.textContent = command.slice(0, index);
+        index += 1;
+        if(index > command.length){
+          clearInterval(timer);
+          setTimeout(() => heroCaret.style.display = "none", 800);
+        }
+      }, 70);
+    }
+
+    function previewCommandLogs(){
+      let i = 0;
+      const lines = commandLogSequence.slice(0, 8);
+      commandPreviewLogs.innerHTML = "";
+      commandPreviewProgress.style.width = "0%";
+      const timer = setInterval(() => {
+        if(i >= lines.length){
+          clearInterval(timer);
+          commandPreviewProgress.style.width = "100%";
+          return;
+        }
+        const div = document.createElement("div");
+        div.className = "run";
+        div.textContent = "> " + lines[i];
+        commandPreviewLogs.appendChild(div);
+        commandPreviewProgress.style.width = (((i + 1) / lines.length) * 100) + "%";
+        commandPreviewLogs.scrollTop = commandPreviewLogs.scrollHeight;
+        i += 1;
+      }, 340);
+    }
+
+    function runCommandModal(){
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden","false");
+      modalLogs.innerHTML = "";
+      modalStageView.innerHTML = "";
+      modalProgress.style.width = "0%";
+      const stages = pipeline.map(item => item.step);
+      let logIndex = 0;
+      let stageIndex = 0;
+      const stageTimer = setInterval(() => {
+        if(stageIndex < stages.length){
+          const div = document.createElement("div");
+          div.textContent = `${String(stageIndex + 1).padStart(2,"0")} / ${stages[stageIndex]}`;
+          modalStageView.appendChild(div);
+          stageIndex += 1;
+        }
+        if(stageIndex >= stages.length){
+          clearInterval(stageTimer);
+        }
+      }, 240);
+      const logTimer = setInterval(() => {
+        if(logIndex >= commandLogSequence.length){
+          clearInterval(logTimer);
+          const ok = document.createElement("div");
+          ok.className = "ok";
+          ok.textContent = "✓ Approval artifacts prepared / verified learning saved / migration completed";
+          modalLogs.appendChild(ok);
+          modalProgress.style.width = "100%";
+          sparkBurst();
+          return;
+        }
+        const line = document.createElement("div");
+        line.className = logIndex === commandLogSequence.length - 1 ? "ok" : "run";
+        line.textContent = "> " + commandLogSequence[logIndex];
+        modalLogs.appendChild(line);
+        modalLogs.scrollTop = modalLogs.scrollHeight;
+        modalProgress.style.width = (((logIndex + 1) / commandLogSequence.length) * 100) + "%";
+        logIndex += 1;
+      }, 260);
+    }
+
+    function sparkBurst(){
+      const visual = document.getElementById("modalPipelineVisual");
+      for(let i = 0; i < 24; i += 1){
+        const spark = document.createElement("span");
+        spark.className = "spark";
+        const x = 180 + Math.cos((Math.PI * 2 / 24) * i) * (60 + Math.random() * 80);
+        const y = 180 + Math.sin((Math.PI * 2 / 24) * i) * (60 + Math.random() * 80);
+        spark.style.left = x + "px";
+        spark.style.top = y + "px";
+        visual.appendChild(spark);
+        spark.animate([
+          { transform:"scale(.4)", opacity:0 },
+          { transform:"scale(1)", opacity:1, offset:.25 },
+          { transform:`translate(${(Math.random()-.5)*140}px, ${(Math.random()-.5)*140}px) scale(0)`, opacity:0 }
+        ], { duration:1200 + Math.random() * 600, easing:"ease-out" });
+        setTimeout(() => spark.remove(), 1600);
+      }
+    }
+
+    function typeBlueprint(){
+      const text = JSON.stringify(blueprintObject, null, 2);
+      blueprintCode.textContent = "";
+      let index = 0;
+      const timer = setInterval(() => {
+        blueprintCode.textContent = text.slice(0, index);
+        blueprintCode.scrollTop = blueprintCode.scrollHeight;
+        index += 4;
+        if(index >= text.length){
+          blueprintCode.textContent = text;
+          clearInterval(timer);
+        }
+      }, 12);
+    }
+
+    function runQAConsole(){
+      const lines = [
+        { text: "> pytest tests/backend", cls: "run" },
+        { text: "tests/ui/test_submit_flow.spec.ts / visual mismatch detected", cls: "fail" },
+        { text: "> assigning test_repair_agent", cls: "run" },
+        { text: "> frontend_agent patching request form spacing + primary CTA state", cls: "run" },
+        { text: "> replaying visual comparison", cls: "run" },
+        { text: "playwright test tests/ui / PASS", cls: "pass" },
+        { text: "security review / APPROVED", cls: "pass" },
+        { text: "design quality gate / PASS", cls: "pass" }
+      ];
+      qaConsole.innerHTML = "";
+      document.querySelectorAll(".loop-step").forEach((step, index) => {
+        step.classList.toggle("active", index === 0);
+      });
+      let i = 0;
+      const loopStates = [...document.querySelectorAll(".loop-step")];
+      const timer = setInterval(() => {
+        if(i >= lines.length){
+          clearInterval(timer);
+          return;
+        }
+        const div = document.createElement("div");
+        div.className = `console-row ${lines[i].cls}`;
+        div.textContent = lines[i].text;
+        qaConsole.appendChild(div);
+        qaConsole.scrollTop = qaConsole.scrollHeight;
+        const stepIndex = Math.min(loopStates.length - 1, i);
+        loopStates.forEach((step, idx) => step.classList.toggle("active", idx === stepIndex));
+        i += 1;
+      }, 420);
+    }
+
+    function playDeployment(index, step){
+      document.querySelectorAll(".deploy-node").forEach((node, idx) => {
+        node.classList.toggle("active", idx <= index);
+      });
+      openDrawer({
+        eyebrow: "Deployment flow",
+        title: step.title,
+        description: step.text,
+        items: [
+          "GitHub delivery, Docker packaging, staging, and approval are represented here.",
+          "Genesis currently prepares deployment artifacts and reports in the pipeline.",
+          "This visual shows the future live deployment path."
+        ]
+      });
+    }
+
+    function seedBlueprint(){
+      blueprintCode.textContent = "{\n  \"status\": \"click Generate Blueprint\"\n}";
+    }
+
+    function initReveals(){
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add("in");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold:.14 });
+      document.querySelectorAll(".reveal").forEach(item => observer.observe(item));
+    }
+
+    function initParticles(){
+      const canvas = document.getElementById("particles");
+      const ctx = canvas.getContext("2d");
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      let width = 0;
+      let height = 0;
+      let particles = [];
+      function resize(){
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        particles = Array.from({ length: Math.min(90, Math.floor(width / 18)) }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - .5) * .28,
+          vy: (Math.random() - .5) * .28,
+          r: Math.random() * 2.2 + .6
+        }));
+      }
+      function draw(){
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          if(p.x < -10) p.x = width + 10;
+          if(p.x > width + 10) p.x = -10;
+          if(p.y < -10) p.y = height + 10;
+          if(p.y > height + 10) p.y = -10;
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(120, 220, 255, 0.55)";
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        for(let i = 0; i < particles.length; i += 1){
+          for(let j = i + 1; j < particles.length; j += 1){
+            const a = particles[i];
+            const b = particles[j];
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const dist = Math.hypot(dx, dy);
+            if(dist < 120){
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(120, 220, 255, ${0.12 * (1 - dist / 120)})`;
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+      resize();
+      draw();
+      window.addEventListener("resize", resize);
+    }
+
+    document.getElementById("blueprintButton").addEventListener("click", typeBlueprint);
+    document.getElementById("qaConsoleCard").addEventListener("click", runQAConsole);
+    document.getElementById("heroRun").addEventListener("click", runCommandModal);
+    document.getElementById("navRun").addEventListener("click", runCommandModal);
+    document.getElementById("inlineRun").addEventListener("click", runCommandModal);
+    document.getElementById("finalRun").addEventListener("click", runCommandModal);
+
+    renderInputs();
+    renderAgents();
+    renderPipeline();
+    renderSourceTruth();
+    renderFactory();
+    renderReplay();
+    renderCommands();
+    renderDeployment();
+    renderMemory();
+    initReveals();
+    initParticles();
+    typeHeroCommand();
+    seedBlueprint();
+    previewCommandLogs();
+    setTimeout(runQAConsole, 800);
+  </script>
+</body>
+</html>

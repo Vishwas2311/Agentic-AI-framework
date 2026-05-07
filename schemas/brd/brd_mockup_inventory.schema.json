@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nocode2procode.local/schemas/brd_mockup_inventory.schema.json",
+  "title": "BRD Mockup Inventory",
+  "type": "object",
+  "required": ["schema_version", "source_document", "images_found", "mockups"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "source_document": { "type": "string" },
+    "images_found": { "type": "integer" },
+    "mockups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["file", "classification", "caption_or_nearest_text", "use_as_visual_evidence"],
+        "properties": {
+          "file": { "type": "string" },
+          "classification": {
+            "enum": ["screenshot", "wireframe", "mockup", "diagram", "logo", "non_ui_image"]
+          },
+          "caption_or_nearest_text": { "type": "string" },
+          "use_as_visual_evidence": { "type": "boolean" }
+        }
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

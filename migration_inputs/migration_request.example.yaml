@@ -1,0 +1,38 @@
+app_name: Customer Portal
+delivery_mode: production_procode
+migration_output_mode: hybrid_pilot_app
+brd_gate_decision: A
+# To edit the extracted BRD before generation, use:
+# brd_gate_decision: D
+# brd_edit_notes: "Add admin approval queue, remove billing page, and keep only patient workflows."
+# Genesis parses these notes into brd_semantic_patch_report.json and patches approved_brd_plan.json where safe.
+generated_app_gate_decision: A
+# After generated frontend/backend/database review:
+# generated_app_gate_decision: B
+# generated_app_review_notes: "Dashboard is missing the admin approval queue."
+# generated_app_gate_decision: C
+# generated_app_review_notes: "Add role-based admin view before QA."
+# Generated app notes become generated_app_semantic_patch_report.json and repair-loop instructions.
+target_stack: nextjs_tailwind_shadcn_motion_plus_api
+domain: healthcare
+scope: dashboard portal
+goal: Rebuild the source system as production web software while preserving workflows, roles, and data intent.
+source_type: powerapps
+roles:
+  - admin
+  - operator
+  - reviewer
+target_users:
+  - internal operations staff
+  - managers
+reference_urls: []
+accessibility_requirements:
+  - keyboard_access
+  - visible_labels
+  - color_contrast_review
+notes: |
+  Add your migration notes here.
+  Recommended input layout:
+  - Put raw source/business evidence in migration_inputs/raw_data/.
+  - Put UI screenshots, mockups, brand, and component references in migration_inputs/images/.
+  - Put runtime walkthroughs and screen recordings in migration_inputs/videos/.

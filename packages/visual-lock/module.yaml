@@ -1,0 +1,4 @@
+name: visual-lock
+purpose: Defines exact_fidelity or modernized_fidelity constraints and visual QA thresholds per screen.
+status: scaffold
+

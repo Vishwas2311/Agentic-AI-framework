@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nocode2procode.local/schemas/stack_decision.schema.json",
+  "title": "NoCode2ProCode Stack Decision",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "detected_brd_stack",
+    "user_delivery_intent",
+    "selected_delivery_mode",
+    "selected_target_stack",
+    "selected_frontend_profile",
+    "selected_ui_automation_profile",
+    "prototype_stack_allowed",
+    "conflict_detected",
+    "decision_reason",
+    "human_approval_required",
+    "quality_gates_required"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "detected_brd_stack": { "type": ["string", "null"] },
+    "user_delivery_intent": { "type": "string" },
+    "selected_delivery_mode": {
+      "enum": ["prototype_demo", "client_demo_polished", "production_procode", "enterprise_migration"]
+    },
+    "selected_target_stack": { "type": "string" },
+    "selected_frontend_profile": { "type": ["string", "null"] },
+    "selected_ui_automation_profile": { "type": "string" },
+    "prototype_stack_allowed": { "type": "boolean" },
+    "conflict_detected": { "type": "boolean" },
+    "decision_reason": { "type": "string" },
+    "human_approval_required": { "type": "boolean" },
+    "quality_gates_required": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

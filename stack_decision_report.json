@@ -1,0 +1,24 @@
+{
+  "schema_version": "3.1.0",
+  "detected_brd_stack": "streamlit",
+  "user_delivery_intent": "Use Hospital_Online_Consultation_Portal_BRD.docx and build the same software as production pro-code.",
+  "selected_delivery_mode": "production_procode",
+  "selected_target_stack": "nextjs_tailwind_shadcn_motion",
+  "selected_frontend_profile": "nextjs_tailwind_shadcn_motion",
+  "selected_ui_automation_profile": "ui_ux_pro_max_magic_motion",
+  "prototype_stack_allowed": false,
+  "conflict_detected": true,
+  "decision_reason": "Delivery mode resolved to production_procode. BRD requested a prototype stack, so the framework upgraded the implementation stack to satisfy production intent. UI-heavy surface detected, so the premium web profile was preferred.",
+  "human_approval_required": false,
+  "quality_gates_required": [
+    "stack_decision_report",
+    "design_decision_report",
+    "design_quality_score",
+    "visual_rejection_report",
+    "before_after_improvement_report",
+    "layout_profile_selection",
+    "viewport_fit_plan",
+    "playwright_visual_qa"
+  ],
+  "ui_heavy_surface_detected": true
+}

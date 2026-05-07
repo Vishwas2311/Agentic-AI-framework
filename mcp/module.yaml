@@ -1,0 +1,22 @@
+name: mcp
+purpose: MCP gateway profiles, core MCPs, gated MCPs, and audit rules.
+status: scaffold
+core:
+  - GitHub MCP
+  - Playwright MCP
+  - Figma MCP
+  - Firecrawl MCP
+  - Context7 MCP
+  - E2B MCP
+  - PostgreSQL MCP
+  - Qdrant/pgvector memory
+gated:
+  - Docker MCP
+  - Kubernetes MCP
+  - Terraform MCP
+  - Jira MCP
+  - Linear MCP
+  - Slack MCP
+  - Datadog MCP
+  - Burp Suite MCP
+

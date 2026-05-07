@@ -1,0 +1,54 @@
+{
+  "schema_version": "3.1.0",
+  "scores": {
+    "visual_fidelity_score": 0.0,
+    "ux_quality_score": 0.0,
+    "accessibility_score": 0.0,
+    "responsive_score": 0.0,
+    "motion_quality_score": 0.0,
+    "component_reuse_score": 0.0
+  },
+  "thresholds": {
+    "visual_fidelity_score": 0.9,
+    "ux_quality_score": 0.88,
+    "accessibility_score": 0.95,
+    "responsive_score": 0.92,
+    "motion_quality_score": 0.85,
+    "component_reuse_score": 0.8
+  },
+  "overall_design_quality_score": 0.0,
+  "approved": false,
+  "failures": [
+    {
+      "score": "visual_fidelity_score",
+      "actual": 0.0,
+      "minimum": 0.9
+    },
+    {
+      "score": "ux_quality_score",
+      "actual": 0.0,
+      "minimum": 0.88
+    },
+    {
+      "score": "accessibility_score",
+      "actual": 0.0,
+      "minimum": 0.95
+    },
+    {
+      "score": "responsive_score",
+      "actual": 0.0,
+      "minimum": 0.92
+    },
+    {
+      "score": "motion_quality_score",
+      "actual": 0.0,
+      "minimum": 0.85
+    },
+    {
+      "score": "component_reuse_score",
+      "actual": 0.0,
+      "minimum": 0.8
+    }
+  ],
+  "next_action": "reject_and_run_ui_polish_loop"
+}

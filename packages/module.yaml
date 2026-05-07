@@ -1,0 +1,14 @@
+name: packages
+purpose: Reusable Genesis runtime modules used by CLI, API, dashboard, and Claude Code agents.
+status: scaffold
+modules:
+  - core
+  - orchestrator
+  - policy-gate
+  - mcp-gateway
+  - source-truth
+  - evidence-graph
+  - memory
+  - runtime-recorder
+  - replay-dashboard
+

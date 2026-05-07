@@ -1,0 +1,12 @@
+name: adapters
+purpose: Source extraction modules for platforms, design sources, databases, and API specifications.
+status: scaffold
+contract:
+  input: native source path, URL, API credentials, or schema reference
+  output: Genesis AST + unsupported items + evidence refs + confidence score
+categories:
+  - platforms
+  - design
+  - data
+  - api
+

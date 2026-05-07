@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nocode2procode-genesis"
+version = "0.1.0"
+description = "NoCode2ProCode by TrustEngines: Claude Code-native no-code/low-code/design/website to production pro-code framework."
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.7",
+  "pyyaml>=6.0",
+  "typer>=0.12",
+  "rich>=13.7",
+  "jsonschema>=4.22",
+  "networkx>=3.3",
+  "jinja2>=3.1"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2",
+  "ruff>=0.5"
+]
+local-e2e = [
+  "beautifulsoup4>=4.12",
+  "fastapi>=0.111",
+  "httpx>=0.27",
+  "lxml>=5.2",
+  "locust>=2.29",
+  "pillow>=10.4",
+  "python-docx>=1.1",
+  "python-multipart>=0.0.9",
+  "schemathesis>=3.25",
+  "semgrep>=1.80",
+  "testcontainers>=4.7",
+  "uvicorn[standard]>=0.30"
+]
+visual = [
+  "beautifulsoup4>=4.12",
+  "pillow>=10.4",
+  "python-docx>=1.1"
+]
+security = [
+  "semgrep>=1.80"
+]
+all = [
+  "beautifulsoup4>=4.12",
+  "fastapi>=0.111",
+  "httpx>=0.27",
+  "lxml>=5.2",
+  "locust>=2.29",
+  "pillow>=10.4",
+  "python-docx>=1.1",
+  "python-multipart>=0.0.9",
+  "schemathesis>=3.25",
+  "semgrep>=1.80",
+  "testcontainers>=4.7",
+  "uvicorn[standard]>=0.30"
+]
+
+[project.scripts]
+genesis = "genesis_framework.cli:app"
+nocode2procode = "genesis_framework.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

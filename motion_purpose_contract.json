@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "intensity": "subtle",
+  "animations": [
+    {
+      "component": "interactive_controls",
+      "trigger": "hover_focus_tap",
+      "purpose": "Give immediate feedback without distracting from task completion.",
+      "duration_ms": 120,
+      "easing_or_spring": "easeOut",
+      "reduced_motion_fallback": "color_or_opacity_change_only",
+      "qa_assertion": "No layout shift and reduced-motion mode disables transforms."
+    }
+  ]
+}

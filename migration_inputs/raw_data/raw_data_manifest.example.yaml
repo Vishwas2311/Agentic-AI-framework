@@ -1,0 +1,10 @@
+raw_data:
+  - file: sample-powerapps-export.zip
+    purpose: lowcode_export
+    priority: high
+    notes: "Main source export for workflow and screen extraction."
+
+  - file: hospital-portal-brd.docx
+    purpose: business_requirements
+    priority: high
+    notes: "Primary BRD for features, roles, acceptance criteria, and security language."

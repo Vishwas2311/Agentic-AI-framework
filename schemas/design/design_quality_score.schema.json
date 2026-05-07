@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nocode2procode.local/schemas/design_quality_score.schema.json",
+  "title": "Genesis Design Quality Score",
+  "type": "object",
+  "required": ["schema_version", "scores", "thresholds", "overall_design_quality_score", "approved", "failures", "next_action"],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "scores": {
+      "type": "object",
+      "required": [
+        "visual_fidelity_score",
+        "ux_quality_score",
+        "accessibility_score",
+        "responsive_score",
+        "desktop_space_utilization_score",
+        "content_density_score",
+        "container_fit_score",
+        "motion_quality_score",
+        "component_reuse_score"
+      ]
+    },
+    "thresholds": {
+      "type": "object"
+    },
+    "overall_design_quality_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "approved": {
+      "type": "boolean"
+    },
+    "failures": {
+      "type": "array"
+    },
+    "next_action": {
+      "enum": ["approve", "reject_and_run_ui_polish_loop"]
+    }
+  }
+}
