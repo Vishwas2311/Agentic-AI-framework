@@ -1,0 +1,46 @@
+version: 3.1.0
+name: Genesis Prompt Engineering Contract
+
+global_rules:
+  - Never generate final code directly from the user prompt.
+  - Produce or update canonical_app_spec.json before code generation.
+  - Every stage output must cite source evidence or explicitly mark missing evidence.
+  - Every uncertain decision must include confidence and human_review_required.
+  - Do not proceed to the next stage unless required outputs exist or the stage is explicitly waived.
+
+stage_prompt_template: |
+  You are executing Genesis stage: {stage_name}
+
+  Inputs:
+  {input_artifacts}
+
+  Allowed tools:
+  {allowed_tools}
+
+  Required outputs:
+  {required_outputs}
+
+  Policy constraints:
+  {policy_rules}
+
+  Task:
+  Produce the required output only for this stage.
+
+  For each decision include:
+  - source evidence
+  - assumptions
+  - reasoning summary
+  - confidence
+  - human review required: yes/no
+
+  Do not proceed to the next stage.
+
+output_decision_shape:
+  artifact_id: string
+  decision: string
+  source_evidence: list
+  assumptions: list
+  confidence: number
+  human_review_required: boolean
+  next_action: string
+

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Vishwas/Desktop/AI/Backup/BRD/**)",
+      "Bash(python -c ' *)",
+      "Bash(pip install *)",
+      "Bash(New-Item -ItemType Directory -Force -Path \"C:\\\\Users\\\\Vishwas\\\\Desktop\\\\AI\\\\1.Python Work Space\\\\NoCode2ProCode-Genesis\\\\genesis_apps\\\\hospital_consultation_portal\")",
+      "Bash(Out-Null)",
+      "Bash(Write-Host \"Directory ready\")",
+      "Bash(python *)",
+      "Bash(New-Item -ItemType Directory -Path \"C:\\\\Users\\\\Vishwas\\\\Desktop\\\\AI\\\\Backup\\\\BRD\\\\Hospital_Online_Consultation_Portal\" -Force)",
+      "Bash(Write-Host \"Directory created\")"
+    ]
+  }
+}

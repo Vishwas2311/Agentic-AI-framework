@@ -1,0 +1,24 @@
+version: 3.1.0
+stores:
+  vector:
+    preferred: qdrant
+    alternatives: [pgvector, chroma]
+  graph:
+    preferred: neo4j
+    alternatives: [postgres_graph_tables]
+trust_levels:
+  generated_only: review required
+  build_passed: reusable with QA
+  test_passed: reusable
+  human_approved: trusted
+  deployed_stable: production verified
+  failed_before: avoid or warn
+save:
+  - verified_mappings
+  - verified_fixes
+  - failed_mappings
+  - successful_prompts
+  - ui_patterns
+  - template_improvements
+  - plugin_improvements
+  - agent_cost_lessons

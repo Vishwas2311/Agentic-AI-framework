@@ -1,0 +1,93 @@
+version: 3.1.0
+status_values: [supported, partial, runtime-only, manual, unsupported, blocked]
+
+platforms:
+  mendix:
+    extractor: Mendix Model SDK
+    confidence: high
+    capabilities:
+      domain_models: supported
+      pages: supported
+      microflows: supported
+      security: partial
+      custom_java: manual
+
+  powerapps:
+    extractor: Power Platform CLI / Git integration / Src/*.pa.yaml + Power Fx
+    confidence: medium
+    capabilities:
+      screens: supported
+      formulas: partial
+      data_sources: supported
+      custom_connectors: partial
+      component_libraries: partial
+
+  appian:
+    extractor: Deployment API package export
+    confidence: medium
+    capabilities:
+      records: supported
+      interfaces: partial
+      process_models: partial
+      rules: partial
+      integrations: partial
+
+  outsystems:
+    extractor: OAP/OML + APIs + runtime evidence
+    confidence: low
+    high_risk: true
+    capabilities:
+      entities: partial
+      screens: runtime-only
+      actions: runtime-only
+      integrations: partial
+      proprietary_semantics: manual
+
+  figma:
+    extractor: Figma MCP
+    confidence: high
+    capabilities:
+      frames: supported
+      nodes: supported
+      components: supported
+      tokens: partial
+      interactions: partial
+
+  website:
+    extractor: Firecrawl + Playwright
+    confidence: medium
+    capabilities:
+      content: supported
+      dom: supported
+      css: partial
+      interactions: runtime-only
+      backend_logic: unsupported
+
+pipeline_runtime:
+  migration_session:
+    capabilities:
+      session_start: supported
+      session_resume: partial
+      session_registry: supported
+      stage_checkpoints: supported
+
+  swarm_execution:
+    capabilities:
+      agent_stage_assignment: supported
+      owned_output_planning: supported
+      live_parallel_workers: partial
+      conflict_notifications: partial
+
+  verified_memory:
+    capabilities:
+      retrieval_plans: supported
+      packet_writeback: supported
+      vector_search: partial
+      graph_links: partial
+
+  browser_runtime:
+    capabilities:
+      provider_neutral_plan: supported
+      live_capture: partial
+      network_trace_contract: supported
+      authenticated_sessions: runtime-only
