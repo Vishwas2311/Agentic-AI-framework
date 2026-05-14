@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+.next
+.swc
+node_modules
+playwright-report
+playwright-results
+test-results
+coverage
+*.log
+.next-dev*.log
+component-render-results.json
+jest-results.json
+tsconfig.tsbuildinfo

@@ -1,0 +1,37 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "screen": "Landing"
+    },
+    {
+      "path": "/login",
+      "screen": "Secure Access"
+    },
+    {
+      "path": "/dashboard",
+      "screen": "Dashboard"
+    },
+    {
+      "path": "/triage",
+      "screen": "Symptom Triage"
+    },
+    {
+      "path": "/navigator",
+      "screen": "Provider Navigator"
+    },
+    {
+      "path": "/documents",
+      "screen": "Document Intelligence"
+    },
+    {
+      "path": "/emergency",
+      "screen": "Emergency Guide"
+    },
+    {
+      "path": "/safety",
+      "screen": "Safety"
+    }
+  ],
+  "stack": "custom_stack"
+}
