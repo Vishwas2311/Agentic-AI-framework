@@ -1,0 +1,27 @@
+{
+  "genesis_stage": "decide_delivery_mode_and_stack",
+  "delivery_mode": "client_demo_polished",
+  "migration_output_mode": "local_demo_app",
+  "intent": "Pixel-match the BRD mockups in Next.js + Tailwind + shadcn/ui + Motion. All 7 pages, sidebar nav, metric cards, status badges, booking form, filter+search, prescriptions, sign out. All 10 BRD test cases pass. Hospital-client-ready demo.",
+  "scope_preserved": [
+    "All 7 pages from BRD",
+    "All functional requirements (Sections 6.1–6.9)",
+    "All 10 happy-path test cases",
+    "13 acceptance criteria",
+    "Data model: consultation with all fields",
+    "Session state (React state / localStorage)",
+    "Demo credentials: patient@example.com / patient123",
+    "Demo disclaimers visible",
+    "No real patient data storage"
+  ],
+  "scope_upgraded": [
+    "Stack: Streamlit → Next.js 14 App Router + Tailwind + shadcn/ui + Motion",
+    "Layout: sidebar nav properly implemented in React (not Streamlit sidebar approximation)",
+    "Visual fidelity: pixel-matched to BRD mockups using design tokens extracted from mockup analysis",
+    "Accessibility: WCAG 2.1 AA vs basic BRD accessibility requirements",
+    "Tests: Playwright browser tests (same happy-path coverage as BRD ui_test.py spec)"
+  ],
+  "human_approved": true,
+  "prototype_stack_blocked": true,
+  "approved_by": "user_explicit_selection"
+}

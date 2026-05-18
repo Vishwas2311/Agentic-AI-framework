@@ -1,0 +1,304 @@
+version: 3.1.0
+name: Genesis Smart Design Strategy
+
+principle: Decide design tooling from user intent and evidence before building UI. Always improve the result beyond the input unless exact fidelity or legal/compliance constraints limit the change. Do not send vague UI prompts to Magic, Motion, or UI/UX Pro Max.
+
+global_design_policy:
+  improve_by_default: true
+  meaning:
+    - Every generated UI should be cleaner, more accessible, more responsive, and more production-ready than the source.
+    - Do not blindly copy weak spacing, poor contrast, broken hierarchy, outdated styling, or confusing UX.
+    - Preserve source workflow, content, information hierarchy, and brand intent unless the user requests a redesign.
+    - If exact_fidelity is selected, preserve geometry and visible hierarchy while still improving code quality, accessibility labels, responsiveness, and safe states.
+  blocked:
+    - copying_protected_assets_without_rights
+    - ignoring_uploaded_images_or_urls
+    - adding_animation_before_ui_rebuild
+    - accepting_beautiful_ui_that_breaks_functionality
+    - accepting_functional_ui_that_fails_design_quality
+
+decision_outputs:
+  - design_decision_report.json
+  - magic_selection.json
+  - motion_plan.json
+  - ui_ux_pro_max_brief.md
+  - layout_profile_selection.json
+  - viewport_fit_plan.json
+
+input_routing_matrix:
+  screenshot_existing_ui:
+    source_material: uploaded_image
+    source_usage: primary_visual_evidence
+    default_rebuild_mode: modernized_rebuild
+    tool_sequence: [vision_model, ui_ux_pro_max, magic_21st, motion_after_rebuild, playwright_qa]
+    magic_project_type_rule: component_if_single_widget_else_website
+    magic_creation_type: from_scratch
+    improvement_rule: Preserve layout/workflow, improve UX, accessibility, responsiveness, visual polish, and code structure.
+
+  wireframe_or_sketch:
+    source_material: uploaded_image
+    source_usage: layout_intent
+    default_rebuild_mode: polished_interpretation
+    tool_sequence: [vision_model, ui_ux_pro_max, magic_21st, motion_after_rebuild, playwright_qa]
+    magic_project_type_rule: component_if_single_widget_else_website
+    magic_creation_type: from_scratch
+    improvement_rule: Convert rough layout into professional industry-matched UI.
+
+  design_inspiration_image:
+    source_material: uploaded_image
+    source_usage: style_dna_reference
+    default_rebuild_mode: inspired_redesign
+    tool_sequence: [vision_model, ui_ux_pro_max, magic_21st, motion_after_rebuild, playwright_qa]
+    magic_project_type_rule: user_scope_component_or_website
+    magic_creation_type: from_scratch
+    improvement_rule: Use style direction only. Adapt to domain and do not clone protected design.
+
+  outdated_existing_ui:
+    source_material: uploaded_image_or_existing_code
+    source_usage: ux_audit_baseline
+    default_rebuild_mode: improve_and_modernize
+    tool_sequence: [ui_ux_pro_max_audit, magic_21st, motion_after_rebuild, playwright_qa]
+    magic_project_type_rule: component_if_single_widget_else_website
+    magic_creation_type: from_scratch
+    improvement_rule: Identify UX issues first, then rebuild with better hierarchy, spacing, states, accessibility, and polish.
+
+  figma_export_image:
+    source_material: uploaded_image
+    source_usage: visual_mockup_evidence
+    default_rebuild_mode: exact_or_modernized_from_mockup
+    preferred_alternative: figma_mcp_when_figma_url_available
+    tool_sequence: [vision_model, ui_ux_pro_max, magic_21st, motion_after_rebuild, playwright_qa]
+    magic_project_type_rule: component_if_single_widget_else_website
+    magic_creation_type: from_scratch
+    improvement_rule: Match mockup closely while adding accessibility, responsive behavior, and production states.
+
+  brand_logo_image:
+    source_material: uploaded_logo_or_brand_asset
+    source_usage: brand_system_seed
+    default_rebuild_mode: brand_matched_design_system
+    tool_sequence: [vision_model, ui_ux_pro_max, magic_21st, motion_after_rebuild, playwright_qa]
+    magic_project_type_rule: user_scope_component_or_website
+    magic_creation_type: from_scratch
+    improvement_rule: Extract brand tokens first, then generate UI that feels like a mature product system.
+
+  mobile_app_screenshot:
+    source_material: uploaded_image
+    source_usage: mobile_visual_evidence
+    default_rebuild_mode: mobile_native_feel_rebuild
+    tool_sequence: [vision_model, ui_ux_pro_max, magic_21st, motion_after_rebuild, playwright_qa]
+    magic_project_type_rule: component_if_single_screen_else_website_or_flow
+    magic_creation_type: from_scratch
+    improvement_rule: Apply safe areas, thumb zones, 44px touch targets, platform navigation, and native-feel interaction.
+
+  website_url:
+    source_material: url
+    source_usage: primary_website_evidence_or_style_reference
+    default_rebuild_mode: modernized_rebuild
+    tool_sequence: [firecrawl, playwright, ui_ux_pro_max, magic_21st, motion_after_rebuild, playwright_qa]
+    magic_project_type_rule: website_for_full_site_or_page_component_for_single_element
+    magic_creation_type: get_inspired
+    improvement_rule: Crawl content/layout/interactions, then rebuild better. Preserve content and structure when requested; use style DNA only when requested as inspiration.
+
+  text_only_idea:
+    source_material: user_brief
+    source_usage: product_brief
+    default_rebuild_mode: from_brief_best_practice
+    tool_sequence: [ui_ux_pro_max, magic_21st, motion_after_rebuild, playwright_qa]
+    magic_project_type_rule: user_scope_component_or_website
+    magic_creation_type: from_scratch
+    improvement_rule: Choose best industry pattern from domain, audience, and goal.
+
+magic_selection:
+  project_type:
+    component:
+      use_when:
+        - user_asks_for_single_component
+        - extracted_ui_scope_is_widget_only
+        - page_shell_already_exists
+      generate:
+        - component_only
+        - props_contract
+        - states
+        - accessibility_labels
+    website:
+      use_when:
+        - user_asks_for_full_page_or_app
+        - website_url_present
+        - screenshot_contains_full_page
+        - figma_frame_contains_page_or_flow
+      generate:
+        - page_sections
+        - navigation
+        - responsive_layout
+        - component_set
+
+  creation_type:
+    from_scratch:
+      label: No reference website URL flow.
+      meaning: Build from uploaded screenshot, sketch, Figma export image, logo, low-code source, database/API evidence, or text brief. This does not mean ignore uploaded images.
+      use_when:
+        - no_reference_url
+        - user_gives_business_goal_only
+        - modernization_mode_requested
+      evidence_required:
+        - domain
+        - target_users
+        - primary_goal
+    get_inspired:
+      label: Use reference website URL or URL-derived website evidence.
+      meaning: Crawl or inspect the URL, then use it as primary evidence for rebuilds or style inspiration for components/pages depending on user intent.
+      use_when:
+        - website_url_present
+        - competitor_reference_present
+        - style_reference_present
+      evidence_required:
+        - reference_url
+        - allowed_inspiration_scope
+        - asset_license_status
+      guardrail: Use structure and UX inspiration only unless the user owns the source or license allows reuse.
+
+  website_goals:
+    lead_generation:
+      signals: [lead, inquiry, appointment, booking, contact, demo, quote, consultation]
+      priority_components: [hero, trust_signals, benefits, form, testimonial, faq, sticky_cta]
+      conversion_pattern: form_or_calendar_primary
+    drive_sales:
+      signals: [shop, product, ecommerce, checkout, pricing, buy, cart, order]
+      priority_components: [product_grid, product_detail, pricing, cart, checkout, reviews, urgency_banner]
+      conversion_pattern: product_to_checkout
+    interactive_quiz:
+      signals: [quiz, assessment, configurator, recommendation, survey, onboarding]
+      priority_components: [stepper, progress, question_card, results, recommendation, email_capture]
+      conversion_pattern: guided_steps_to_result
+    subscriptions:
+      signals: [subscription, membership, pricing, recurring, plan, SaaS]
+      priority_components: [pricing_table, plan_compare, feature_matrix, account_signup, billing_faq]
+      conversion_pattern: plan_selection_to_signup
+    custom:
+      signals: [dashboard, admin, workflow, portal, internal, enterprise, migration]
+      priority_components: [app_shell, sidebar, data_table, forms, detail_panel, audit_trail, role_states]
+      conversion_pattern: task_completion
+
+ui_ux_pro_max:
+  role: design_director
+  required_inputs:
+    - app_domain
+    - audience
+    - source_evidence
+    - migration_mode
+    - target_stack
+    - accessibility_requirements
+  required_outputs:
+    - DESIGN.md
+    - design_tokens.json
+    - component_registry.json
+    - visual_acceptance_criteria.md
+  persistence_pattern:
+    master: design-system/MASTER.md
+    page_overrides: design-system/pages/{page_id}.md
+  decision_rules:
+    - Use enterprise density for dashboards, admin tools, internal portals, healthcare, fintech, and operations software.
+    - Use expressive editorial or conversion patterns only for consumer, product, marketing, ecommerce, fitness, or portfolio surfaces.
+    - When source screenshots are provided, preserve visual hierarchy and layout first, then modernize only inside the allowed fidelity mode.
+    - Every aesthetic decision must map to a measurable acceptance criterion.
+    - Match layout density to screen purpose; dashboard, portal, workspace, and record screens must not feel like centered marketing pages on large desktop widths.
+    - Choose container strategy intentionally; use capped content widths for narrative or conversion sections, and broader task-first layouts for operational software.
+
+layout_profiles:
+  auth_split_screen:
+    use_for: [login, signin, auth, onboarding_gate]
+    desktop_strategy: split_screen_balanced
+    max_content_width: hero_panel_40_to_48_percent_form_panel_480_to_640px
+    rules:
+      - Narrow forms are acceptable only when the overall composition feels balanced on desktop.
+      - Avoid leaving the primary form visually miniaturized inside a very large empty panel.
+      - The right panel should feel anchored, not floating in excessive whitespace.
+  portal_dashboard:
+    use_for: [dashboard, portal_home, overview, records_home, patient_portal]
+    desktop_strategy: task_first_wide
+    max_content_width: 1280_to_1600px_or_adaptive
+    rules:
+      - Use horizontal space efficiently on 1440px and wider screens.
+      - Avoid marketing-style narrow centered columns for core operational content.
+      - Hero, metrics, filters, tables, and quick actions should read as one purposeful product surface.
+  operational_form:
+    use_for: [form, booking, workflow, intake, settings, profile_edit]
+    desktop_strategy: form_plus_context
+    max_content_width: 1100_to_1400px
+    rules:
+      - Form-heavy pages should include enough width for two-column layouts when desktop space allows.
+      - Related context, summary, or help content may occupy a side panel instead of leaving empty margins.
+  data_table_workspace:
+    use_for: [table, list, grid, search, queue, inbox, audit]
+    desktop_strategy: dense_workspace
+    max_content_width: 1400_to_full
+    rules:
+      - Data-heavy surfaces should prioritize scanability and visible rows over decorative whitespace.
+      - Filters, columns, and detail views should expand with desktop width.
+  landing_or_marketing:
+    use_for: [landing, marketing, hero, campaign, public_website]
+    desktop_strategy: editorial_capped
+    max_content_width: section_based
+    rules:
+      - Capped containers are acceptable when they support readability and section rhythm.
+      - Hero composition must still feel intentional and not accidentally undersized.
+
+viewport_fit_strategy:
+  principle: The UI should feel correctly composed for the viewport, not merely technically responsive.
+  desktop_expectations:
+    - Do not let operational apps feel zoomed out because content is trapped in narrow centered containers.
+    - Use large desktop widths intentionally; fill space with useful structure, not accidental emptiness.
+    - If a page uses a narrow form or card, balance it with a complementary panel, supporting context, or visual anchor.
+  mobile_expectations:
+    - Preserve safe areas, thumb zones, and readable spacing.
+    - Do not solve desktop fit issues by shrinking mobile density.
+  qa_flags:
+    - excessive_unused_whitespace
+    - narrow_operational_layout
+    - undersized_hero_for_viewport
+    - miniaturized_form_on_desktop
+    - dashboard_composition_feels_zoomed_out
+
+motion_strategy:
+  baseline:
+    library: motion
+    react_import_policy: Prefer LazyMotion and motion/react-m for production bundles.
+    accessibility: Always respect reduced motion with MotionConfig reducedMotion=user or useReducedMotion.
+  intensity_levels:
+    none:
+      use_when: [exact_fidelity, compliance_restricted, highly_regulated_internal_app]
+      allowed_patterns: [focus_ring, loading_state, opacity_feedback]
+    subtle:
+      use_when: [enterprise_dashboard, admin_portal, healthcare, fintech, workflow_app]
+      allowed_patterns: [hover_feedback, active_state, collapsible_nav, toast_enter_exit, skeleton_loading]
+    standard:
+      use_when: [saas, marketplace, education, productivity, subscription]
+      allowed_patterns: [page_transition, layout_animation, card_reveal, tab_transition, modal_enter_exit]
+    expressive:
+      use_when: [landing_page, product_marketing, portfolio, campaign, fitness, entertainment]
+      allowed_patterns: [hero_reveal, scroll_reveal, shared_element, progress_motion, tasteful_parallax]
+  blocked_patterns:
+    - autoplaying_motion_without_user_value
+    - parallax_when_reduced_motion_enabled
+    - animation_that_changes_measured_layout_after_load
+    - decorative_motion_on_dense_data_tables
+    - motion_that_hides_content_or_delays_task_completion
+
+visual_quality_gates:
+  required:
+    - desktop_screenshot
+    - mobile_screenshot
+    - visual_diff
+    - axe_accessibility
+    - desktop_space_usage_review
+    - layout_profile_match_check
+    - no_text_overlap
+    - no_content_clipping
+    - motion_reduced_mode_check
+  fail_conditions:
+    - primary_cta_not_visible
+    - generated_ui_ignores_source_layout_in_exact_fidelity
+    - Magic output not integrated with project design tokens
+    - Motion added without purpose or reduced-motion fallback
+    - desktop_layout_feels_zoomed_out
+    - operational_ui_uses_marketing_container_strategy_without_reason

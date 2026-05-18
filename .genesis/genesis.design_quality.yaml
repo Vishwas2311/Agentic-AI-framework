@@ -1,0 +1,201 @@
+version: 3.1.0
+name: Genesis Design Quality Gates
+
+principle: Generated UI is not accepted because it compiles. It must look, feel, and behave like a high-quality product for the given domain.
+
+quality_scores:
+  required_scores:
+    visual_fidelity_score:
+      minimum: 0.90
+      measures: [layout_match, hierarchy_match, content_match, color_typography_match]
+    ux_quality_score:
+      minimum: 0.88
+      measures: [clarity, information_architecture, task_efficiency, empty_error_loading_states]
+    accessibility_score:
+      minimum: 0.95
+      measures: [axe_pass_rate, contrast, labels, keyboard_navigation, focus_states]
+    responsive_score:
+      minimum: 0.92
+      measures: [mobile_fit, tablet_fit, desktop_fit, no_overlap, no_clipping]
+    desktop_space_utilization_score:
+      minimum: 0.85
+      measures: [wide_screen_usage, whitespace_balance, task_surface_fill, hero_scale_fit]
+    content_density_score:
+      minimum: 0.84
+      measures: [information_density_match, operational_scanability, panel_balance, section_compactness]
+    container_fit_score:
+      minimum: 0.86
+      measures: [container_strategy_match, form_balance, dashboard_width_fit, data_surface_width_fit]
+    motion_quality_score:
+      minimum: 0.85
+      measures: [purpose, timing, reduced_motion, no_task_delay, performance]
+    component_reuse_score:
+      minimum: 0.80
+      measures: [design_token_usage, component_registry_usage, duplication_control]
+  overall_minimum: 0.90
+
+visual_rejection_gate:
+  reject_when:
+    - required_stack_or_design_artifacts_missing
+    - any_required_score_below_minimum
+    - text_overlaps_or_clips
+    - primary_task_or_cta_hidden
+    - exact_fidelity_geometry_outside_tolerance
+    - source_content_missing_without_human_approval
+    - motion_without_purpose_or_reduced_motion_fallback
+    - accessibility_critical_failure
+    - generated_ui_is_generic_or_boring_for_context
+    - streamlit_global_css_breaks_contrast_or_labels
+    - desktop_layout_feels_zoomed_out
+    - operational_ui_trapped_in_narrow_centered_container
+    - auth_or_form_screen_has_unbalanced_empty_whitespace
+    - layout_profile_mismatch_for_screen_type
+  on_reject:
+    - create_ui_fix_task
+    - run_ui_polish_agent
+    - rerun_playwright_screenshots
+    - rerun_visual_diff
+    - rerun_axe
+    - update_before_after_improvement_report
+
+before_after_improvement_report:
+  required_sections:
+    - preserved_from_source
+    - improved_from_source
+    - intentionally_changed
+    - not_changed_due_to_fidelity
+    - accessibility_improvements
+    - responsive_improvements
+    - viewport_fit_improvements
+    - motion_improvements
+    - remaining_risks
+
+tool_selection_explanation:
+  required_fields:
+    - source_material_reason
+    - build_scope_reason
+    - layout_profile_reason
+    - magic_project_type_reason
+    - magic_creation_type_reason
+    - website_goal_reason
+    - ui_ux_pro_max_mode_reason
+    - motion_intensity_reason
+    - qa_gate_reason
+
+motion_purpose_contract:
+  required_for_each_animation:
+    - component
+    - trigger
+    - purpose
+    - duration_ms
+    - easing_or_spring
+    - reduced_motion_fallback
+    - qa_assertion
+  no_purpose_means: do_not_animate
+
+domain_style_packs:
+  healthcare:
+    density: calm_compact
+    palette: clean_trustworthy_accessible
+    components: [patient_summary, appointment_card, forms, alerts, tables, timeline]
+    motion: subtle
+    rules: [large_touch_targets, strong_contrast, privacy_first, low_cognitive_load]
+  fintech:
+    density: compact_precise
+    palette: high_trust_high_contrast
+    components: [metric_cards, transaction_tables, filters, risk_badges, audit_trail]
+    motion: subtle
+    rules: [data_clarity, error_prevention, strong_empty_states, auditability]
+  saas_admin:
+    density: compact_task_focused
+    palette: neutral_premium
+    components: [sidebar, topbar, metric_cards, data_table, filters, detail_panel]
+    motion: subtle
+    rules: [scanability, keyboard_efficiency, fast_state_feedback]
+  ecommerce:
+    density: balanced_conversion
+    palette: brand_forward
+    components: [product_grid, product_card, cart, checkout, reviews, pricing]
+    motion: standard
+    rules: [conversion_clarity, trust_signals, fast_checkout, product_visibility]
+  education:
+    density: balanced_guided
+    palette: warm_clear
+    components: [course_card, progress, lesson_nav, quiz, resource_panel]
+    motion: standard
+    rules: [progress_visibility, friendly_feedback, readable_content]
+  fitness:
+    density: expressive_mobile_first
+    palette: energetic_brand
+    components: [program_card, progress_ring, plan_steps, leaderboard, habit_streak]
+    motion: expressive
+    rules: [motivational_feedback, mobile_thumb_zones, energetic_but_clear]
+  real_estate:
+    density: visual_browsing
+    palette: premium_editorial
+    components: [listing_card, search_filters, map_panel, image_gallery, contact_form]
+    motion: standard
+    rules: [image_quality, filter_clarity, lead_capture]
+  crm:
+    density: compact_workflow
+    palette: neutral_operational
+    components: [pipeline_board, contact_card, activity_timeline, filters, task_panel]
+    motion: subtle
+    rules: [workflow_speed, clear_statuses, low_visual_noise]
+  hrms:
+    density: compact_people_ops
+    palette: calm_enterprise
+    components: [employee_table, profile_panel, approval_flow, calendar, document_card]
+    motion: subtle
+    rules: [privacy, approvals_visibility, clear_form_validation]
+  portfolio:
+    density: expressive_showcase
+    palette: creator_brand
+    components: [hero, project_grid, case_study, testimonial, contact_cta]
+    motion: expressive
+    rules: [strong_first_impression, tasteful_reveal, fast_loading]
+  marketplace:
+    density: balanced_discovery
+    palette: brand_trust
+    components: [search, filters, listing_card, compare, reviews, checkout_or_contact]
+    motion: standard
+    rules: [discovery_speed, trust_signals, comparison_clarity]
+
+component_pattern_selector:
+  dashboard:
+    pattern: sidebar_topbar_metric_cards_filters_data_table_detail_panel
+    use_for: [admin, dashboard, portal, analytics, records]
+  lead_generation:
+    pattern: hero_proof_benefits_form_faq_sticky_cta
+    use_for: [lead, inquiry, appointment, booking, demo, quote]
+  drive_sales:
+    pattern: product_grid_pricing_cart_reviews_checkout
+    use_for: [shop, ecommerce, product, sales, checkout]
+  interactive_quiz:
+    pattern: stepper_progress_question_card_results_recommendation
+    use_for: [quiz, assessment, survey, configurator, recommendation]
+  subscriptions:
+    pattern: pricing_table_plan_compare_feature_matrix_signup_billing_faq
+    use_for: [subscription, membership, saas, recurring, plan]
+  mobile:
+    pattern: safe_area_header_content_cards_bottom_nav_large_touch_targets
+    use_for: [mobile, ios, android, react_native, flutter]
+
+viewport_fit_rules:
+  desktop_operational_products:
+    use_for: [dashboard, portal, admin, records, workflow, healthcare, fintech, crm, hrms]
+    rules:
+      - Prefer broad task-first layouts over narrow marketing containers.
+      - On 1366px and wider screens, primary task areas should feel intentional and adequately filled.
+      - Reject layouts where margins dominate more than the task surface.
+  auth_screens:
+    use_for: [login, signin, patient_portal_login, staff_login]
+    rules:
+      - Split layouts must feel compositionally balanced.
+      - Single-column forms on wide desktop need a strong visual anchor or contextual panel.
+      - Reject if the form appears miniaturized relative to the viewport.
+  data_dense_screens:
+    use_for: [table, grid, queue, list, audit, inbox]
+    rules:
+      - Show enough rows, columns, filters, or adjacent detail to justify desktop width.
+      - Reject if the layout feels like a mobile card stack pasted into a widescreen desktop shell.

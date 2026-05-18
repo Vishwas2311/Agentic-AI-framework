@@ -1,0 +1,46 @@
+{
+  "library": "motion/react",
+  "intensity": "subtle",
+  "animations": [
+    {
+      "component": "Sidebar nav items",
+      "trigger": "hover",
+      "purpose": "active state feedback",
+      "duration_ms": 150,
+      "easing": "ease-out",
+      "reduced_motion_fallback": "no animation"
+    },
+    {
+      "component": "MetricCard",
+      "trigger": "mount",
+      "purpose": "entrance reveal",
+      "duration_ms": 300,
+      "easing": "ease-out",
+      "reduced_motion_fallback": "instant show"
+    },
+    {
+      "component": "ConsultationCard",
+      "trigger": "mount",
+      "purpose": "staggered list entrance",
+      "duration_ms": 200,
+      "easing": "ease-out",
+      "reduced_motion_fallback": "instant show"
+    },
+    {
+      "component": "StatusBadge status change",
+      "trigger": "status_update",
+      "purpose": "confirm update feedback",
+      "duration_ms": 250,
+      "easing": "spring",
+      "reduced_motion_fallback": "instant color change"
+    },
+    {
+      "component": "Toast notification",
+      "trigger": "booking_success",
+      "purpose": "confirm action",
+      "duration_ms": 300,
+      "easing": "ease-out",
+      "reduced_motion_fallback": "instant show"
+    }
+  ]
+}

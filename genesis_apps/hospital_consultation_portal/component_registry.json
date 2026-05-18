@@ -1,0 +1,47 @@
+{
+  "components": [
+    {
+      "name": "AppShell",
+      "file": "src/components/AppShell.tsx",
+      "type": "layout",
+      "auth_guard": true
+    },
+    {
+      "name": "Sidebar",
+      "file": "src/components/Sidebar.tsx",
+      "type": "navigation"
+    },
+    {
+      "name": "TopHeader",
+      "file": "src/components/TopHeader.tsx",
+      "type": "header"
+    },
+    {
+      "name": "HospitalLogo",
+      "file": "src/components/HospitalLogo.tsx",
+      "type": "brand"
+    },
+    {
+      "name": "MetricCard",
+      "file": "src/components/MetricCard.tsx",
+      "type": "data_display",
+      "motion": true
+    },
+    {
+      "name": "ActionCard",
+      "file": "src/components/ActionCard.tsx",
+      "type": "navigation_card"
+    },
+    {
+      "name": "ConsultationCard",
+      "file": "src/components/ConsultationCard.tsx",
+      "type": "data_card",
+      "motion": true
+    },
+    {
+      "name": "StatusBadge",
+      "file": "src/components/StatusBadge.tsx",
+      "type": "status_indicator"
+    }
+  ]
+}

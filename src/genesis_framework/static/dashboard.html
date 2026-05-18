@@ -1,0 +1,1698 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NoCode2ProCode Genesis — One Command. Full Migration.</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060f;--glass:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08);--blue:#00d4ff;--violet:#7c3aed;--cyan:#06b6d4;--muted:rgba(255,255,255,0.45);--sub:rgba(255,255,255,0.68);--mono:'JetBrains Mono',monospace;--head:'Space Grotesk',sans-serif;--body:'Inter',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:#fff;font-family:var(--body);overflow-x:hidden;line-height:1.6}
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);background-size:80px 80px}
+.orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
+.orb1{width:500px;height:500px;background:rgba(0,212,255,0.04);top:-80px;right:-80px}
+.orb2{width:400px;height:400px;background:rgba(124,58,237,0.05);bottom:20%;left:-80px}
+.wrap{position:relative;z-index:1}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,6,15,0.7);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .3s}
+.logo{font-family:var(--head);font-size:1.35rem;font-weight:700;background:linear-gradient(135deg,var(--blue),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.02em;text-decoration:none}
+.nav-links{display:flex;list-style:none;gap:32px}
+.nav-links a{color:var(--sub);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-btns{display:flex;gap:10px;align-items:center}
+.btn-ghost{padding:9px 20px;border:1px solid var(--border);border-radius:8px;background:var(--glass);color:var(--sub);font-size:.875rem;font-weight:500;cursor:pointer;transition:all .3s;font-family:var(--body);text-decoration:none;display:inline-block}
+.btn-ghost:hover{border-color:rgba(0,212,255,.35);color:#fff;box-shadow:0 0 20px rgba(0,212,255,.1)}
+.btn-manual{padding:9px 20px;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:linear-gradient(135deg,#ff6d6d,#ff3131);color:#0b0b0b;font-size:.9rem;font-weight:900;cursor:pointer;transition:all .3s;font-family:var(--body);text-decoration:none;display:inline-block;box-shadow:0 10px 24px rgba(255,68,68,.28)}
+.btn-manual:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(255,68,68,.36);filter:saturate(1.08)}
+.btn-pri{padding:9px 22px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--violet));color:#fff;font-size:.875rem;font-weight:600;cursor:pointer;transition:all .3s;font-family:var(--body);text-decoration:none;display:inline-block;position:relative;overflow:hidden}
+.btn-pri:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,212,255,.4)}
+.btn-lg{padding:15px 34px;font-size:1rem;border-radius:12px}
+
+/* SECTION BASE */
+.sec{padding:120px 60px;max-width:1400px;margin:0 auto}
+.sec-full{padding:120px 0;width:100%}
+.tag{display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border-radius:100px;border:1px solid rgba(0,212,255,.3);background:rgba(0,212,255,.05);color:var(--blue);font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
+.tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);animation:blink 2s ease infinite}
+h1,h2,h3{font-family:var(--head);letter-spacing:-.03em}
+h1{font-size:clamp(2.8rem,5.5vw,5.2rem);font-weight:800;line-height:1.05}
+h2{font-size:clamp(1.9rem,3.2vw,3rem);font-weight:700;line-height:1.15}
+h3{font-size:1.1rem;font-weight:600}
+.grad{background:linear-gradient(135deg,var(--blue),var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.glass{background:var(--glass);border:1px solid var(--border);border-radius:16px;backdrop-filter:blur(20px);transition:all .4s cubic-bezier(.23,1,.32,1)}
+.glass:hover{border-color:rgba(0,212,255,.22);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 28px rgba(0,212,255,.07);transform:translateY(-4px)}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .8s cubic-bezier(.23,1,.32,1),transform .8s cubic-bezier(.23,1,.32,1)}
+.rv.on{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}.d6{transition-delay:.6s}
+
+/* HERO */
+#hero{padding:160px 60px 100px;max-width:100%}
+.hero-in{max-width:1400px;margin:0 auto;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 20px;border-radius:100px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.3);color:rgba(167,139,250,1);font-size:.8rem;font-weight:600;margin-bottom:28px;animation:fadeUp .8s ease both}
+.hero-title{animation:fadeUp 1s .2s ease both;margin-bottom:24px}
+.hero-sub{font-size:1.1rem;color:var(--sub);max-width:660px;margin:0 auto 44px;line-height:1.75;animation:fadeUp 1s .4s ease both}
+.hero-cta{display:flex;gap:14px;justify-content:center;animation:fadeUp 1s .6s ease both;margin-bottom:72px}
+
+/* PIPELINE */
+.pipe-wrap{animation:fadeUp 1s .8s ease both}
+.pipe-box{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:22px;padding:44px 36px;position:relative;overflow:hidden}
+.pipe-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--violet),var(--cyan),transparent);animation:shimmer 4s ease infinite}
+@keyframes shimmer{0%,100%{opacity:.3}50%{opacity:1}}
+.pipe-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;gap:4px}
+.pnode{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:13px;min-width:108px;transition:all .3s;cursor:default}
+.pnode:hover{border-color:rgba(0,212,255,.4);box-shadow:0 0 24px rgba(0,212,255,.2);transform:translateY(-5px)}
+.pnode-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.pnode-lbl{font-size:.68rem;font-weight:600;color:var(--sub);text-align:center;line-height:1.3}
+.parr{padding:0 6px;color:var(--violet);font-size:.85rem;opacity:.7}
+.float-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:12px;margin-top:36px}
+.fcard{padding:16px 10px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;text-align:center;animation:float 4s ease-in-out infinite}
+.fcard:nth-child(1){animation-delay:0s}.fcard:nth-child(2){animation-delay:.5s}.fcard:nth-child(3){animation-delay:1s}.fcard:nth-child(4){animation-delay:1.5s}
+.fcard:nth-child(5){animation-delay:2s}.fcard:nth-child(6){animation-delay:2.5s}.fcard:nth-child(7){animation-delay:3s}.fcard:nth-child(8){animation-delay:3.5s}
+.fcard:hover{border-color:rgba(0,212,255,.3);box-shadow:0 0 18px rgba(0,212,255,.1)}
+.fcard-ico{font-size:1.6rem;margin-bottom:7px}
+.fcard-lbl{font-size:.68rem;font-weight:600;color:var(--muted)}
+
+/* PROBLEM */
+.prob-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.prob-card{padding:32px 26px}
+.prob-ico{width:52px;height:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:18px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2)}
+.prob-card p{color:var(--muted);font-size:.875rem;line-height:1.7;margin-top:10px}
+
+/* SOLUTION */
+.sol-cols{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;border-radius:20px;overflow:hidden}
+.sol-col{padding:38px 30px}
+.sol-hd{display:flex;align-items:center;gap:11px;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.sol-ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.sol-ttl{font-family:var(--head);font-size:1.05rem;font-weight:700}
+.sol-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.875rem;color:var(--sub)}
+.sol-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.sol-div{display:flex;align-items:center;justify-content:center;padding:0 18px;margin-top:56px}
+.sol-div span{font-size:1.4rem;color:var(--blue);filter:drop-shadow(0 0 8px var(--blue));animation:arrPulse 1.5s ease-in-out infinite}
+@keyframes arrPulse{0%,100%{transform:translateX(0);opacity:.6}50%{transform:translateX(5px);opacity:1}}
+
+/* AGENTS */
+.agent-stage-shell{position:relative;padding:30px 30px 44px;border-radius:28px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(13,16,37,.74),rgba(6,7,18,.92));box-shadow:0 34px 90px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter:blur(24px);overflow:hidden}
+.agent-stage-shell::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(0,212,255,.14),transparent 38%),radial-gradient(circle at 78% 18%,rgba(124,58,237,.15),transparent 26%),radial-gradient(circle at 18% 24%,rgba(6,182,212,.12),transparent 22%);pointer-events:none}
+.agent-stage-shell::after{content:'';position:absolute;inset:16px;border-radius:24px;border:1px solid rgba(255,255,255,.05);pointer-events:none}
+.agent-activation-strip{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:26px}
+.activate-card{position:relative;padding:18px 18px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 14px 32px rgba(0,0,0,.26);overflow:hidden;overflow-wrap:anywhere}
+.activate-card::before{content:'';position:absolute;inset:auto 0 0 0;height:2px;background:linear-gradient(90deg,var(--accent),transparent 80%)}
+.activate-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at top left,rgba(255,255,255,.18),transparent 42%);opacity:.7;pointer-events:none}
+.activate-kicker{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(220,236,255,.58);font-weight:700}
+.activate-title{font-family:var(--head);font-size:1rem;font-weight:700;margin:8px 0 7px;color:#fff}
+.activate-flow{font-size:.76rem;line-height:1.55;color:var(--sub)}
+.activate-flow strong{color:#fff;font-weight:700}
+.agent-stage-scene{position:relative;width:1320px;max-width:100%;height:1260px;margin:0 auto;perspective:1800px;transform-style:preserve-3d;animation:sceneHover 10s ease-in-out infinite}
+.agent-stage-scene.is-tilting{transition:transform .2s ease-out}
+.orbit-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid rgba(0,212,255,.14);transform-style:preserve-3d;pointer-events:none}
+.orbit-ring.outer{width:1060px;height:1060px;transform:translate(-50%,-50%) rotateX(71deg);box-shadow:0 0 30px rgba(0,212,255,.06),inset 0 0 30px rgba(0,212,255,.04)}
+.orbit-ring.middle{width:800px;height:800px;transform:translate(-50%,-50%) rotateX(74deg);border-color:rgba(124,58,237,.16)}
+.orbit-ring.inner{width:540px;height:540px;transform:translate(-50%,-50%) rotateX(76deg);border-color:rgba(6,182,212,.2)}
+.orbit-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:176px;height:176px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#92f8ff 0%,#33c5ff 28%,#2a82ff 54%,#7c3aed 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 70px rgba(0,212,255,.34),0 0 150px rgba(124,58,237,.22),inset 0 3px 16px rgba(255,255,255,.35);z-index:10;animation:centerPulse 4.6s ease-in-out infinite}
+.oc-kicker{font-size:.62rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,251,255,.76);margin-bottom:8px}
+.oc-lbl{font-family:var(--head);font-size:1.08rem;font-weight:800;text-align:center;line-height:1.2}
+.oc-sub{font-size:.66rem;line-height:1.45;text-align:center;color:rgba(243,250,255,.82);max-width:110px;margin-top:8px}
+.conn-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;filter:drop-shadow(0 0 14px rgba(0,212,255,.2))}
+.cline{stroke:url(#lg);stroke-width:1.2;fill:none;stroke-dasharray:7 8;animation:dash 4s linear infinite;opacity:.88}
+.cline.alt{stroke:url(#lgAlt);stroke-dasharray:4 10;animation-duration:5.2s}
+@keyframes dash{from{stroke-dashoffset:0}to{stroke-dashoffset:-32}}
+.anode{position:absolute;transform:translate(-50%,-50%);transform-style:preserve-3d;will-change:transform;animation:nodeDrift 8s ease-in-out infinite;z-index:2}
+.anode.is-inner{animation-duration:9.5s}
+.anode:hover{z-index:20}
+.acard{position:relative;width:166px;min-height:132px;padding:14px 12px 16px;background:linear-gradient(180deg,rgba(11,14,35,.96),rgba(7,9,24,.88));border:1px solid rgba(255,255,255,.1);border-radius:20px;text-align:center;backdrop-filter:blur(24px);transition:transform .35s cubic-bezier(.23,1,.32,1),box-shadow .35s,border-color .35s;cursor:pointer;overflow:hidden;overflow-wrap:anywhere;box-shadow:0 18px 42px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.06)}
+.acard::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(145deg,rgba(255,255,255,.08),transparent 28%,transparent 68%,rgba(0,212,255,.08));pointer-events:none}
+.acard::after{content:'';position:absolute;inset:auto 16px 0 16px;height:2px;border-radius:999px;background:linear-gradient(90deg,var(--agent-accent),transparent 85%);box-shadow:0 0 12px var(--agent-accent)}
+.acard:hover{border-color:rgba(255,255,255,.22);box-shadow:0 26px 54px rgba(0,0,0,.42),0 0 26px color-mix(in srgb, var(--agent-accent) 36%, transparent);transform:translateY(-5px) rotateX(6deg) rotateY(-6deg) scale(1.008)}
+.aico{display:block;font-size:1.42rem;margin-bottom:8px;transform:translateZ(28px);text-shadow:0 0 16px var(--agent-accent)}
+.anm{font-size:.72rem;font-weight:700;color:#fff;line-height:1.28;min-height:34px;display:flex;align-items:center;justify-content:center;transform:translateZ(18px)}
+.acap{font-size:.6rem;font-weight:500;color:rgba(214,231,255,.72);line-height:1.45;min-height:34px;margin-top:8px;transform:translateZ(14px)}
+.ast{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px #22c55e;margin:10px auto 0;animation:blink 2s infinite}
+@keyframes nodeDrift{0%,100%{transform:translate(-50%,-50%) translateY(0) rotateZ(0deg)}50%{transform:translate(-50%,-50%) translateY(-7px) rotateZ(.4deg)}}
+@keyframes centerPulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.05)}}
+@keyframes sceneHover{0%,100%{transform:rotateX(0deg) rotateY(0deg)}50%{transform:rotateX(2.8deg) rotateY(-2.5deg)}}
+
+/* ARCHITECTURE TIMELINE */
+.tl{position:relative;max-width:780px;margin:0 auto;padding-left:56px}
+.tl-line{position:absolute;left:16px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--blue),var(--violet),var(--cyan))}
+.ts{position:relative;margin-bottom:48px;padding:32px 36px;opacity:0;transform:translateX(-20px);transition:all .6s cubic-bezier(.23,1,.32,1)}
+.ts.on{opacity:1;transform:translateX(0)}
+.ts-node{position:absolute;left:-46px;top:32px;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));box-shadow:0 0 16px rgba(0,212,255,.5);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:#fff}
+.ts-num{font-size:.72rem;font-weight:700;color:var(--blue);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.ts-title{font-family:var(--head);font-size:1.25rem;font-weight:700;margin-bottom:12px}
+.ts p{color:var(--muted);font-size:.875rem;margin-bottom:14px;line-height:1.7}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.stag{padding:5px 12px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid var(--border);font-size:.75rem;color:var(--sub);font-family:var(--mono)}
+
+/* TABLE */
+.tbl-wrap{overflow:hidden;border-radius:16px;border:1px solid var(--border);background:rgba(255,255,255,.02)}
+table{width:100%;border-collapse:collapse}
+thead th{padding:18px 22px;text-align:left;font-size:.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
+tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .2s}
+tbody tr:hover{background:rgba(0,212,255,.04)}
+tbody tr:last-child{border-bottom:none}
+tbody td{padding:18px 22px;font-size:.875rem;color:var(--sub)}
+.badge-hi{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e}
+.badge-md{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:#fbbf24}
+.out-tag{padding:3px 11px;border-radius:6px;font-size:.75rem;font-weight:600;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);color:var(--blue);font-family:var(--mono)}
+
+/* BLUEPRINT */
+.bp-panel{background:rgba(6,6,15,.85);border:1px solid rgba(0,212,255,.2);border-radius:16px;overflow:hidden;max-width:780px;margin:0 auto}
+.bp-head{display:flex;align-items:center;gap:7px;padding:14px 22px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
+.dot-r{width:11px;height:11px;border-radius:50%;background:#ef4444}
+.dot-y{width:11px;height:11px;border-radius:50%;background:#fbbf24}
+.dot-g{width:11px;height:11px;border-radius:50%;background:#22c55e}
+.bp-fname{font-family:var(--mono);font-size:.78rem;color:var(--muted);margin-left:8px}
+.bp-body{padding:28px 32px;font-family:var(--mono);font-size:.85rem;line-height:1.85;color:#8fa0b0;min-height:320px}
+.jk{color:#7dd3fc}.js{color:#86efac}.jb{color:#e2e8f0}.jn{color:#f472b6}
+#cur{display:inline-block;width:2px;height:1em;background:var(--blue);animation:blink 1s step-end infinite;vertical-align:text-bottom}
+
+/* OUTPUT GRID */
+.out-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.out-card{padding:28px 22px;text-align:center}
+.out-card-ico{font-size:1.9rem;margin-bottom:14px;display:block}
+.out-card h3{margin-bottom:8px;font-size:.975rem}
+.out-card p{color:var(--muted);font-size:.8rem;line-height:1.65}
+.chk{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:#22c55e;font-size:.72rem;margin-top:14px}
+
+/* QA */
+.qa-pipe{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin:44px 0}
+.qa-st{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 14px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;min-width:96px}
+.qa-ico{font-size:1.3rem}.qa-lbl{font-size:.68rem;font-weight:600;color:var(--muted);text-align:center}
+.qa-arr{color:var(--blue);font-size:1.1rem}
+.browser{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:14px;overflow:hidden;max-width:700px;margin:0 auto}
+.b-bar{display:flex;align-items:center;gap:7px;padding:13px 18px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border)}
+.b-dot{width:10px;height:10px;border-radius:50%}
+.b-url{flex:1;padding:5px 12px;background:rgba(255,255,255,.04);border-radius:6px;font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-left:6px}
+.b-body{padding:22px}
+.t-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04);font-family:var(--mono);font-size:.8rem;flex-wrap:wrap;overflow-wrap:anywhere}
+.t-row:last-child{border-bottom:none}
+.t-ok{width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.68rem;background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.3);flex-shrink:0}
+.t-act{color:var(--muted)}.t-hl{color:var(--blue);overflow-wrap:anywhere}
+
+/* USE CASES */
+.uc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.uc-card{padding:32px 26px}
+.uc-num{font-family:var(--head);font-size:2.4rem;font-weight:800;color:rgba(0,212,255,.12);margin-bottom:10px;line-height:1}
+.uc-card h3{font-size:.975rem;margin-bottom:9px}
+.uc-card p{color:var(--muted);font-size:.85rem;line-height:1.7}
+
+/* COMPARISON */
+.cmp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.cmp-before{padding:36px;border-radius:20px;background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.14)}
+.cmp-after{padding:36px;border-radius:20px;background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.18)}
+.cmp-hd{display:flex;align-items:center;gap:11px;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.cmp-hd h3{font-size:1.15rem;font-weight:700}
+.cmp-row{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.875rem}
+.cmp-row:last-child{border-bottom:none}
+.ico-bad{width:22px;height:22px;border-radius:50%;background:rgba(239,68,68,.12);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#ef4444;border:1px solid rgba(239,68,68,.25);flex-shrink:0}
+.ico-good{width:22px;height:22px;border-radius:50%;background:rgba(34,197,94,.12);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#22c55e;border:1px solid rgba(34,197,94,.25);flex-shrink:0}
+
+/* CTA */
+#cta{text-align:center;padding:140px 60px;max-width:100%;position:relative}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:280px;background:radial-gradient(ellipse,rgba(124,58,237,.14),transparent 70%);pointer-events:none}
+.cta-in{position:relative;z-index:1;max-width:1400px;margin:0 auto}
+.cta-btns{display:flex;gap:14px;justify-content:center;margin-top:44px;flex-wrap:wrap}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:56px 60px 40px;max-width:1400px;margin:0 auto}
+.ft-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px}
+.ft-brand p{color:var(--muted);font-size:.85rem;line-height:1.7;margin-top:10px;max-width:240px}
+.ft-col h4{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:18px}
+.ft-col ul{list-style:none}
+.ft-col li{margin-bottom:11px}
+.ft-col a{color:var(--sub);text-decoration:none;font-size:.875rem;transition:color .2s}
+.ft-col a:hover{color:#fff}
+.ft-bot{padding-top:28px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.ft-bot p{color:var(--muted);font-size:.8rem}
+
+/* KEYFRAMES */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* RESPONSIVE */
+@media(max-width:1200px){.prob-grid{grid-template-columns:repeat(2,1fr)}.out-grid{grid-template-columns:repeat(2,1fr)}.float-grid{grid-template-columns:repeat(4,1fr)}.agent-activation-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.agent-stage-scene{height:1180px}.orbit-ring.outer{width:920px;height:920px}.orbit-ring.middle{width:700px;height:700px}.orbit-ring.inner{width:440px;height:440px}.acard{width:154px}}
+@media(max-width:900px){nav{padding:14px 24px}.nav-links{display:none}.sec{padding:80px 24px}#hero{padding:110px 24px 80px}.prob-grid{grid-template-columns:1fr 1fr}.sol-cols{grid-template-columns:1fr}.sol-div{display:none}.float-grid{grid-template-columns:repeat(2,1fr)}.out-grid{grid-template-columns:repeat(2,1fr)}.uc-grid{grid-template-columns:1fr}.cmp-wrap{grid-template-columns:1fr}.ft-grid{grid-template-columns:1fr 1fr;gap:28px}.agent-stage-shell{padding:20px 16px 28px}.agent-activation-strip{grid-template-columns:1fr}.agent-stage-scene{width:100%;height:auto;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;perspective:none;animation:none;padding-top:0}.conn-svg,.orbit-ring{display:none}.orbit-center{position:relative;top:auto;left:auto;transform:none;width:100%;height:auto;min-height:128px;border-radius:24px;grid-column:1/-1;margin-bottom:6px}.oc-sub{max-width:none}.anode{position:relative!important;top:auto!important;left:auto!important;transform:none!important;animation:none!important}.acard{width:auto;min-height:140px}}
+@media(max-width:640px){.prob-grid,.out-grid{grid-template-columns:1fr}.agent-stage-scene{grid-template-columns:1fr}.ft-grid{grid-template-columns:1fr}.hero-cta{flex-direction:column;align-items:center}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rv,.ts{transition:none!important}.agent-stage-scene,.anode,.orbit-center,.fcard,.cline,.tag::before{animation:none!important}.acard:hover,.glass:hover,.pnode:hover{transform:none!important}}
+
+/* UNIFIED USER MANUAL */
+#user-manual{padding-top:40px}
+#user-manual .manual-shell{max-width:1380px;margin:0 auto;display:grid;grid-template-columns:280px minmax(0,1fr);gap:26px}
+#user-manual .manual-side{position:relative}
+#user-manual .toc-card{position:sticky;top:96px;padding:22px;background:linear-gradient(180deg,rgba(14,17,37,.96),rgba(8,10,24,.88));border:1px solid rgba(255,255,255,.085);border-radius:24px;backdrop-filter:blur(18px);box-shadow:0 18px 50px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.05)}
+#user-manual .toc-title{font-family:var(--head);font-size:1.02rem;font-weight:800;margin-bottom:14px}
+#user-manual .toc-links{display:grid;gap:8px}
+#user-manual .toc-links a{padding:10px 12px;border-radius:12px;color:var(--sub);font-size:.88rem;font-weight:700;border:1px solid transparent;transition:all .2s;text-decoration:none}
+#user-manual .toc-links a:hover,#user-manual .toc-links a.is-active{background:rgba(255,255,255,.04);border-color:rgba(0,212,255,.18);color:#fff}
+#user-manual .toc-meta{display:grid;gap:12px;margin-top:18px}
+#user-manual .toc-meta .meta{padding:14px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06)}
+#user-manual .toc-meta .k{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:6px}
+#user-manual .toc-meta .v{font-size:.88rem;color:#fff}
+#user-manual .manual-main{display:grid;gap:22px}
+#user-manual .doc-card,#user-manual .info-card,#user-manual .agent-card,#user-manual .artifact-card,#user-manual .faq-item{background:linear-gradient(180deg,rgba(14,17,37,.96),rgba(8,10,24,.88));border:1px solid rgba(255,255,255,.085);border-radius:24px;backdrop-filter:blur(18px);box-shadow:0 18px 50px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.05);overflow-wrap:anywhere}
+#user-manual .doc-card{padding:28px}
+#user-manual .doc-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px}
+#user-manual .doc-head h2{font-family:var(--head);font-size:clamp(1.5rem,2vw,2rem);line-height:1.1}
+#user-manual .doc-head p{max-width:58ch;color:var(--muted)}
+#user-manual .section-kicker{font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+#user-manual .three-grid,#user-manual .two-grid,#user-manual .cap-grid,#user-manual .artifact-grid,#user-manual .agent-grid,#user-manual .pipeline{display:grid;gap:16px}
+#user-manual .three-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+#user-manual .two-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+#user-manual .cap-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+#user-manual .artifact-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+#user-manual .agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+#user-manual .pipeline{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:16px}
+#user-manual .info-card,#user-manual .agent-card,#user-manual .artifact-card,#user-manual .faq-item{padding:18px;border-radius:20px}
+#user-manual .info-card h3,#user-manual .agent-card h3,#user-manual .artifact-card h3,#user-manual .faq-item h3{font-size:1rem;font-weight:800;margin-bottom:8px}
+#user-manual .info-card p,#user-manual .agent-card p,#user-manual .artifact-card p,#user-manual .faq-item p{font-size:.9rem;color:var(--muted)}
+#user-manual .accent-blue{border-color:rgba(0,212,255,.18)}
+#user-manual .accent-violet{border-color:rgba(124,58,237,.22)}
+#user-manual .accent-green{border-color:rgba(32,239,163,.22)}
+#user-manual .accent-orange{border-color:rgba(255,154,60,.24)}
+#user-manual .accent-red{border-color:rgba(255,71,71,.22)}
+#user-manual .accent-cyan{border-color:rgba(6,182,212,.22)}
+#user-manual .list{display:grid;gap:10px;margin-top:14px}
+#user-manual .list li{list-style:none;padding-left:18px;position:relative;color:var(--sub);font-size:.92rem}
+#user-manual .list li::before{content:'•';position:absolute;left:0;color:var(--blue)}
+#user-manual .note{margin-top:14px;padding:14px 16px;border-radius:16px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.14);color:var(--sub);font-size:.9rem;overflow-wrap:anywhere}
+#user-manual .callout-red{background:rgba(255,71,71,.07);border-color:rgba(255,71,71,.18)}
+#user-manual .callout-green{background:rgba(32,239,163,.07);border-color:rgba(32,239,163,.18)}
+#user-manual .code-block{position:relative;margin-top:16px;border-radius:18px;background:#050814;border:1px solid rgba(255,255,255,.08);padding:18px;overflow:auto}
+#user-manual .code-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+#user-manual .code-top .left{font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800}
+#user-manual .copy-btn{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+#user-manual .copy-btn:hover{border-color:rgba(0,212,255,.24)}
+#user-manual code,#user-manual pre,#user-manual .mono{font-family:var(--mono);white-space:pre-wrap;overflow-wrap:anywhere}
+#user-manual .code-block pre{font-size:.85rem;color:#bdefff;line-height:1.8}
+#user-manual .flow-bar{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+#user-manual .step-chip{padding:11px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:.84rem;font-weight:700;color:var(--sub)}
+#user-manual .step-chip strong{color:#fff}
+#user-manual .stage{padding:18px;border-radius:20px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}
+#user-manual .stage .num{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+#user-manual .stage h3{font-size:1rem;font-weight:800;margin-bottom:8px}
+#user-manual .stage p{font-size:.9rem;color:var(--muted)}
+#user-manual .stage .out{margin-top:12px;font-size:.82rem;color:#9feaff}
+#user-manual .agent-group{padding:18px;border-radius:22px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+#user-manual .agent-group + .agent-group{margin-top:16px}
+#user-manual .group-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:16px}
+#user-manual .group-head h3{font-family:var(--head);font-size:1.12rem}
+#user-manual .group-head p{color:var(--muted);font-size:.9rem;max-width:52ch}
+#user-manual .role{display:inline-flex;margin-bottom:10px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:.74rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--sub)}
+#user-manual .agent-meta{display:grid;gap:8px;margin-top:12px}
+#user-manual .agent-meta div{font-size:.86rem;color:var(--sub)}
+#user-manual .agent-meta strong{color:#fff}
+#user-manual .table-wrap{margin-top:16px;overflow:auto;border-radius:18px;border:1px solid rgba(255,255,255,.08)}
+#user-manual table{width:100%;min-width:880px;border-collapse:collapse;background:rgba(255,255,255,.02)}
+#user-manual th,#user-manual td{padding:14px 16px;text-align:left;vertical-align:top;border-bottom:1px solid rgba(255,255,255,.06);font-size:.88rem}
+#user-manual th{background:rgba(255,255,255,.04);color:#fff;font-weight:800}
+#user-manual td{color:var(--sub)}
+#user-manual tbody tr:hover{background:rgba(255,255,255,.03)}
+#user-manual .artifact-card .file{font-family:var(--mono);font-size:.8rem;color:#9be7ff;margin-bottom:10px}
+#user-manual .faq-item summary{list-style:none;cursor:pointer;font-size:1rem;font-weight:800}
+#user-manual .faq-item summary::-webkit-details-marker{display:none}
+#user-manual .faq-item[open]{border-color:rgba(0,212,255,.2)}
+#user-manual .faq-item .ans{margin-top:12px;color:var(--muted);font-size:.9rem}
+@media(max-width:1180px){#user-manual .manual-shell,#user-manual .three-grid,#user-manual .cap-grid,#user-manual .artifact-grid,#user-manual .agent-grid,#user-manual .pipeline,#user-manual .two-grid{grid-template-columns:1fr}#user-manual .toc-card{position:relative;top:auto}}
+@media(max-width:640px){#user-manual .doc-card,#user-manual .toc-card{padding:20px}}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="grid"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="wrap">
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="logo" href="#">NoCode2ProCode Genesis</a>
+  <ul class="nav-links">
+    <li><a href="#hero">Genesis</a></li>
+    <li><a href="#solution">Pipeline</a></li>
+    <li><a href="#agents">Agent System</a></li>
+    <li><a href="#architecture">Runtime</a></li>
+    <li><a href="#use-cases">Outputs</a></li>
+    <li><a href="#cta">Replay</a></li>
+    <li><a href="#cta">Handoff</a></li>
+  </ul>
+  <div class="nav-btns">
+    <a href="#user-manual" class="btn-manual">User Manual</a>
+    <a href="#architecture" class="btn-ghost">View Runtime</a>
+    <a href="#cta" class="btn-pri">Run Genesis Migrate</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+<div class="hero-in">
+  <div class="hero-badge">⚙️ One Command. Full Migration.</div>
+  <h1 class="hero-title">Turn No-Code Evidence into<br><span class="grad">Production Pro-Code</span></h1>
+  <p class="hero-sub">NoCode2ProCode Genesis reads <code style="font-family:var(--mono);font-size:.92em;color:#9be7ff">migration_inputs/</code>, classifies packages, websites, videos, BRDs, screenshots, schemas, APIs, and local runtime evidence, then builds a canonical app spec, generates code, runs repair + QA readiness checks, prepares handoff, and saves verified learning.</p>
+  <div class="hero-cta">
+    <a href="#cta" class="btn-pri btn-lg">Run nocode2procode migrate →</a>
+    <a href="#architecture" class="btn-ghost btn-lg">View Full Pipeline</a>
+  </div>
+
+  <!-- Pipeline -->
+  <div class="pipe-wrap rv">
+    <div class="pipe-box">
+      <div class="pipe-row">
+        <div class="pnode"><div class="pnode-icon" style="background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2)">📦</div><span class="pnode-lbl">migration_inputs/</span></div>
+        <span class="parr">→</span>
+        <div class="pnode"><div class="pnode-icon" style="background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2)">🎥</div><span class="pnode-lbl">Source Evidence</span></div>
+        <span class="parr">→</span>
+        <div class="pnode" style="border-color:rgba(0,212,255,.3)"><div class="pnode-icon" style="background:linear-gradient(135deg,rgba(0,212,255,.15),rgba(124,58,237,.15));border:1px solid rgba(0,212,255,.35)">🤖</div><span class="pnode-lbl" style="color:var(--blue)">Genesis Runtime</span></div>
+        <span class="parr">→</span>
+        <div class="pnode"><div class="pnode-icon" style="background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2)">📋</div><span class="pnode-lbl">Canonical App Spec</span></div>
+        <span class="parr">→</span>
+        <div class="pnode"><div class="pnode-icon" style="background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2)">⚛️</div><span class="pnode-lbl">Generated App</span></div>
+        <span class="parr">→</span>
+        <div class="pnode"><div class="pnode-icon" style="background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2)">⚡</div><span class="pnode-lbl">QA + Readiness</span></div>
+        <span class="parr">→</span>
+        <div class="pnode"><div class="pnode-icon" style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2)">🗄️</div><span class="pnode-lbl">Delivery</span></div>
+        <span class="parr">→</span>
+        <div class="pnode"><div class="pnode-icon" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2)">✅</div><span class="pnode-lbl">Verified Memory</span></div>
+        <span class="parr">→</span>
+        <div class="pnode"><div class="pnode-icon" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2)">🚀</div><span class="pnode-lbl">Approved Release</span></div>
+      </div>
+      <div class="float-grid" style="margin-top:32px">
+        <div class="fcard"><div class="fcard-ico">📥</div><div class="fcard-lbl">Input Intake</div></div>
+        <div class="fcard"><div class="fcard-ico">📦</div><div class="fcard-lbl">PowerApps Extractor</div></div>
+        <div class="fcard"><div class="fcard-ico">🌐</div><div class="fcard-lbl">Website Extractor</div></div>
+        <div class="fcard"><div class="fcard-ico">📄</div><div class="fcard-lbl">Document Extractor</div></div>
+        <div class="fcard"><div class="fcard-ico">🧭</div><div class="fcard-lbl">Source Truth</div></div>
+        <div class="fcard"><div class="fcard-ico">🧠</div><div class="fcard-lbl">BRD Intelligence</div></div>
+        <div class="fcard"><div class="fcard-ico">🧪</div><div class="fcard-lbl">Quality Gates</div></div>
+        <div class="fcard"><div class="fcard-ico">🧬</div><div class="fcard-lbl">Memory Curator</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PROBLEM -->
+<section class="sec" id="problem">
+  <div style="text-align:center;margin-bottom:56px">
+    <div class="tag rv">Why Genesis Exists</div>
+    <h2 class="rv">Your Low-Code App Works Today…<br><span class="grad">But It Still Needs Real Engineering</span></h2>
+    <p class="rv d1" style="color:var(--muted);margin-top:14px;font-size:.975rem">Genesis is built for the moment when exports, screenshots, docs, and runtime clues need to become an owned production codebase.</p>
+  </div>
+  <div class="prob-grid">
+    <div class="glass prob-card rv d1"><div class="prob-ico">🔒</div><h3>Scattered Source Evidence</h3><p>Your real app knowledge is split across exports, BRDs, screenshots, videos, APIs, schemas, and human memory instead of one reliable engineering source.</p></div>
+    <div class="glass prob-card rv d2"><div class="prob-ico">📈</div><h3>No Trusted Migration Contract</h3><p>Without source-truth resolution and a canonical app spec, rebuilds drift, assumptions pile up, and teams lose confidence in what should actually be built.</p></div>
+    <div class="glass prob-card rv d3"><div class="prob-ico">🧪</div><h3>No Delivery Pipeline</h3><p>Most conversions stop at mockups. They do not include structured QA, repair reports, replay evidence, approval checkpoints, readiness artifacts, or reusable migration memory.</p></div>
+    <div class="glass prob-card rv d4"><div class="prob-ico">🧩</div><h3>No Repeatable Migration Runtime</h3><p>You need more than generated code. You need a runtime that can orchestrate extractors, builders, QA, security, delivery readiness, and learning in one controlled flow.</p></div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="sec" id="solution">
+  <div style="text-align:center;margin-bottom:64px">
+    <div class="tag rv">Genesis Flow</div>
+    <h2 class="rv">Genesis Reads, Resolves,<br><span class="grad">and Rebuilds</span></h2>
+  </div>
+  <div class="sol-cols glass">
+    <div class="sol-col rv">
+      <div class="sol-hd"><div class="sol-ico" style="background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2)">📥</div><span class="sol-ttl" style="color:var(--blue)">Input</span></div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--blue)"></div>PowerApps package or source files</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--blue)"></div>Website, video, or screenshots</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--blue)"></div>BRD, notes, and mockups</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--blue)"></div>XML, JSON, YAML, API configs</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--blue)"></div>SQL, CSV, Excel, schema files</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--blue)"></div>Local runtime browser evidence</div>
+    </div>
+    <div class="sol-div rv d2"><span>→</span></div>
+    <div class="sol-col rv d2" style="border-left:1px solid var(--border);border-right:1px solid var(--border)">
+      <div class="sol-hd"><div class="sol-ico" style="background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2)">🧠</div><span class="sol-ttl" style="color:rgba(167,139,250,1)">Intelligence</span></div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--violet)"></div>Classifies every source</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--violet)"></div>Builds swarm execution plan</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--violet)"></div>Extracts AST, BRD, screenshot hints</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--violet)"></div>Resolves source truth</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--violet)"></div>Builds migration BRD and IR</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--violet)"></div>Freezes canonical app spec</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--violet)"></div>Plans design, QA, readiness, memory</div>
+    </div>
+    <div class="sol-div rv d3"><span>→</span></div>
+    <div class="sol-col rv d4">
+      <div class="sol-hd"><div class="sol-ico" style="background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2)">📤</div><span class="sol-ttl" style="color:var(--cyan)">Output</span></div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--cyan)"></div>Frontend scaffold</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--cyan)"></div>Backend services</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--cyan)"></div>Database + integration contracts</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--cyan)"></div>Tests + security reports</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--cyan)"></div>Replay dashboard</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--cyan)"></div>Delivery-ready handoff</div>
+      <div class="sol-item"><div class="sol-dot" style="background:var(--cyan)"></div>Verified memory packets</div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<section id="agents" style="padding:120px 60px;max-width:100%;text-align:center">
+  <div style="max-width:1400px;margin:0 auto">
+    <div class="tag rv" style="display:inline-flex">Agent System</div>
+    <h2 class="rv" style="display:block;margin-top:4px">Multi-Agent <span class="grad">Migration Engine</span></h2>
+    <p class="rv d1" style="color:var(--muted);margin-top:14px;max-width:700px;margin-left:auto;margin-right:auto;font-size:.975rem">Genesis coordinates extractor, planner, builder, validation, readiness, and memory agents across one migration runtime. The current local pipeline adds BRD intelligence, screenshot analysis, local HTML capture, repair reporting, QA gates, and a production readiness scorecard.</p>
+    <div class="agent-stage-shell glass rv d2">
+      <div class="agent-stage-scene" id="agent-scene">
+        <svg class="conn-svg" id="agent-connections" viewBox="0 0 1320 1260" aria-hidden="true"></svg>
+        <div class="orbit-ring outer"></div>
+        <div class="orbit-ring middle"></div>
+        <div class="orbit-ring inner"></div>
+        <div class="orbit-center">
+          <div class="oc-kicker">Core Runtime</div>
+          <div class="oc-lbl">Genesis<br>Orchestrator</div>
+          <div class="oc-sub">routes extractors, builders, QA, readiness, memory</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="sec" id="architecture">
+  <div style="text-align:center;margin-bottom:72px">
+    <div class="tag rv">Pipeline Runtime</div>
+    <h2 class="rv">From Inputs to<br><span class="grad">Validated Handoff</span></h2>
+  </div>
+  <div class="tl">
+    <div class="tl-line"></div>
+    <div class="glass ts" id="ts1"><div class="ts-node">1</div><div class="ts-num">Step 01</div><div class="ts-title">Load migration_inputs and Start Session</div><p>Genesis validates inputs, starts the runtime session, routes models, retrieves prior verified memory, and records the migration manifest.</p><div class="tags"><span class="stag">migration_inputs/</span><span class="stag">runtime_session.json</span><span class="stag">provider routing</span><span class="stag">memory context</span></div></div>
+    <div class="glass ts" id="ts2"><div class="ts-node">2</div><div class="ts-num">Step 02</div><div class="ts-title">Discover Sources and Extract Evidence</div><p>Extractor agents gather platform AST, website AST, BRD requirements, screenshot hints, local runtime capture, API hints, database clues, and source baseline artifacts.</p><div class="tags"><span class="stag">platform_ast.json</span><span class="stag">website_ast.json</span><span class="stag">document_intent.json</span><span class="stag">runtime_evidence.json</span></div></div>
+    <div class="glass ts" id="ts3"><div class="ts-node">3</div><div class="ts-num">Step 03</div><div class="ts-title">Resolve Source Truth and Build Planning IR</div><p>Genesis compares evidence, scores confidence, builds the migration BRD, ULC-IR, design IR, and freezes the canonical app specification.</p><div class="tags"><span class="stag">source_truth_report.json</span><span class="stag">confidence_scores.json</span><span class="stag">canonical_app_spec.json</span></div></div>
+    <div class="glass ts" id="ts4"><div class="ts-node">4</div><div class="ts-num">Step 04</div><div class="ts-title">Generate Design System and App Scaffold</div><p>Builder agents generate frontend, backend, database, tests, docs, delivery-readiness files, and design-system outputs from the canonical contract.</p><div class="tags"><span class="stag">frontend/</span><span class="stag">backend/</span><span class="stag">tests/</span><span class="stag">deploy/</span><span class="stag">docs/</span></div></div>
+    <div class="glass ts" id="ts5"><div class="ts-node">5</div><div class="ts-num">Step 05</div><div class="ts-title">Run Repair, QA, Replay, Approval, and Learning</div><p>The runtime executes preflight repair, code quality gates, JSON validation, route checks, Python syntax checks, security scanning, replay dashboard creation, final approval, readiness scoring, and verified memory writeback.</p><div class="tags"><span class="stag">repair_loop_report.json</span><span class="stag">test_report.json</span><span class="stag">security_review.json</span><span class="stag">production_readiness_scorecard.json</span></div></div>
+  </div>
+</section>
+
+<!-- VIDEO MAPPING TABLE -->
+<section class="sec" id="video-mapping">
+  <div style="text-align:center;margin-bottom:56px">
+    <div class="tag rv">Source Truth Resolver</div>
+    <h2 class="rv">Runtime Evidence Meets<br><span class="grad">Source Truth</span></h2>
+    <p class="rv d1" style="color:var(--muted);margin-top:14px;max-width:540px;margin-left:auto;margin-right:auto;font-size:.975rem">Genesis cross-checks exports, docs, website clues, browser evidence, APIs, and database hints before anything becomes canonical.</p>
+  </div>
+  <div class="tbl-wrap rv">
+    <table>
+      <thead><tr><th>Evidence Signal</th><th>Supporting Artifact</th><th>Confidence</th><th>Canonical Decision</th></tr></thead>
+      <tbody>
+        <tr><td>PowerApps export shows request statuses</td><td><code style="font-family:var(--mono);color:var(--blue);font-size:.8rem">platform_ast.json</code></td><td><span class="badge-hi">● High</span></td><td><span class="out-tag">Workflow enum contract</span></td></tr>
+        <tr><td>Local runtime capture reads page title, buttons, forms, inputs, and links</td><td><code style="font-family:var(--mono);color:var(--blue);font-size:.8rem">runtime_evidence.json</code></td><td><span class="badge-hi">● High</span></td><td><span class="out-tag">UI actions + capture evidence</span></td></tr>
+        <tr><td>Website reference suggests dashboard layout</td><td><code style="font-family:var(--mono);color:var(--blue);font-size:.8rem">website_ast.json</code></td><td><span class="badge-md">● Medium</span></td><td><span class="out-tag">Design strategy guidance</span></td></tr>
+        <tr><td>BRD notes say manager approval is required</td><td><code style="font-family:var(--mono);color:var(--blue);font-size:.8rem">document_intent.json</code></td><td><span class="badge-md">● Medium</span></td><td><span class="out-tag">Human review assumption</span></td></tr>
+        <tr><td>OpenAPI spec defines notification contract</td><td><code style="font-family:var(--mono);color:var(--blue);font-size:.8rem">api_ast.json</code></td><td><span class="badge-hi">● High</span></td><td><span class="out-tag">Integration contract</span></td></tr>
+        <tr><td>Schema export defines attachment relationships</td><td><code style="font-family:var(--mono);color:var(--blue);font-size:.8rem">db_ast.json</code></td><td><span class="badge-md">● Medium</span></td><td><span class="out-tag">DB model + storage flow</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- BLUEPRINT JSON -->
+<section class="sec" id="blueprint">
+  <div style="text-align:center;margin-bottom:56px">
+    <div class="tag rv">Canonical App Spec</div>
+    <h2 class="rv">Every Migration Freezes Into a<br><span class="grad">Canonical App Spec</span></h2>
+  </div>
+  <div class="bp-panel rv">
+    <div class="bp-head"><div class="dot-r"></div><div class="dot-y"></div><div class="dot-g"></div><span class="bp-fname">canonical_app_spec.json</span></div>
+    <div class="bp-body"><div id="jc"></div><span id="cur"></span></div>
+  </div>
+</section>
+
+<!-- OUTPUT CODE FACTORY -->
+<section class="sec" id="output">
+  <div style="text-align:center;margin-bottom:56px">
+    <div class="tag rv">Generated Output Factory</div>
+    <h2 class="rv">Production Code,<br><span class="grad">Not Just Prototype</span></h2>
+    <p class="rv d1" style="color:var(--muted);margin-top:14px;max-width:540px;margin-left:auto;margin-right:auto;font-size:.975rem">Genesis produces the migration workspace, QA reports, repair evidence, readiness artifacts, and learning outputs needed to keep improving the next run.</p>
+  </div>
+  <div class="out-grid">
+    <div class="glass out-card rv d1"><span class="out-card-ico">⚛️</span><h3>Frontend App</h3><p>Generated from the canonical spec with routes, forms, dashboards, and component structure ready for repair and polish.</p><div class="chk">✓</div></div>
+    <div class="glass out-card rv d2"><span class="out-card-ico">⚡</span><h3>Backend API</h3><p>Generated service scaffold with APIs, validation, integration contracts, auth boundaries, and observability hooks.</p><div class="chk">✓</div></div>
+    <div class="glass out-card rv d3"><span class="out-card-ico">🗄️</span><h3>Database Schema</h3><p>Database models, migrations, relationship hints, and data-contract outputs derived from source evidence.</p><div class="chk">✓</div></div>
+    <div class="glass out-card rv d4"><span class="out-card-ico">🔐</span><h3>Security Review</h3><p>Local secret-pattern scanning, security review JSON, compliance notes, and approval-sensitive migration signals.</p><div class="chk">✓</div></div>
+    <div class="glass out-card rv d1"><span class="out-card-ico">🧪</span><h3>QA + Repair Reports</h3><p>Required-file checks, JSON validation, route checks, Python syntax checks, repair logs, and test reports.</p><div class="chk">✓</div></div>
+    <div class="glass out-card rv d2"><span class="out-card-ico">⚙️</span><h3>Readiness Pack</h3><p>Deployment scaffolding, CI-ready structure, approval files, and production readiness scorecard for local handoff.</p><div class="chk">✓</div></div>
+    <div class="glass out-card rv d3"><span class="out-card-ico">📚</span><h3>Architecture Docs</h3><p>README, architecture docs, migration reports, and traceability artifacts packaged with the run.</p><div class="chk">✓</div></div>
+    <div class="glass out-card rv d4"><span class="out-card-ico">🐳</span><h3>Verified Memory</h3><p>Verified memory packets, reusable migration patterns, and learning reports captured after approval.</p><div class="chk">✓</div></div>
+  </div>
+</section>
+
+<!-- QA -->
+<section class="sec" id="qa">
+  <div style="text-align:center;margin-bottom:56px">
+    <div class="tag rv">QA + Repair Loop</div>
+    <h2 class="rv">Built-In QA<br><span class="grad">Before Delivery</span></h2>
+    <p class="rv d1" style="color:var(--muted);margin-top:14px;max-width:640px;margin-left:auto;margin-right:auto;font-size:.975rem">Genesis now runs local repair preflight, required-file checks, JSON validation, route consistency, Python syntax checks, optional Ruff checks, backend health smoke checks, secret scanning, and readiness scoring before approval.</p>
+  </div>
+  <div class="qa-pipe rv">
+    <div class="qa-st"><span class="qa-ico">🔬</span><span class="qa-lbl">Scaffold Check</span></div>
+    <span class="qa-arr">→</span>
+    <div class="qa-st"><span class="qa-ico">🔌</span><span class="qa-lbl">JSON + Routes</span></div>
+    <span class="qa-arr">→</span>
+    <div class="qa-st"><span class="qa-ico">🖥️</span><span class="qa-lbl">Backend Smoke</span></div>
+    <span class="qa-arr">→</span>
+    <div class="qa-st"><span class="qa-ico">👁️</span><span class="qa-lbl">Secret Scan</span></div>
+    <span class="qa-arr">→</span>
+    <div class="qa-st"><span class="qa-ico">🔄</span><span class="qa-lbl">Repair Preflight</span></div>
+    <span class="qa-arr">→</span>
+    <div class="qa-st" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05)"><span class="qa-ico">📋</span><span class="qa-lbl" style="color:#22c55e">Readiness Score</span></div>
+  </div>
+  <div class="browser rv d2">
+    <div class="b-bar"><div class="b-dot" style="background:#ef4444"></div><div class="b-dot" style="background:#fbbf24"></div><div class="b-dot" style="background:#22c55e"></div><div class="b-url">workspace://genesis/replay-dashboard</div></div>
+    <div class="b-body">
+      <div class="t-row"><div class="t-ok">✓</div><span class="t-act">stage.run </span><span class="t-hl">'discover_sources'</span><span style="color:var(--muted);font-size:.72rem;margin-left:auto">32ms</span></div>
+      <div class="t-row"><div class="t-ok">✓</div><span class="t-act">agent.assign </span><span class="t-hl">'source_truth_agent'</span><span style="color:var(--muted);font-size:.72rem;margin-left:auto">18ms</span></div>
+      <div class="t-row"><div class="t-ok">✓</div><span class="t-act">spec.freeze </span><span class="t-hl">'canonical_app_spec.json'</span><span style="color:var(--muted);font-size:.72rem;margin-left:auto">12ms</span></div>
+      <div class="t-row"><div class="t-ok">✓</div><span class="t-act">repair.run </span><span class="t-hl">'preflight_repair_loop'</span><span style="color:var(--muted);font-size:.72rem;margin-left:auto">8ms</span></div>
+      <div class="t-row"><div class="t-ok">✓</div><span class="t-act">qa.run </span><span class="t-hl">'run_quality_gates'</span><span style="color:var(--muted);font-size:.72rem;margin-left:auto">14ms</span></div>
+      <div class="t-row"><div class="t-ok">✓</div><span class="t-act">scorecard.write </span><span class="t-hl">'production_readiness_scorecard.json'</span><span style="color:var(--muted);font-size:.72rem;margin-left:auto">9ms</span></div>
+      <div class="t-row"><div class="t-ok">✓</div><span class="t-act">replay.build </span><span class="t-hl">→ genesis_replay_dashboard.html</span><span style="color:var(--muted);font-size:.72rem;margin-left:auto">45ms</span></div>
+      <div class="t-row"><div class="t-ok">✓</div><span style="color:#22c55e;font-weight:600">Migration replay, QA, repair, approval, and readiness artifacts ready</span><span style="color:var(--muted);font-size:.72rem;margin-left:auto">1.24s total</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section class="sec" id="use-cases">
+  <div style="text-align:center;margin-bottom:56px">
+    <div class="tag rv">Existing Capabilities</div>
+    <h2 class="rv">Built For Real<br><span class="grad">Genesis Workloads</span></h2>
+  </div>
+  <div class="uc-grid">
+    <div class="glass uc-card rv d1"><div class="uc-num">01</div><h3>Internal Tool Modernization</h3><p>Accept PowerApps, website, document, and mixed evidence migrations and route them through one consistent runtime.</p></div>
+    <div class="glass uc-card rv d2"><div class="uc-num">02</div><h3>Legacy Workflow Rebuild</h3><p>Build migration BRDs, ULC-IR, design IR, and canonical specs before generation so teams stop rebuilding from guesswork.</p></div>
+    <div class="glass uc-card rv d3"><div class="uc-num">03</div><h3>Demo to Blueprint</h3><p>Use local runtime capture, replay dashboards, and source-truth scoring to make migrations explainable.</p></div>
+    <div class="glass uc-card rv d1"><div class="uc-num">04</div><h3>Package Logic Extraction</h3><p>Generate frontend, backend, database, tests, docs, and delivery-readiness scaffolds from one migration contract.</p></div>
+    <div class="glass uc-card rv d2"><div class="uc-num">05</div><h3>Enterprise QA-Ready Apps</h3><p>Run repair preflight, quality gates, security review, readiness scoring, and approval reporting before handoff.</p></div>
+    <div class="glass uc-card rv d3"><div class="uc-num">06</div><h3>Automation System Upgrade</h3><p>Save verified migration patterns and memory packets so future migrations improve instead of starting cold.</p></div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="sec" id="comparison">
+  <div style="text-align:center;margin-bottom:56px">
+    <div class="tag rv">Before vs After</div>
+    <h2 class="rv">Before Ad-Hoc Migration<br><span class="grad">vs After Genesis Runtime</span></h2>
+  </div>
+  <div class="cmp-wrap">
+    <div class="cmp-before rv">
+      <div class="cmp-hd"><span style="font-size:1.3rem">⚠️</span><h3 style="color:#ef4444">Before</h3></div>
+      <div class="cmp-row"><div class="ico-bad">✗</div><span style="color:var(--sub)">Evidence scattered across too many sources</span></div>
+      <div class="cmp-row"><div class="ico-bad">✗</div><span style="color:var(--sub)">No source-truth contract or confidence scoring</span></div>
+      <div class="cmp-row"><div class="ico-bad">✗</div><span style="color:var(--sub)">No repair loop, replay, or approval trace</span></div>
+      <div class="cmp-row"><div class="ico-bad">✗</div><span style="color:var(--sub)">No canonical app spec for teams to trust</span></div>
+      <div class="cmp-row"><div class="ico-bad">✗</div><span style="color:var(--sub)">Generators run without a planning runtime</span></div>
+      <div class="cmp-row"><div class="ico-bad">✗</div><span style="color:var(--sub)">No verified memory for the next migration</span></div>
+    </div>
+    <div class="cmp-after rv d2">
+      <div class="cmp-hd"><span style="font-size:1.3rem">✨</span><h3 style="color:var(--blue)">After</h3></div>
+      <div class="cmp-row"><div class="ico-good">✓</div><span style="color:var(--sub)">One migrate command drives the full framework</span></div>
+      <div class="cmp-row"><div class="ico-good">✓</div><span style="color:var(--sub)">Canonical app spec freezes the migration contract</span></div>
+      <div class="cmp-row"><div class="ico-good">✓</div><span style="color:var(--sub)">Frontend, backend, DB, tests, and docs arrive together</span></div>
+      <div class="cmp-row"><div class="ico-good">✓</div><span style="color:var(--sub)">Replay and approval artifacts explain every decision</span></div>
+      <div class="cmp-row"><div class="ico-good">✓</div><span style="color:var(--sub)">Repair, QA, security, and readiness outputs are prepared with the run</span></div>
+      <div class="cmp-row"><div class="ico-good">✓</div><span style="color:var(--sub)">Verified learning is saved for future migrations</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sec" id="user-manual">
+  <div style="text-align:center;max-width:980px;margin:0 auto 54px">
+    <div class="tag rv">User Manual</div>
+    <h2 class="rv">Everything needed to understand and use Genesis</h2>
+    <p class="rv" style="max-width:760px;margin:18px auto 0;color:var(--sub);font-size:1rem;line-height:1.8">This integrated manual explains what the framework is, why TrustEngines built it, how to install it locally, how the pipeline works, what each agent does, which commands are available, what files get produced, and how to review the outputs safely.</p>
+  </div>
+  <div class="manual-shell">
+  <aside class="manual-side">
+    <div class="toc-card rv">
+      <div class="toc-title">On this page</div>
+      <div class="toc-links">
+        <a href="#manual-overview">What Genesis is</a>
+        <a href="#manual-why">Why use it</a>
+        <a href="#manual-setup">Prerequisites + setup</a>
+        <a href="#manual-inputs">Input folder</a>
+        <a href="#manual-flow">One-command flow</a>
+        <a href="#manual-pipeline">Pipeline stages</a>
+        <a href="#manual-agents">Agent system</a>
+        <a href="#manual-commands">Commands</a>
+        <a href="#manual-outputs">Outputs</a>
+        <a href="#manual-workflow">Recommended workflow</a>
+        <a href="#manual-safety">Review + safety</a>
+        <a href="#manual-faq">FAQ + troubleshooting</a>
+      </div>
+      <div class="toc-meta">
+        <div class="meta">
+          <div class="k">Best command</div>
+          <div class="v mono">nocode2procode migrate</div>
+        </div>
+        <div class="meta">
+          <div class="k">Input folder</div>
+          <div class="v mono">migration_inputs/</div>
+        </div>
+        <div class="meta">
+          <div class="k">Generated workspaces</div>
+          <div class="v mono">genesis_apps/</div>
+        </div>
+        <div class="meta">
+          <div class="k">Agent count</div>
+          <div class="v">16 named agents across 4 groups</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="manual-main">
+<section class="doc-card rv" id="manual-overview">
+  <div class="doc-head">
+    <div>
+      <div class="section-kicker">What Genesis is</div>
+      <h2>One migration framework, one controlled runtime</h2>
+    </div>
+    <p>NoCode2ProCode Genesis by TrustEngines is an input-first migration framework that turns low-code packages, websites, videos, documents, screenshots, schemas, and local runtime evidence into reviewable pro-code workspaces.</p>
+  </div>
+  <div class="three-grid">
+    <div class="info-card accent-blue">
+      <h3>Understands your current system</h3>
+      <p>Reads packages, URLs, docs, screenshots, videos, APIs, and schemas as migration evidence.</p>
+    </div>
+    <div class="info-card accent-cyan">
+      <h3>Builds a source-truth blueprint</h3>
+      <p>Resolves conflicts, scores confidence, and creates a canonical app spec before generation.</p>
+    </div>
+    <div class="info-card accent-green">
+      <h3>Generates a reviewable workspace</h3>
+      <p>Creates scaffold outputs, QA reports, repair logs, replay files, approval artifacts, readiness scorecards, and verified memory packets.</p>
+    </div>
+  </div>
+  <div class="note">
+    Main command: <span class="mono">nocode2procode migrate</span> — reads <span class="mono">migration_inputs/</span>, extracts BRD requirements, screenshot hints, source evidence, and local runtime capture, resolves source truth, builds BRD + IR + canonical spec, generates the workspace, runs repair + QA, and records replay + approval + readiness + learning outputs.
+  </div>
+</section>
+    <section class="doc-card rv" id="manual-why">
+      <div class="doc-head">
+        <div>
+          <div class="section-kicker">Why use Genesis</div>
+          <h2>A migration framework, not just a generator</h2>
+        </div>
+        <p>Genesis is meant to help teams understand existing apps before rebuilding them, then generate reviewable outputs with QA and delivery structure.</p>
+      </div>
+      <div class="three-grid">
+        <div class="info-card accent-blue">
+          <h3>Understands the current system</h3>
+          <p>Reads packages, docs, websites, screenshots, videos, APIs, configs, and schemas as evidence.</p>
+        </div>
+        <div class="info-card accent-cyan">
+          <h3>Builds one migration truth</h3>
+          <p>Resolves conflicting sources, scores confidence, and freezes a canonical app spec before generation.</p>
+        </div>
+        <div class="info-card accent-green">
+          <h3>Ships a full migration workspace</h3>
+          <p>Creates planning artifacts, scaffold outputs, QA reports, repair reports, replay files, approval files, readiness scorecards, and verified memory packets.</p>
+        </div>
+      </div>
+      <div class="note">
+        Genesis follows a controlled path: <span class="mono">extract → understand → plan migration → canonical spec → generate → repair → QA → replay → readiness handoff</span>.
+      </div>
+    </section>
+
+    <section class="doc-card rv" id="manual-setup">
+      <div class="doc-head">
+        <div>
+          <div class="section-kicker">Prerequisites + setup</div>
+          <h2>Install once, then run migrations from the repo root</h2>
+        </div>
+        <p>This setup is based on the current Genesis repo contracts and is trimmed for local end-to-end work only. It installs the framework, website/UI test stack, local quality tools, and PowerApps support, while intentionally skipping deployment tooling.</p>
+      </div>
+      <div class="two-grid">
+        <div class="info-card accent-violet">
+          <h3>Required runtime</h3>
+          <ul class="list">
+            <li>Python 3.11+</li>
+            <li>Git</li>
+            <li>Node.js 20+</li>
+            <li>PowerShell on Windows</li>
+            <li>Permission to read the Genesis project</li>
+          </ul>
+        </div>
+        <div class="info-card accent-orange">
+          <h3>Manual integrations after install</h3>
+          <ul class="list">
+            <li>UI/UX Pro Max skill</li>
+            <li>21st.dev Magic MCP</li>
+            <li>Figma MCP</li>
+            <li>Firecrawl MCP</li>
+            <li>Context7 MCP</li>
+            <li>E2B MCP</li>
+            <li>PostgreSQL MCP in read-only mode</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note">
+        This block is for a local Genesis run. It sets up Python, Playwright, visual QA helpers, contract generators, local scanners, and Power Platform CLI support so you can work on website + low-code migrations on your machine without touching deployment infrastructure.
+      </div>
+      <div class="code-block">
+        <div class="code-top">
+          <div class="left">Local-only install block</div>
+          <button class="copy-btn" data-copy-target="setup-block">Copy</button>
+        </div>
+        <pre id="setup-block">$ErrorActionPreference = "Stop"
+Set-ExecutionPolicy -Scope Process Bypass -Force
+
+# ---- CHANGE ONLY IF YOUR REPO PATH IS DIFFERENT ----
+$Repo = "C:\Users\Vishwas\Desktop\AI\1.Python Work Space\NoCode2ProCode-Genesis"
+$ClaudeHome = "$env:USERPROFILE\.claude"
+
+function Require-Cmd($Name, $HelpText) {
+  if (-not (Get-Command $Name -ErrorAction SilentlyContinue)) {
+    throw "Missing required command: $Name. Please install $HelpText first, then run this block again."
+  }
+}
+
+Require-Cmd python "Python 3.11+"
+Require-Cmd git "Git"
+Require-Cmd node "Node.js 20+"
+Require-Cmd npm "Node.js 20+"
+
+Set-Location $Repo
+
+Write-Host "`n=== 1) Genesis Python runtime ===" -ForegroundColor Cyan
+if (-not (Test-Path ".\.venv")) { python -m venv .venv }
+& .\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -e ".[dev]" semgrep schemathesis locust testcontainers
+
+Write-Host "`n=== 2) Claude slash commands + Genesis skill ===" -ForegroundColor Cyan
+& .\scripts\install_genesis.ps1 -ClaudeHome $ClaudeHome -InstallSkill
+
+Write-Host "`n=== 3) Local website / UI / animation / E2E stack ===" -ForegroundColor Cyan
+if (-not (Test-Path ".\package.json")) { npm init -y | Out-Null }
+npm install -D @playwright/test @axe-core/playwright pixelmatch pngjs motion lighthouse
+npx playwright install chromium
+
+Write-Host "`n=== 4) Spec + contract generators ===" -ForegroundColor Cyan
+npm install -g @openapitools/openapi-generator-cli @asyncapi/generator
+
+Write-Host "`n=== 5) Local quality + security tools (no deploy tools) ===" -ForegroundColor Cyan
+pip install --upgrade semgrep
+if (Get-Command winget -ErrorAction SilentlyContinue) {
+  winget install --id Gitleaks.Gitleaks -e --accept-package-agreements --accept-source-agreements
+  winget install --id Anchore.Syft -e --accept-package-agreements --accept-source-agreements
+  winget install --id Anchore.Grype -e --accept-package-agreements --accept-source-agreements
+  winget install --id AquaSecurity.Trivy -e --accept-package-agreements --accept-source-agreements
+  winget install --id Google.OSV-Scanner -e --accept-package-agreements --accept-source-agreements
+} else {
+  Write-Host "winget not found -> manually install: Gitleaks, Syft, Grype, Trivy, OSV-Scanner" -ForegroundColor Yellow
+}
+
+Write-Host "`n=== 6) PowerApps / low-code extractor support ===" -ForegroundColor Cyan
+if (-not (Get-Command pac -ErrorAction SilentlyContinue)) {
+  $DotnetInstall = Join-Path $env:TEMP "dotnet-install.ps1"
+  Invoke-WebRequest https://dot.net/v1/dotnet-install.ps1 -OutFile $DotnetInstall
+  & powershell -ExecutionPolicy Bypass -File $DotnetInstall -Channel 10.0
+  $env:PATH += ";$env:USERPROFILE\.dotnet;$env:USERPROFILE\.dotnet\tools"
+  dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+}
+
+Write-Host "`n=== 7) Contract testing support ===" -ForegroundColor Cyan
+if (-not (Get-Command pact -ErrorAction SilentlyContinue)) {
+  Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/pact-foundation/pact-cli/main/install.ps1 | Invoke-Expression
+}
+
+Write-Host "`n=== 8) Seed Genesis input folder + verify CLI ===" -ForegroundColor Cyan
+if (-not (Test-Path ".\migration_inputs")) {
+  New-Item -ItemType Directory -Path ".\migration_inputs" | Out-Null
+}
+if ((Test-Path ".\migration_inputs\migration_request.example.yaml") -and -not (Test-Path ".\migration_inputs\migration_request.yaml")) {
+  Copy-Item ".\migration_inputs\migration_request.example.yaml" ".\migration_inputs\migration_request.yaml" -Force
+}
+
+nocode2procode validate
+nocode2procode plan
+nocode2procode install-plan
+
+Write-Host "`n=== 9) MANUAL CLAUDE-CODE INTEGRATIONS STILL NEEDED ===" -ForegroundColor Yellow
+Write-Host "UI/UX Pro Max      -> install/configure as a Claude skill in the active environment"
+Write-Host "21st.dev Magic     -> add/configure the Magic MCP in Claude Code"
+Write-Host "Figma MCP          -> connect if you want design/Figma extraction"
+Write-Host "Firecrawl MCP      -> connect if you want deep website crawling"
+Write-Host "Context7 MCP       -> connect for docs/runtime research in the pipeline"
+Write-Host "E2B MCP            -> connect for sandboxed generate/repair stages"
+Write-Host "Postgres MCP (RO)  -> connect only if reading live DB schema/data"
+Write-Host ""
+
+Write-Host "Local-only Genesis E2E stack is ready. Deployment tools were intentionally skipped." -ForegroundColor Green
+Write-Host "Next step: put files into migration_inputs and run: nocode2procode migrate" -ForegroundColor Green</pre>
+      </div>
+      <div class="note callout-green">
+        After the block finishes, the next real workflow is: put source files in <span class="mono">migration_inputs/</span>, copy <span class="mono">migration_request.example.yaml</span> to <span class="mono">migration_request.yaml</span> if needed, then run <span class="mono">nocode2procode migrate</span>.
+      </div>
+      <div class="note callout-red">
+        The block does not deploy anything. It also does not auto-configure account-bound integrations like UI/UX Pro Max, 21st.dev Magic, Figma MCP, Firecrawl MCP, Context7 MCP, E2B MCP, or PostgreSQL MCP. Those still need manual approval and setup in your active Claude environment.
+      </div>
+    </section>
+
+    <section class="doc-card rv" id="manual-inputs">
+      <div class="doc-head">
+        <div>
+          <div class="section-kicker">Input folder</div>
+          <h2>Put every migration source into <span class="mono">migration_inputs/</span></h2>
+        </div>
+        <p>The framework is input-first. It starts from whatever evidence you have, then extracts and normalizes that evidence before planning the build.</p>
+      </div>
+      <div class="code-block">
+        <div class="code-top">
+          <div class="left">Primary input location</div>
+        </div>
+        <pre>C:\Users\Vishwas\Desktop\AI\1.Python Work Space\NoCode2ProCode-Genesis\migration_inputs</pre>
+      </div>
+      <div class="cap-grid" style="margin-top:16px">
+        <div class="info-card accent-blue">
+          <h3>Low-code package</h3>
+          <p>Power Platform solution zips, <span class="mono">.msapp</span>, and <span class="mono">Src/*.pa.yaml</span> sources.</p>
+        </div>
+        <div class="info-card accent-cyan">
+          <h3>Website reference</h3>
+          <p>URLs, local/file HTML pages, navigation hints, screenshots, layouts, and public web evidence.</p>
+        </div>
+        <div class="info-card accent-violet">
+          <h3>Business documents</h3>
+          <p>BRDs, notes, PDFs, DOCX files, PPTX decks, functional requirements, acceptance criteria, and mockup references.</p>
+        </div>
+        <div class="info-card accent-orange">
+          <h3>Runtime evidence</h3>
+          <p>Videos, screenshots, browser evidence plans, local HTML capture, visible workflows, and runtime UI clues.</p>
+        </div>
+        <div class="info-card accent-green">
+          <h3>Data + schema</h3>
+          <p>SQL, CSV, Excel, table designs, and relationship hints.</p>
+        </div>
+        <div class="info-card accent-red">
+          <h3>API + config</h3>
+          <p>XML, JSON, YAML, OpenAPI, integration contracts, and environment clues.</p>
+        </div>
+      </div>
+      <div class="note">
+        Also copy <span class="mono">migration_request.example.yaml</span> to <span class="mono">migration_request.yaml</span> and fill in app name, domain, migration goal, target stack, and special notes.
+      </div>
+    </section>
+
+    <section class="doc-card rv" id="manual-flow">
+      <div class="doc-head">
+        <div>
+          <div class="section-kicker">One-command flow</div>
+          <h2>The command that drives the whole framework</h2>
+        </div>
+        <p>Most users only need one command to kick off the end-to-end migration runtime. Everything else exists to inspect, refine, or review a run.</p>
+      </div>
+      <div class="hero-command" style="margin-top:0">
+        <div class="label">Primary runtime command</div>
+        <code>nocode2procode migrate</code>
+        <p style="margin-top:10px;color:var(--muted);font-size:.9rem">
+          Reads all files from <span class="mono">migration_inputs/</span>, classifies sources, extracts BRD requirements, screenshot hints, website/runtime evidence, resolves source truth, builds BRD + IR + canonical spec, plans agents + runtime + memory, generates scaffold outputs, runs repair + QA + readiness checks, creates replay and approval outputs, and saves verified learning.
+        </p>
+      </div>
+      <div class="flow-bar">
+        <div class="step-chip"><strong>1.</strong> Validate inputs + session</div>
+        <div class="step-chip"><strong>2.</strong> Discover sources</div>
+        <div class="step-chip"><strong>3.</strong> Extract AST + evidence</div>
+        <div class="step-chip"><strong>4.</strong> Resolve source truth</div>
+        <div class="step-chip"><strong>5.</strong> Build BRD + IR + canonical spec</div>
+        <div class="step-chip"><strong>6.</strong> Generate scaffold</div>
+        <div class="step-chip"><strong>7.</strong> Repair + QA + readiness</div>
+        <div class="step-chip"><strong>8.</strong> Replay + approval + memory</div>
+      </div>
+    </section>
+
+    <section class="doc-card rv" id="manual-pipeline">
+      <div class="doc-head">
+        <div>
+          <div class="section-kicker">Pipeline</div>
+          <h2>How the system works stage by stage</h2>
+        </div>
+        <p>Genesis does not jump straight from input to code. Extraction is only the front half; the rest of the system plans, validates, and documents the migration.</p>
+      </div>
+      <div class="pipeline">
+        <div class="stage"><div class="num">Stage 01</div><h3>Validate inputs + start session</h3><p>Loads the input folder, validates framework configuration, starts the runtime session, and prepares model/provider routing.</p><div class="out">Outputs: <span class="mono">input_intake_manifest.json</span>, <span class="mono">runtime_session.json</span></div></div>
+        <div class="stage"><div class="num">Stage 02</div><h3>Discover sources + swarm plan</h3><p>Builds the source baseline and the structured execution plan for the migration runtime.</p><div class="out">Outputs: <span class="mono">source_baseline.json</span>, <span class="mono">agent_execution_plan.json</span></div></div>
+        <div class="stage"><div class="num">Stage 03</div><h3>Extract native AST</h3><p>Normalizes platform, website, document, API, DB, screenshot, and runtime evidence into structured artifacts.</p><div class="out">Outputs: <span class="mono">platform_ast.json</span>, <span class="mono">website_ast.json</span>, <span class="mono">document_intent.json</span>, <span class="mono">brd_mockup_inventory.json</span></div></div>
+        <div class="stage"><div class="num">Stage 04</div><h3>Runtime evidence + browser plan</h3><p>Plans browser evidence and captures local/file/localhost HTML metadata such as title, links, forms, buttons, and inputs when available.</p><div class="out">Outputs: <span class="mono">browser_runtime_plan.json</span>, <span class="mono">runtime_capture_contract.json</span>, <span class="mono">runtime_evidence.json</span></div></div>
+        <div class="stage"><div class="num">Stage 05</div><h3>Resolve source truth</h3><p>Compares package evidence, website signals, docs, APIs, DB clues, and runtime hints before generation.</p><div class="out">Outputs: <span class="mono">source_truth_report.json</span>, <span class="mono">source_conflict_report.json</span></div></div>
+        <div class="stage"><div class="num">Stage 06</div><h3>Build migration BRD + IR</h3><p>Turns extracted evidence into the migration brief, ULC-IR, design IR, and canonical app plan.</p><div class="out">Outputs: <span class="mono">canonical_app_spec.json</span>, <span class="mono">design_ir/</span>, <span class="mono">ulc_ir/</span></div></div>
+        <div class="stage"><div class="num">Stage 07</div><h3>Generate app scaffold</h3><p>Runs deterministic scaffold generation for frontend, backend, tests, docs, and local delivery-readiness structure.</p><div class="out">Outputs: <span class="mono">frontend/</span>, <span class="mono">backend/</span>, <span class="mono">tests/</span>, <span class="mono">deploy/</span></div></div>
+        <div class="stage"><div class="num">Stage 08</div><h3>Repair + QA + readiness</h3><p>Runs repair preflight, JSON validation, route checks, syntax checks, optional Ruff checks, backend health smoke, secret scan, and scorecard generation.</p><div class="out">Outputs: <span class="mono">repair_loop_report.json</span>, <span class="mono">test_report.json</span>, <span class="mono">security_review.json</span>, <span class="mono">production_readiness_scorecard.json</span></div></div>
+        <div class="stage"><div class="num">Stage 09</div><h3>Replay + approval + learning</h3><p>Creates replay files, approval artifacts, local handoff reports, and verified memory writeback packets.</p><div class="out">Outputs: <span class="mono">genesis_replay_dashboard.html</span>, <span class="mono">approval.json</span>, <span class="mono">verified_memory_packet.json</span></div></div>
+      </div>
+      <div class="note" style="margin-top:16px">
+        After extraction, Genesis does this next: normalize artifacts → build <span class="mono">source_baseline.json</span> → resolve source truth → build planning IR → build <span class="mono">canonical_app_spec.json</span> → generate scaffold → run repair + QA + readiness checks → build replay and approval outputs.
+      </div>
+    </section>
+
+    <section class="doc-card rv" id="manual-agents">
+      <div class="doc-head">
+        <div>
+          <div class="section-kicker">Agent system</div>
+          <h2>What each agent does and why it matters</h2>
+        </div>
+        <p>The framework uses two major families of agents: extractor/planning agents and build/delivery agents. Each has a clear responsibility and a known output surface.</p>
+      </div>
+
+      <div class="agent-group">
+        <div class="group-head">
+          <div>
+            <h3>Input agents</h3>
+          </div>
+          <p>These agents read the incoming evidence and turn it into structured baseline artifacts before planning begins.</p>
+        </div>
+        <div class="agent-grid">
+          <div class="agent-card accent-blue">
+            <span class="role">Source intake</span>
+            <h3>solution_intake_agent</h3>
+            <p>Classifies migration inputs, identifies source types, and starts the baseline for the run.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> input folder contents</div>
+              <div><strong>Produces:</strong> <span class="mono">input_intake_manifest.json</span>, <span class="mono">source_baseline.json</span></div>
+              <div><strong>Why it matters:</strong> stops the runtime from guessing what kind of migration it is.</div>
+            </div>
+          </div>
+          <div class="agent-card accent-blue">
+            <span class="role">Platform extractor</span>
+            <h3>powerapps_extractor_agent</h3>
+            <p>Extracts Power Platform and Power Apps exports into normalized AST artifacts.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> PowerApps packages, source files</div>
+              <div><strong>Produces:</strong> <span class="mono">platform_ast.json</span></div>
+              <div><strong>Why it matters:</strong> recovers screen, formula, and connector structure for migration.</div>
+            </div>
+          </div>
+          <div class="agent-card accent-cyan">
+            <span class="role">Website extractor</span>
+            <h3>website_extractor_agent</h3>
+            <p>Normalizes website URLs, local HTML pages, screenshots, and supporting web evidence into website AST artifacts.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> URLs, file/local HTML, screenshots, web hints</div>
+              <div><strong>Produces:</strong> <span class="mono">website_ast.json</span></div>
+              <div><strong>Why it matters:</strong> preserves page layout and navigation clues that packages do not contain.</div>
+            </div>
+          </div>
+          <div class="agent-card accent-violet">
+            <span class="role">Document extractor</span>
+            <h3>document_extractor_agent</h3>
+            <p>Pulls migration intent, BRD expectations, requirements, acceptance criteria, roles, workflows, and mockup references from business docs.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> BRDs, notes, PDFs, DOCX, PPTX</div>
+              <div><strong>Produces:</strong> <span class="mono">document_intent.json</span>, <span class="mono">brd_design_intent.json</span>, <span class="mono">brd_mockup_inventory.json</span></div>
+              <div><strong>Why it matters:</strong> captures business goals that pure UI evidence cannot explain.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-group">
+        <div class="group-head">
+          <div>
+            <h3>Planning agents</h3>
+          </div>
+          <p>These agents turn extracted evidence into the planning system that the generators can trust.</p>
+        </div>
+        <div class="agent-grid">
+          <div class="agent-card accent-orange">
+            <span class="role">Runtime capture</span>
+            <h3>runtime_evidence_agent</h3>
+            <p>Captures local/file/localhost HTML evidence and plans deeper browser/runtime capture for walkthrough flows.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> runtime videos, screenshots, local HTML, browser signals</div>
+              <div><strong>Produces:</strong> <span class="mono">runtime_evidence.json</span>, <span class="mono">browser_runtime_plan.json</span></div>
+              <div><strong>Why it matters:</strong> fills the gap when source packages are incomplete.</div>
+            </div>
+          </div>
+          <div class="agent-card accent-violet">
+            <span class="role">Swarm coordinator</span>
+            <h3>swarm_coordinator_agent</h3>
+            <p>Builds the structured execution plan for extractor, planner, generator, repair, QA, and readiness waves.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> source inventory + route signals</div>
+              <div><strong>Produces:</strong> <span class="mono">agent_execution_plan.json</span>, <span class="mono">swarm_topology.json</span></div>
+              <div><strong>Why it matters:</strong> keeps the runtime organized instead of ad hoc.</div>
+            </div>
+          </div>
+          <div class="agent-card accent-cyan">
+            <span class="role">Source truth resolver</span>
+            <h3>source_truth_agent</h3>
+            <p>Resolves conflicts across export, runtime, API, DB, website, and design evidence before generation.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> all extracted evidence</div>
+              <div><strong>Produces:</strong> <span class="mono">source_truth_report.json</span>, <span class="mono">confidence_scores.json</span></div>
+              <div><strong>Why it matters:</strong> prevents incorrect code generation from conflicting inputs.</div>
+            </div>
+          </div>
+          <div class="agent-card accent-green">
+            <span class="role">Migration planner</span>
+            <h3>migration_brd_agent</h3>
+            <p>Turns extracted evidence into the migration brief, IR, and canonical app spec before code generation.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> source truth outputs</div>
+              <div><strong>Produces:</strong> <span class="mono">canonical_app_spec.json</span>, <span class="mono">ulc_ir/</span></div>
+              <div><strong>Why it matters:</strong> creates the one contract all builders should follow.</div>
+            </div>
+          </div>
+          <div class="agent-card accent-green">
+            <span class="role">Verified memory curator</span>
+            <h3>memory_curator_agent</h3>
+            <p>Retrieves relevant prior migration patterns before planning and saves trustworthy memory after approval.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> memory store + migration context</div>
+              <div><strong>Produces:</strong> <span class="mono">memory_retrieval_plan.json</span>, <span class="mono">verified_memory_packet.json</span></div>
+              <div><strong>Why it matters:</strong> lets the framework improve without saving weak assumptions.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-group">
+        <div class="group-head">
+          <div>
+            <h3>Build agents</h3>
+          </div>
+          <p>These agents turn the canonical spec into product structure, design direction, and code scaffolding.</p>
+        </div>
+        <div class="agent-grid">
+          <div class="agent-card accent-violet">
+            <span class="role">Design director</span>
+            <h3>ui_ux_pro_max</h3>
+            <p>Defines the product experience before component and code generation.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> canonical spec + design strategy rules</div>
+              <div><strong>Produces:</strong> <span class="mono">DESIGN.md</span>, <span class="mono">design_tokens.json</span></div>
+              <div><strong>Why it matters:</strong> gives the generators a consistent visual contract.</div>
+            </div>
+          </div>
+          <div class="agent-card accent-blue">
+            <span class="role">Frontend builder</span>
+            <h3>frontend_agent</h3>
+            <p>Generates the frontend scaffold, routes, screens, and UI structure for the migration.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> canonical app spec + design system</div>
+              <div><strong>Produces:</strong> <span class="mono">frontend/</span></div>
+              <div><strong>Why it matters:</strong> creates the user-facing shape of the rebuilt application.</div>
+            </div>
+          </div>
+          <div class="agent-card accent-cyan">
+            <span class="role">Backend builder</span>
+            <h3>backend_agent</h3>
+            <p>Generates API services, backend structure, validation, auth, and integration contract scaffolding.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> canonical app spec + data/integration hints</div>
+              <div><strong>Produces:</strong> <span class="mono">backend/</span>, <span class="mono">integration_contracts/</span></div>
+              <div><strong>Why it matters:</strong> gives the generated app an operational backend structure.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-group">
+        <div class="group-head">
+          <div>
+            <h3>Validation + delivery agents</h3>
+          </div>
+          <p>These agents review, repair, package, and document the migration workspace before handoff.</p>
+        </div>
+        <div class="agent-grid">
+          <div class="agent-card accent-orange">
+            <span class="role">Test repair</span>
+            <h3>test_repair_agent</h3>
+            <p>Runs repair preflight, tracks failures, writes patch logs, and supports scaffold quality gates.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> generated app scaffold</div>
+              <div><strong>Produces:</strong> <span class="mono">tests/</span>, <span class="mono">repair_loop_report.json</span>, <span class="mono">test_report.json</span></div>
+              <div><strong>Why it matters:</strong> moves the output closer to something reviewable and runnable.</div>
+            </div>
+          </div>
+          <div class="agent-card accent-red">
+            <span class="role">Security reviewer</span>
+            <h3>security_agent</h3>
+            <p>Handles local secret scanning, security review, compliance notes, risk reporting, and approval readiness outputs.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> scaffold outputs + runtime context</div>
+              <div><strong>Produces:</strong> <span class="mono">security_review.json</span>, <span class="mono">security_review_report.md</span>, <span class="mono">compliance_report.md</span></div>
+              <div><strong>Why it matters:</strong> keeps migrations from shipping without basic governance signals.</div>
+            </div>
+          </div>
+          <div class="agent-card accent-green">
+            <span class="role">Deploy builder</span>
+            <h3>deploy_agent</h3>
+            <p>Prepares local delivery-readiness artifacts, CI structure, Docker scaffolding, and handoff packaging without deploying infrastructure.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> generated app + delivery settings</div>
+              <div><strong>Produces:</strong> <span class="mono">deploy/</span>, <span class="mono">.github/</span>, <span class="mono">production_readiness_scorecard.json</span></div>
+              <div><strong>Why it matters:</strong> makes the migration handoff practical instead of theoretical.</div>
+            </div>
+          </div>
+          <div class="agent-card accent-cyan">
+            <span class="role">Documentation writer</span>
+            <h3>documentation_agent</h3>
+            <p>Writes README, architecture docs, handoff guides, and migration documentation for the workspace.</p>
+            <div class="agent-meta">
+              <div><strong>Reads:</strong> planning artifacts + scaffold outputs</div>
+              <div><strong>Produces:</strong> <span class="mono">docs/</span>, <span class="mono">README.md</span>, <span class="mono">ARCHITECTURE.md</span></div>
+              <div><strong>Why it matters:</strong> helps the generated project remain understandable after the run.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-card rv" id="manual-commands">
+      <div class="doc-head">
+        <div>
+          <div class="section-kicker">Commands</div>
+          <h2>CLI commands and what they are for</h2>
+        </div>
+        <p>Use the main migrate command most of the time. The rest are useful for inspection, setup, validation, and reviewing a current workspace.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Command</th><th>When to use it</th><th>What it gives you</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="mono">nocode2procode validate</span></td><td>Before running the framework or after config edits.</td><td>Checks that the YAML/config files are internally consistent.</td></tr>
+            <tr><td><span class="mono">nocode2procode plan</span></td><td>When you want to see the ordered pipeline stages.</td><td>A stage plan view for the migration entrypoint.</td></tr>
+            <tr><td><span class="mono">nocode2procode install-plan</span></td><td>When you need to know tool expectations and install modes.</td><td>Install guidance based on framework policy.</td></tr>
+            <tr><td><span class="mono">nocode2procode check-tool &lt;stage&gt; &lt;tool&gt;</span></td><td>When checking stage-specific tool permissions.</td><td>Whether that tool is allowed in that stage.</td></tr>
+            <tr><td><span class="mono">nocode2procode route &lt;signal&gt;</span></td><td>When exploring routing signals like website URLs or PowerApps exports.</td><td>How a signal maps to tools, stages, and prompts.</td></tr>
+            <tr><td><span class="mono">nocode2procode init-workspace "App Name"</span></td><td>When you want a prepared workspace before a run.</td><td>A migration workspace and default folder structure.</td></tr>
+            <tr><td><span class="mono">nocode2procode estimate "App Name"</span></td><td>When you need a dry-run effort placeholder.</td><td>A lightweight estimate output.</td></tr>
+            <tr><td><span class="mono">nocode2procode visual-lock &lt;screen_id&gt;</span></td><td>When you want a starter visual lock spec.</td><td>A basic <span class="mono">visual_lock_spec.json</span>.</td></tr>
+            <tr><td><span class="mono">nocode2procode design-strategy</span></td><td>When defining Magic mode, UI/UX direction, and motion.</td><td>Design strategy outputs and decisions.</td></tr>
+            <tr><td><span class="mono">nocode2procode design-quality</span></td><td>When reviewing design quality signals.</td><td>A starter design quality report.</td></tr>
+            <tr><td><span class="mono">nocode2procode stack-resolve "&lt;prompt&gt;"</span></td><td>When deciding stack and delivery mode from the migration goal.</td><td>Stack resolution guidance.</td></tr>
+            <tr><td><span class="mono">nocode2procode discover</span></td><td>When you want intake, discovery, extraction, and runtime planning only.</td><td>Baseline evidence artifacts and discovery outputs.</td></tr>
+            <tr><td><span class="mono">nocode2procode plan-run</span></td><td>When you want planning without generation.</td><td>Source truth, IR validation, canonical spec, and visual contract setup.</td></tr>
+            <tr><td><span class="mono">nocode2procode generate</span></td><td>When you want deterministic scaffold generation only.</td><td>Generated structure under the migration workspace.</td></tr>
+            <tr><td><span class="mono">nocode2procode qa</span></td><td>When you want local quality gates without a full migration rerun.</td><td>Code quality, test, security, repair, and readiness-oriented outputs.</td></tr>
+            <tr><td><span class="mono">nocode2procode replay</span></td><td>When you want the replay dashboard and traceability outputs.</td><td>Replay artifacts for the current workspace.</td></tr>
+            <tr><td><span class="mono">nocode2procode migrate</span></td><td>The main end-to-end runtime command.</td><td>Discovery, planning, generation, repair, QA, security, replay, approval, readiness, and learning artifacts.</td></tr>
+            <tr><td><span class="mono">nocode2procode genesis-migrate</span></td><td>When you use the compatibility alias.</td><td>Same behavior as <span class="mono">nocode2procode migrate</span>.</td></tr>
+            <tr><td><span class="mono">nocode2procode sessions</span></td><td>When you want to list known runtime sessions.</td><td>A list of migration sessions and current states.</td></tr>
+            <tr><td><span class="mono">nocode2procode status "C:\path\to\workspace"</span></td><td>When you want to inspect one workspace state.</td><td>Runtime session, last completed stage, and approval status.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top:16px">
+        Claude Code command surfaces also exist for <span class="mono">/nocode2procode-discover</span>, <span class="mono">/nocode2procode-plan</span>, <span class="mono">/nocode2procode-generate</span>, <span class="mono">/nocode2procode-qa</span>, <span class="mono">/nocode2procode-replay</span>, and <span class="mono">/nocode2procode-migrate</span>.
+      </div>
+    </section>
+
+    <section class="doc-card rv" id="manual-outputs">
+      <div class="doc-head">
+        <div>
+          <div class="section-kicker">Outputs</div>
+          <h2>What the runtime creates in a migration workspace</h2>
+        </div>
+        <p>Genesis writes both planning artifacts and generated project structure. Review these outputs to understand what the runtime believed, what it generated, and what still needs human attention.</p>
+      </div>
+      <div class="artifact-grid">
+        <div class="artifact-card accent-blue">
+          <div class="file">input_intake_manifest.json · runtime_session.json · session_events.jsonl</div>
+          <h3>Session + intake</h3>
+          <p>Shows the run identity, intake inventory, and session state for the migration.</p>
+        </div>
+        <div class="artifact-card accent-cyan">
+          <div class="file">source_baseline.json · platform_ast.json · website_ast.json · document_intent.json · brd_mockup_inventory.json</div>
+          <h3>Evidence layer</h3>
+          <p>Holds the extracted source evidence that the planning runtime depends on.</p>
+        </div>
+        <div class="artifact-card accent-violet">
+          <div class="file">browser_runtime_plan.json · runtime_capture_contract.json · runtime_evidence.json</div>
+          <h3>Runtime capture</h3>
+          <p>Explains how runtime/browser evidence should be captured and records local/file HTML evidence when available.</p>
+        </div>
+        <div class="artifact-card accent-green">
+          <div class="file">source_truth_report.json · source_conflict_report.json · canonical_app_spec.json</div>
+          <h3>Planning truth</h3>
+          <p>Shows what the system trusted, what conflicted, and what contract the builders followed.</p>
+        </div>
+        <div class="artifact-card accent-orange">
+          <div class="file">frontend/ · backend/ · tests/ · deploy/ · docs/</div>
+          <h3>Generated scaffold</h3>
+          <p>Contains the production-oriented structure for UI, services, validation, tests, local delivery readiness, and documentation.</p>
+        </div>
+        <div class="artifact-card accent-red">
+          <div class="file">generated_file_manifest.json · checkpoint_manifest.json · repair_loop_report.json</div>
+          <h3>Traceability + repair</h3>
+          <p>Keeps track of what was generated, which stages completed, and what repair preflight changed or checked.</p>
+        </div>
+        <div class="artifact-card accent-cyan">
+          <div class="file">genesis_replay_dashboard.html · approval.json · production_readiness_scorecard.json</div>
+          <h3>Replay + approval + readiness</h3>
+          <p>Provides review visibility into the migration, records approval state, and summarizes local production readiness.</p>
+        </div>
+        <div class="artifact-card accent-green">
+          <div class="file">memory_retrieval_plan.json · memory_context.json · verified_memory_packet.json</div>
+          <h3>Memory</h3>
+          <p>Shows what prior learning was reused and what verified learning is now ready to save.</p>
+        </div>
+        <div class="artifact-card accent-blue">
+          <div class="file">genesis_apps/</div>
+          <h3>Workspace location</h3>
+          <p>All generated migration workspaces are written under <span class="mono">genesis_apps/</span>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-card rv" id="manual-workflow">
+      <div class="doc-head">
+        <div>
+          <div class="section-kicker">Recommended workflow</div>
+          <h2>The simplest way to use Genesis well</h2>
+        </div>
+        <p>This is the cleanest path for most users, especially if you are running Genesis for the first time.</p>
+      </div>
+      <div class="flow-bar">
+        <div class="step-chip"><strong>1.</strong> Put sources in <span class="mono">migration_inputs/</span></div>
+        <div class="step-chip"><strong>2.</strong> Copy <span class="mono">migration_request.yaml</span></div>
+        <div class="step-chip"><strong>3.</strong> Run <span class="mono">nocode2procode migrate</span></div>
+        <div class="step-chip"><strong>4.</strong> Open the workspace in <span class="mono">genesis_apps/</span></div>
+        <div class="step-chip"><strong>5.</strong> Review source truth + canonical spec</div>
+        <div class="step-chip"><strong>6.</strong> Review replay + approval outputs</div>
+      </div>
+      <div class="two-grid" style="margin-top:18px">
+        <div class="info-card accent-green">
+          <h3>Files to review first</h3>
+          <ul class="list">
+            <li><span class="mono">source_truth_report.json</span></li>
+            <li><span class="mono">canonical_app_spec.json</span></li>
+            <li><span class="mono">runtime_session.json</span></li>
+            <li><span class="mono">agent_execution_plan.json</span></li>
+            <li><span class="mono">runtime_evidence.json</span></li>
+            <li><span class="mono">test_report.json</span></li>
+            <li><span class="mono">production_readiness_scorecard.json</span></li>
+            <li><span class="mono">genesis_replay_dashboard.html</span></li>
+          </ul>
+        </div>
+        <div class="info-card accent-orange">
+          <h3>Best use cases right now</h3>
+          <ul class="list">
+            <li>PowerApps and mixed low-code migrations</li>
+            <li>Website + BRD rebuilds</li>
+            <li>Schema + API guided migrations</li>
+            <li>Mixed-evidence discovery and planning runs</li>
+            <li>Teams that need replay, reports, and controlled review</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-card rv" id="manual-safety">
+      <div class="doc-head">
+        <div>
+          <div class="section-kicker">Review + safety</div>
+          <h2>When Genesis continues automatically and when it should pause</h2>
+        </div>
+        <p>The framework is meant to move forward on its own when the signals are clear, and stop when the decision has hidden risk or needs approval.</p>
+      </div>
+      <div class="two-grid">
+        <div class="info-card accent-green">
+          <h3>Genesis should usually continue</h3>
+          <ul class="list">
+            <li>Input classification and extraction</li>
+            <li>Planning artifact generation</li>
+            <li>Canonical spec creation</li>
+            <li>Scaffold generation</li>
+            <li>Repair, QA, readiness, replay, and manifest outputs</li>
+          </ul>
+        </div>
+        <div class="info-card accent-red">
+          <h3>Genesis should stop for approval</h3>
+          <ul class="list">
+            <li>Low-confidence mappings</li>
+            <li>Source conflicts that change behavior</li>
+            <li>Missing or privileged credentials</li>
+            <li>Protected or licensed media</li>
+            <li>Deploying infrastructure or using production data</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note callout-red">
+        Production-quality areas still planned for deeper implementation include authenticated remote browser capture, Firecrawl integration, full Power Fx parsing, deeper semantic code repair, full compiler/build execution for every generated stack, and stronger vector-backed prior-memory matching.
+      </div>
+    </section>
+
+    <section class="doc-card rv" id="manual-faq">
+      <div class="doc-head">
+        <div>
+          <div class="section-kicker">FAQ + troubleshooting</div>
+          <h2>Common questions and practical answers</h2>
+        </div>
+        <p>This section is here so users can get unstuck quickly without reading the whole framework source.</p>
+      </div>
+      <div class="faq-grid">
+        <details class="faq-item">
+          <summary>Can Genesis migrate any app perfectly from any input?</summary>
+          <div class="ans">No. Genesis supports a wide range of inputs, but the honest goal is high-coverage migration with source truth, confidence scoring, replay, and controlled review. Some deep runtime features are still planned.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What if I only have screenshots, a video, or a BRD?</summary>
+          <div class="ans">You can still use Genesis. Put those files in <span class="mono">migration_inputs/</span>. The extractor and planning agents will treat them as evidence and build the planning side of the migration from what is available.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Where do I put my files?</summary>
+          <div class="ans">Put them in <span class="mono">migration_inputs/</span> inside the project root. That folder is the main intake surface for the runtime.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What command should I start with?</summary>
+          <div class="ans">Start with <span class="mono">nocode2procode migrate</span>. That is the full end-to-end runtime path and the best default entrypoint.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Where do the results go?</summary>
+          <div class="ans">Genesis writes migration workspaces under <span class="mono">genesis_apps/</span>, including scaffold outputs, manifests, replay files, and memory packets.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What if the command is not found?</summary>
+          <div class="ans">Activate the project virtual environment first, then run the install block again. The common path is: create <span class="mono">.venv</span>, activate it, and run <span class="mono">pip install -e ".[dev]"</span>.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What if extraction is partial?</summary>
+          <div class="ans">That is expected in some migrations. Review <span class="mono">source_truth_report.json</span>, <span class="mono">runtime_evidence.json</span>, and <span class="mono">canonical_app_spec.json</span> to see what the system trusted and what still needs review.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What makes Genesis different from a plain prompt workflow?</summary>
+          <div class="ans">It is structured around source truth, canonical spec generation, stage checkpoints, replay outputs, approval surfaces, and verified memory. It is trying to be a controlled migration factory, not only a code prompt.</div>
+        </details>
+      </div>
+    </section>
+  </div>
+</div>
+</section>
+
+<section id="cta">
+  <div class="cta-glow"></div>
+  <div class="cta-in">
+    <div class="tag rv" style="display:inline-flex">Run Genesis</div>
+    <h2 class="rv" style="margin-top:12px;font-size:clamp(2rem,3.8vw,3.6rem)">Drop Files into migration_inputs.<br><span class="grad">Run nocode2procode migrate.</span></h2>
+    <p class="rv d1" style="color:var(--muted);margin-top:18px;font-size:1rem;max-width:580px;margin-left:auto;margin-right:auto;line-height:1.75">Genesis reads the input folder, extracts and resolves evidence, generates the migration workspace, runs repair + QA + readiness checks, prepares local handoff, and stores verified learning for the next run.</p>
+    <div class="cta-btns rv d2">
+      <a href="#cta" class="btn-pri btn-lg">Run nocode2procode migrate →</a>
+      <a href="#agents" class="btn-ghost btn-lg">View Agents</a>
+      <a href="#architecture" class="btn-ghost btn-lg">View Architecture</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <a class="logo" href="#" style="font-size:1.25rem">NoCode2ProCode Genesis</a>
+      <p>The migration runtime that turns low-code evidence into a controlled pro-code pipeline with repair, QA, replay, readiness, and verified memory.</p>
+    </div>
+    <div class="ft-col"><h4>Platform</h4><ul><li><a href="#solution">Pipeline Runtime</a></li><li><a href="#video-mapping">Source Truth</a></li><li><a href="#output">Generated Outputs</a></li><li><a href="#qa">Quality Gates</a></li></ul></div>
+    <div class="ft-col"><h4>Agents</h4><ul><li><a href="#agents">Solution Intake</a></li><li><a href="#agents">Source Truth</a></li><li><a href="#agents">Frontend + Backend</a></li><li><a href="#agents">QA + Readiness</a></li></ul></div>
+    <div class="ft-col"><h4>Artifacts</h4><ul><li><a href="#blueprint">canonical_app_spec.json</a></li><li><a href="#output">generated_app/</a></li><li><a href="#qa">test_report.json</a></li><li><a href="#qa">production_readiness_scorecard.json</a></li></ul></div>
+    <div class="ft-col"><h4>Handoff</h4><ul><li><a href="#qa">Security Review</a></li><li><a href="#comparison">Replay Dashboard</a></li><li><a href="#cta">Approval</a></li><li><a href="#cta">Local Readiness</a></li></ul></div>
+  </div>
+  <div class="ft-bot"><p>© 2026 NoCode2ProCode Genesis. All rights reserved.</p><p style="color:rgba(255,255,255,.25)">Built around the Genesis migration pipeline</p></div>
+</footer>
+
+</div><!-- /wrap -->
+<script>
+// Particle canvas
+const C=document.getElementById('bg-canvas'),X=C.getContext('2d');
+let P=[];
+function resize(){C.width=window.innerWidth;C.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+class Pt{constructor(){this.reset()}reset(){this.x=Math.random()*C.width;this.y=Math.random()*C.height;this.vx=(Math.random()-.5)*.28;this.vy=(Math.random()-.5)*.28;this.r=Math.random()*1.4+.4;this.o=Math.random()*.35+.08;this.c=['#00d4ff','#7c3aed','#06b6d4'][Math.floor(Math.random()*3)]}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0)this.x=C.width;if(this.x>C.width)this.x=0;if(this.y<0)this.y=C.height;if(this.y>C.height)this.y=0}draw(){X.save();X.globalAlpha=this.o;X.fillStyle=this.c;X.shadowBlur=5;X.shadowColor=this.c;X.beginPath();X.arc(this.x,this.y,this.r,0,Math.PI*2);X.fill();X.restore()}}
+for(let i=0;i<110;i++)P.push(new Pt());
+let wo=0;
+function frame(){X.clearRect(0,0,C.width,C.height);wo+=.004;
+  // waves
+  for(let w=0;w<3;w++){X.save();X.globalAlpha=.025;X.strokeStyle='#00d4ff';X.lineWidth=1;X.beginPath();for(let x=0;x<=C.width;x+=4){const y=C.height*(0.25+w*.18)+Math.sin(x*.007+wo+w*1.3)*45;x===0?X.moveTo(x,y):X.lineTo(x,y)}X.stroke();X.restore()}
+  // connections
+  for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const dx=P[i].x-P[j].x,dy=P[i].y-P[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<90){X.save();X.globalAlpha=(1-d/90)*.07;X.strokeStyle='#00d4ff';X.lineWidth=.5;X.beginPath();X.moveTo(P[i].x,P[i].y);X.lineTo(P[j].x,P[j].y);X.stroke();X.restore()}}
+  P.forEach(p=>{p.update();p.draw()});
+  requestAnimationFrame(frame)}
+frame();
+
+// Agent orbit renderer
+const agentCards = [
+  {title:'Solution Intake', icon:'📥', blurb:'Scans inputs, classifies sources, and opens runtime session.', ring:'outer', angle:-90, color:'#00d4ff'},
+  {title:'PowerApps Extractor', icon:'📦', blurb:'Extracts screens, formulas, connectors, and app structure.', ring:'outer', angle:-42, color:'#2ca9ff'},
+  {title:'Website Extractor', icon:'🌐', blurb:'Maps pages, local HTML, layout hints, and behavior.', ring:'outer', angle:-4, color:'#6a8cff'},
+  {title:'Document Extractor', icon:'📄', blurb:'Pulls BRD requirements, roles, workflows, and mockups.', ring:'outer', angle:32, color:'#9b5cff'},
+  {title:'Runtime Evidence', icon:'🖥️', blurb:'Captures local HTML evidence and plans browser runtime.', ring:'outer', angle:72, color:'#b460ff'},
+  {title:'Swarm Coordinator', icon:'🛰️', blurb:'Assigns extraction, build, repair, QA, and readiness waves.', ring:'outer', angle:112, color:'#ff61c9'},
+  {title:'Source Truth', icon:'🧭', blurb:'Compares evidence, scores confidence, and resolves conflicts.', ring:'outer', angle:156, color:'#19d6d0'},
+  {title:'Migration BRD', icon:'🗺️', blurb:'Builds migration brief, IR, and canonical contract.', ring:'outer', angle:206, color:'#20efa3'},
+  {title:'Memory Curator', icon:'🧠', blurb:'Retrieves proven patterns and stores verified learning.', ring:'inner', angle:-112, color:'#77ffd9'},
+  {title:'UI UX Pro Max', icon:'🎨', blurb:'Picks fitness style, colors, fonts, and motion.', ring:'inner', angle:-68, color:'#00d4ff'},
+  {title:'Frontend Agent', icon:'⚛️', blurb:'Generates routes, screens, forms, components, and states.', ring:'inner', angle:-24, color:'#2f92ff'},
+  {title:'Backend Agent', icon:'🛡️', blurb:'Builds APIs, services, auth, validation, and integrations.', ring:'inner', angle:20, color:'#7c3aed'},
+  {title:'Test Repair', icon:'🧪', blurb:'Runs preflight repair, QA gates, and patch logs.', ring:'inner', angle:64, color:'#ff8a3d'},
+  {title:'Security Review', icon:'🔐', blurb:'Scans local secrets, risks, and approval readiness.', ring:'inner', angle:108, color:'#fbbf24'},
+  {title:'Deploy Builder', icon:'🚀', blurb:'Prepares Docker, CI, and local handoff artifacts.', ring:'inner', angle:152, color:'#ff61c9'},
+  {title:'Documentation', icon:'📚', blurb:'Writes README, architecture docs, and handoff guides.', ring:'inner', angle:196, color:'#06b6d4'}
+];
+
+function polarPoint(angleDeg, radius, cx = 660, cy = 630){
+  const rad = angleDeg * (Math.PI / 180);
+  return {
+    x: cx + Math.cos(rad) * radius,
+    y: cy + Math.sin(rad) * radius
+  };
+}
+
+function edgePointForCard(cx, cy, px, py, halfW, halfH){
+  const dx = px - cx;
+  const dy = py - cy;
+  const tx = dx !== 0 ? halfW / Math.abs(dx) : Number.POSITIVE_INFINITY;
+  const ty = dy !== 0 ? halfH / Math.abs(dy) : Number.POSITIVE_INFINITY;
+  const t = Math.min(tx, ty);
+  return {
+    x: px - dx * t,
+    y: py - dy * t
+  };
+}
+
+function renderAgentScene(){
+  const scene = document.getElementById('agent-scene');
+  const svg = document.getElementById('agent-connections');
+  if(!scene || !svg) return;
+
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#00d4ff" stop-opacity=".85"></stop>
+        <stop offset="100%" stop-color="#7c3aed" stop-opacity=".45"></stop>
+      </linearGradient>
+      <linearGradient id="lgAlt" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#06b6d4" stop-opacity=".7"></stop>
+        <stop offset="100%" stop-color="#ff61c9" stop-opacity=".36"></stop>
+      </linearGradient>
+    </defs>
+  `;
+
+  scene.querySelectorAll('.anode').forEach(node => node.remove());
+  const isCompact = window.innerWidth <= 900;
+
+  const sceneWidth = 1320;
+  const sceneHeight = 1260;
+  const centerX = sceneWidth / 2;
+  const centerY = sceneHeight / 2;
+  const cardWidth = window.innerWidth <= 1200 ? 154 : 166;
+  const cardHeight = window.innerWidth <= 1200 ? 138 : 132;
+  const desktopPoints = {
+    'Solution Intake': {x:50, y:8},
+    'PowerApps Extractor': {x:84, y:22},
+    'Website Extractor': {x:92, y:45},
+    'Document Extractor': {x:84, y:70},
+    'Runtime Evidence': {x:63, y:92},
+    'Swarm Coordinator': {x:41, y:93},
+    'Source Truth': {x:18, y:69},
+    'Migration BRD': {x:19, y:28},
+    'Memory Curator': {x:32, y:20},
+    'UI UX Pro Max': {x:58, y:20},
+    'Frontend Agent': {x:76, y:38},
+    'Backend Agent': {x:76, y:58},
+    'Test Repair': {x:50, y:81},
+    'Security Review': {x:33, y:82},
+    'Deploy Builder': {x:24, y:56},
+    'Documentation': {x:31, y:42}
+  };
+
+  agentCards.forEach((agent, index) => {
+    const radius = agent.ring === 'outer' ? 420 : 310;
+    const fallback = polarPoint(agent.angle, radius, centerX, centerY);
+    const desktopPoint = desktopPoints[agent.title];
+    const point = (!isCompact && desktopPoint)
+      ? {x:(desktopPoint.x / 100) * sceneWidth, y:(desktopPoint.y / 100) * sceneHeight}
+      : fallback;
+
+    if(!isCompact){
+      const edgePoint = edgePointForCard(
+        centerX,
+        centerY,
+        point.x,
+        point.y,
+        cardWidth / 2,
+        cardHeight / 2
+      );
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', String(centerX));
+      line.setAttribute('y1', String(centerY));
+      line.setAttribute('x2', edgePoint.x.toFixed(1));
+      line.setAttribute('y2', edgePoint.y.toFixed(1));
+      line.setAttribute('class', `cline ${agent.ring === 'inner' ? 'alt' : ''}`);
+      line.style.animationDelay = `${index * 0.18}s`;
+      svg.appendChild(line);
+    }
+
+    const node = document.createElement('div');
+    node.className = `anode ${agent.ring === 'inner' ? 'is-inner' : 'is-outer'}`;
+    node.style.left = `${(point.x / sceneWidth) * 100}%`;
+    node.style.top = `${(point.y / sceneHeight) * 100}%`;
+    node.style.animationDelay = `${index * 0.22}s`;
+    node.innerHTML = `
+      <div class="acard" style="--agent-accent:${agent.color}">
+        <div class="aico">${agent.icon}</div>
+        <div class="anm">${agent.title}</div>
+        <div class="acap">${agent.blurb}</div>
+        <div class="ast"></div>
+      </div>
+    `;
+    scene.appendChild(node);
+  });
+}
+
+renderAgentScene();
+window.addEventListener('resize', renderAgentScene);
+
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const agentScene = document.getElementById('agent-scene');
+if(agentScene && !prefersReduced){
+  agentScene.addEventListener('mousemove', e => {
+    if(window.innerWidth <= 900) return;
+    const rect = agentScene.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    agentScene.classList.add('is-tilting');
+    agentScene.style.transform = `rotateX(${(-y * 10).toFixed(2)}deg) rotateY(${(x * 10).toFixed(2)}deg)`;
+  });
+  agentScene.addEventListener('mouseleave', () => {
+    agentScene.style.transform = '';
+    agentScene.classList.remove('is-tilting');
+  });
+}
+
+// Scroll reveal
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+// Timeline steps
+const tlObs=new IntersectionObserver(es=>es.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('on'),i*120)}),{threshold:.2});
+document.querySelectorAll('.ts').forEach(el=>tlObs.observe(el));
+
+// Navbar scroll
+window.addEventListener('scroll',()=>{const n=document.getElementById('nav');n.style.background=window.scrollY>70?'rgba(6,6,15,.96)':'rgba(6,6,15,.7)';n.style.boxShadow=window.scrollY>70?'0 4px 40px rgba(0,0,0,.4)':'none'});
+
+// JSON typing
+const jsonRaw=`{
+  "command": "nocode2procode migrate",
+  "input_dir": "migration_inputs/",
+  "input_sources": [
+    "powerapps_export",
+    "website_reference",
+    "brd_document",
+    "screenshots",
+    "runtime_video",
+    "schema_files",
+    "api_configs"
+  ],
+  "session_runtime": {
+    "runtime_session": "runtime_session.json",
+    "provider_routing": "provider_routing_plan.json",
+    "memory_context": "memory_context.json"
+  },
+  "canonical_outputs": {
+    "source_truth": "source_truth_report.json",
+    "spec": "canonical_app_spec.json",
+    "frontend": "frontend/",
+    "backend": "backend/",
+    "tests": "tests/",
+    "deploy": "deploy/",
+    "repair": "repair_loop_report.json",
+    "qa": "test_report.json",
+    "security": "security_review.json",
+    "readiness": "production_readiness_scorecard.json",
+    "replay": "genesis_replay_dashboard.html"
+  },
+  "quality_gates": [
+    "run_agent_repair_loop",
+    "run_quality_gates",
+    "run_security_review",
+    "write_readiness_scorecard",
+    "final_approval",
+    "learn_verified_patterns"
+  ]
+}`;
+
+function colorize(txt){
+  return txt
+    .replace(/("[\w_]+")\s*:/g,'<span class="jk">$1</span>:')
+    .replace(/:\s*("(?:[^"\\]|\\.)*")/g,match=>match.replace(/"(?:[^"\\]|\\.)*"/,'<span class="js">$&</span>'))
+    .replace(/[{}\[\]]/g,'<span class="jb">$&</span>');
+}
+
+let typed=false;
+const bpObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!typed){typed=true;runTyping()}}),{threshold:.3});
+bpObs.observe(document.getElementById('blueprint'));
+
+function runTyping(){
+  const el=document.getElementById('jc');
+  let i=0;const chars=jsonRaw.split('');let acc='';
+  function next(){if(i>=chars.length)return;acc+=chars[i++];el.innerHTML=colorize(acc);setTimeout(next,chars[i-1]==='\n'?30:10)}
+  next();
+}
+</script>
+<script>
+document.querySelectorAll('#user-manual .copy-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const target = document.getElementById(btn.dataset.copyTarget);
+    if(!target) return;
+    try {
+      await navigator.clipboard.writeText(target.innerText);
+      const old = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(() => btn.textContent = old, 1400);
+    } catch {
+      btn.textContent = 'Copy failed';
+      setTimeout(() => btn.textContent = 'Copy', 1400);
+    }
+  });
+});
+
+const manualTocLinks = [...document.querySelectorAll('#user-manual .toc-links a')];
+const manualSections = manualTocLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+if(manualTocLinks.length && manualSections.length){
+  const manualObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const id = '#' + entry.target.id;
+      const link = manualTocLinks.find(a => a.getAttribute('href') === id);
+      if(entry.isIntersecting && link){
+        manualTocLinks.forEach(a => a.classList.remove('is-active'));
+        link.classList.add('is-active');
+      }
+    });
+  }, {rootMargin:'-35% 0px -50% 0px', threshold:0.01});
+  manualSections.forEach(section => manualObs.observe(section));
+}
+</script>
+</body>
+</html>
+

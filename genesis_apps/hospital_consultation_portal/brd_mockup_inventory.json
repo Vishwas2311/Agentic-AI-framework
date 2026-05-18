@@ -1,0 +1,98 @@
+{
+  "genesis_stage": "extract_brd_mockups",
+  "source_docx": "migration_inputs/raw_data/Hospital_Online_Consultation_Portal_BRD.docx",
+  "extraction_path": "genesis_apps/hospital_consultation_portal/brd_extracted_images/",
+  "total_images_extracted": 8,
+  "mockups": [
+    {
+      "figure_id": "figure_1",
+      "file": "brd_extracted_images/figure_1.png",
+      "brd_label": "Figure 1: Proposed patient dashboard direction",
+      "page_id": "dashboard",
+      "page_name": "Main Dashboard",
+      "layout_observed": "sidebar_left (240px) + topbar (teal gradient) + 4-column metric card row + 2x2 action card grid",
+      "visual_fidelity": "high_detail_mockup",
+      "usage": "primary_visual_evidence",
+      "key_elements": ["teal header bar with + logo", "Welcome/Dashboard/Book Consultation/My Consultations/Prescriptions/Profile nav", "metric cards: 12 Total, 5 Scheduled, 6 Completed, 6 Prescriptions", "action cards: Book New, My Consultations, View Prescriptions, Contact Support with Open buttons"]
+    },
+    {
+      "figure_id": "figure_2",
+      "file": "brd_extracted_images/figure_2.png",
+      "brd_label": "Figure 2: Login page with secure patient access card",
+      "page_id": "login",
+      "page_name": "Login Page",
+      "layout_observed": "split_screen: form_card_left (~45%) + illustration_right (~55%) on light blue-gray bg",
+      "visual_fidelity": "high_detail_mockup",
+      "usage": "primary_visual_evidence",
+      "key_elements": ["teal + circle logo", "Hospital Online Consultation Portal title", "Patient ID or Email input", "Password (masked) input", "Login Securely button (teal)", "Demo system disclaimer text", "Online Doctor Consultation illustration right panel"]
+    },
+    {
+      "figure_id": "figure_3",
+      "file": "brd_extracted_images/figure_3.png",
+      "brd_label": "Figure 3: Welcome page with quick patient actions",
+      "page_id": "welcome",
+      "page_name": "Welcome Page",
+      "layout_observed": "sidebar_left + topbar (teal) + hero_section_with_illustration + 2 CTA buttons + 3 info cards",
+      "visual_fidelity": "high_detail_mockup",
+      "usage": "primary_visual_evidence",
+      "key_elements": ["Welcome, Patient greeting", "Book Consultation + View Consultations CTA buttons", "Video Consultation Ready illustration", "3 secondary cards: Upcoming Consultations, Prescriptions, Support"]
+    },
+    {
+      "figure_id": "figure_4",
+      "file": "brd_extracted_images/figure_4.png",
+      "brd_label": "Figure 4 (via figure_4): Book consultation form",
+      "page_id": "book_consultation",
+      "page_name": "Book Consultation",
+      "layout_observed": "sidebar_left + topbar + single_wide_card_with_2col_form_grid + full_width_textarea",
+      "visual_fidelity": "high_detail_mockup",
+      "usage": "primary_visual_evidence",
+      "key_elements": ["Consultation Details heading", "2-col grid: Patient Name, Patient Age, Gender, Department", "2-col grid: Doctor, Mode, Date, Time", "Symptoms textarea full-width", "Book Consultation button (teal) + helper text"]
+    },
+    {
+      "figure_id": "figure_5",
+      "file": "brd_extracted_images/figure_5.png",
+      "brd_label": "Figure 5: Consultation tracking page",
+      "page_id": "my_consultations",
+      "page_name": "My Consultations",
+      "layout_observed": "sidebar_left + topbar + filter_row_3col + consultation_card_list",
+      "visual_fidelity": "high_detail_mockup",
+      "usage": "primary_visual_evidence",
+      "key_elements": ["Search input", "Status Filter dropdown (All)", "Department dropdown (All)", "Consultation cards: patient name bold, department/doctor/mode pill, date/time", "Status badge (Scheduled=teal, Completed=green)", "Update button (dark teal)"]
+    },
+    {
+      "figure_id": "figure_6",
+      "file": "brd_extracted_images/figure_6.png",
+      "brd_label": "Figure 6: Prescription and medical summary",
+      "page_id": "prescriptions",
+      "page_name": "Prescriptions & Medical Summary",
+      "layout_observed": "sidebar_left + topbar + prescription_status_badge + 3_info_cards + download_button",
+      "visual_fidelity": "high_detail_mockup",
+      "usage": "primary_visual_evidence",
+      "key_elements": ["Prescription Status heading", "Available for Completed Visit badge (teal)", "Doctor Advice card", "Medication Notes card", "Follow-up Recommendation card", "Download Placeholder button (teal)"]
+    },
+    {
+      "figure_id": "figure_7",
+      "file": "brd_extracted_images/figure_7.png",
+      "brd_label": "Figure 7: Sign out page",
+      "page_id": "signout",
+      "page_name": "Profile / Sign Out",
+      "layout_observed": "sidebar_left + topbar + centered_confirmation_card",
+      "visual_fidelity": "high_detail_mockup",
+      "usage": "primary_visual_evidence",
+      "key_elements": ["Green check circle icon", "You are about to sign out heading", "Session clear confirmation text", "Sign Out Securely button (red/coral)"]
+    },
+    {
+      "figure_id": "figure_8",
+      "file": "brd_extracted_images/figure_8.png",
+      "brd_label": "Figure 8: Patient portal user flow diagram",
+      "page_id": "flow_diagram",
+      "page_name": "User Flow",
+      "layout_observed": "horizontal_flow_diagram",
+      "visual_fidelity": "flow_reference",
+      "usage": "ux_flow_evidence",
+      "key_elements": ["Login → Welcome → Dashboard → Book → Track → Prescription → Sign Out"]
+    }
+  ],
+  "stack_conflict_observation": "All 7 page mockups depict a React/Next.js-style sidebar-navigation web application with proper desktop layout, metric cards, and status-badge patterns. Streamlit cannot reproduce this layout fidelity without extensive custom-component workarounds.",
+  "visual_source_quality": "professional_mockup_not_wireframe"
+}

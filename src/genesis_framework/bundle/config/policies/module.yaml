@@ -1,0 +1,7 @@
+name: policies
+purpose: Genesis Policy Gate rules for tool permissions, secret access, deployment, compliance, and approvals.
+status: scaffold
+engines:
+  - OPA/Rego
+  - Cedar
+

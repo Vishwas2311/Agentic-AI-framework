@@ -1,0 +1,69 @@
+{
+  "genesis_version": "3.1.0",
+  "stage": "extract_brd_design_intent",
+  "timestamp": "2026-05-07T00:00:00Z",
+  "source_file": "Hospital_Online_Consultation_Portal_BRD.docx",
+  "domain": "healthcare",
+  "subdomain": "patient_portal",
+  "target_users": ["patients", "hospital_admin_staff", "doctors", "customer_support", "care_coordinators"],
+  "primary_user": "patient",
+  "user_persona": "Non-technical patient seeking online medical consultation",
+  "app_title": "Hospital Online Consultation Portal",
+  "tone": ["clean", "calm", "trustworthy", "medical", "accessible", "friendly"],
+  "pages": [
+    {
+      "id": "login",
+      "title": "Login Page",
+      "brd_section": "5.1",
+      "layout_profile": "auth_split_screen",
+      "design_expectations": ["hospital logo placeholder", "clean login card center", "calm medical background", "patient ID or email field", "password field", "login button", "secure patient access note", "support/help text"]
+    },
+    {
+      "id": "welcome",
+      "title": "Welcome Page",
+      "brd_section": "5.2",
+      "layout_profile": "landing_or_marketing",
+      "design_expectations": ["hero section with greeting", "short hospital message", "online doctor consultation illustration", "book consultation CTA", "view consultations CTA"]
+    },
+    {
+      "id": "dashboard",
+      "title": "Main Dashboard",
+      "brd_section": "5.3",
+      "layout_profile": "portal_dashboard",
+      "design_expectations": ["top header with hospital name and patient greeting", "metric cards: total, scheduled, completed, prescriptions", "quick action cards: book, track, prescriptions, support", "clean dashboard layout with visual hierarchy"]
+    },
+    {
+      "id": "book",
+      "title": "Book Consultation",
+      "brd_section": "5.4",
+      "layout_profile": "operational_form",
+      "design_expectations": ["easy appointment form in clean card", "department, doctor, date, time, symptoms, consultation mode", "clear submit button", "helpful instruction text", "visible labels for every control"]
+    },
+    {
+      "id": "consultations",
+      "title": "My Consultations",
+      "brd_section": "5.5",
+      "layout_profile": "data_table_workspace",
+      "design_expectations": ["filter section and search input above list", "consultation cards or table", "status badges", "doctor name, department, date/time, consultation mode, status update option"]
+    },
+    {
+      "id": "prescriptions",
+      "title": "Prescription / Medical Summary",
+      "brd_section": "5.6",
+      "layout_profile": "operational_form",
+      "design_expectations": ["prescription status for completed consultations", "doctor advice placeholder", "medication summary placeholder", "follow-up recommendation placeholder", "demo disclaimer"]
+    },
+    {
+      "id": "signout",
+      "title": "Sign Out",
+      "brd_section": "5.7",
+      "layout_profile": "landing_or_marketing",
+      "design_expectations": ["confirmation message", "friendly goodbye message", "sign out button", "session ended security note"]
+    }
+  ],
+  "accessibility_requirements": ["visible labels on all inputs", "keyboard navigation", "clear button action names", "readable status labels", "playwright-testable locators"],
+  "security_requirements": ["demo only - no real patient data", "no real medical advice", "password field masked", "session state management", "demo disclaimer visible"],
+  "demo_credentials": {"email": "patient@example.com", "password": "patient123"},
+  "mockup_figures_referenced": ["Figure 1: Patient dashboard direction", "Figure 2: Login page mockup", "Figure 3: Welcome page mockup", "Figure 4: Main dashboard mockup", "Figure 5: Book consultation page mockup", "Figure 6: Consultation tracking page mockup", "Figure 7: Prescription and medical summary mockup", "Figure 8: Sign out page mockup", "Figure 9: Patient portal flow from login to sign out"],
+  "visual_acceptance_criteria": ["modern and clean", "professional", "hospital-client ready", "user-friendly for non-technical patients", "accessible labels on all controls"]
+}

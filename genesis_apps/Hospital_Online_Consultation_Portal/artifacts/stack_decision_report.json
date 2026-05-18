@@ -1,0 +1,29 @@
+{
+  "genesis_version": "3.1.0",
+  "stage": "decide_delivery_mode_and_stack",
+  "timestamp": "2026-05-07T00:00:00Z",
+  "source_file": "Hospital_Online_Consultation_Portal_BRD.docx",
+  "brd_requested_stack": "streamlit",
+  "brd_requested_stack_section": "Section 14 - Technical Requirements",
+  "conflict_detected": true,
+  "conflict_reason": "BRD requests prototype stack (Streamlit) but the portal is a 7-page UI-heavy patient-facing application with auth, booking flows, metrics, consultation management, and prescriptions. The BRD also states the app should 'feel like a real hospital client application' - a client-demo quality intent.",
+  "policy_rule_triggered": "brd_stack_conflict_requires_decision",
+  "human_decision": "client_demo_polished",
+  "selected_stack": "nextjs_tailwind_shadcn_motion",
+  "selected_stack_rationale": "UI-heavy patient portal with 7 distinct page surfaces. Healthcare domain. Client-demo quality requested. Per genesis.stack.yaml production_profiles.nextjs_tailwind_shadcn_motion: use_for includes portal, healthcare, client_demo_polished.",
+  "stack_profile": {
+    "frontend": "nextjs_14_app_router",
+    "styling": "tailwind_css",
+    "component_system": "shadcn_ui",
+    "motion_layer": "framer_motion",
+    "state_management": "zustand",
+    "design_director": "ui_ux_pro_max",
+    "component_generator": "magic_21st",
+    "qa": ["playwright", "axe", "visual_diff", "design_quality_gate"]
+  },
+  "prototype_stack_blocked": true,
+  "prototype_stack_override": false,
+  "brd_features_preserved": true,
+  "approved_by": "human",
+  "approved_at": "2026-05-07T00:00:00Z"
+}

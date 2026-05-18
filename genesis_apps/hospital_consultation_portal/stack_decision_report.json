@@ -1,0 +1,20 @@
+{
+  "genesis_stage": "decide_delivery_mode_and_stack",
+  "decision_timestamp": "2026-05-07T00:00:00Z",
+  "brd_stack_requested": "streamlit",
+  "brd_stack_accepted": false,
+  "brd_stack_override_reason": "BRD embedded mockups (Figures 1–8) depict a sidebar-nav React/Next.js web application with metric cards, status badges, grid forms, and split-screen login. Streamlit cannot reproduce this visual fidelity. User invoked NoCode2ProCode (pro-code pipeline) and explicitly selected polished client demo stack.",
+  "selected_stack": "nextjs_tailwind_shadcn_motion",
+  "selected_stack_profile": {
+    "frontend": "Next.js 14 App Router",
+    "styling": "Tailwind CSS",
+    "component_system": "shadcn/ui",
+    "motion_layer": "motion/react (framer-motion v11+)",
+    "design_director": "UI/UX Pro Max",
+    "component_generator": "21st.dev Magic",
+    "qa": ["playwright", "axe", "visual_diff", "design_quality_gate"]
+  },
+  "human_decision": "polished_client_demo_nextjs",
+  "human_decision_recorded": true,
+  "policy_gate": "PASSED — explicit human override recorded, prototype stack correctly declined"
+}

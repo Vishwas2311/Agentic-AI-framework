@@ -1,0 +1,14 @@
+{
+  "genesis_stage": "discover_sources",
+  "sources": [
+    {
+      "type": "brd_docx",
+      "path": "migration_inputs/raw_data/Hospital_Online_Consultation_Portal_BRD.docx",
+      "evidence_type": "primary_source_truth"
+    }
+  ],
+  "figma_url": null,
+  "live_url": null,
+  "db_connection": null,
+  "api_docs": null
+}

@@ -1,0 +1,129 @@
+{
+  "schema_version": "3.1.0",
+  "ir_type": "UI_IR",
+  "project": "Hospital Online Consultation Portal",
+  "generated_at": "2026-05-05",
+  "pages": [
+    {
+      "id": "login",
+      "title": "Login Page",
+      "route": "/",
+      "guard": "unauthenticated_only",
+      "components": [
+        { "type": "heading", "text": "Hospital Online Consultation Portal", "level": 1 },
+        { "type": "subtext", "text": "Secure Patient Access Portal" },
+        { "type": "form", "id": "login_form", "fields": [
+          { "name": "login_email", "label": "Patient ID or Email", "type": "text_input", "required": true },
+          { "name": "login_password", "label": "Password", "type": "password_input", "required": true }
+        ]},
+        { "type": "button", "label": "Login", "variant": "primary", "action": "authenticate" },
+        { "type": "caption", "text": "Demo credentials: patient@example.com / patient123" }
+      ]
+    },
+    {
+      "id": "welcome",
+      "title": "Welcome Page",
+      "route": "/welcome",
+      "guard": "authenticated",
+      "components": [
+        { "type": "hero", "icon": "🩺", "heading": "Online Doctor Consultation", "subtext": "Connect with specialist doctors" },
+        { "type": "button", "label": "📅 Book Consultation", "variant": "primary", "key": "welcome_book" },
+        { "type": "button", "label": "📋 View My Consultations", "variant": "secondary", "key": "welcome_view" },
+        { "type": "service_grid", "items": ["General Medicine","Cardiology","Dermatology","Orthopedics","Pediatrics","Neurology"] }
+      ]
+    },
+    {
+      "id": "dashboard",
+      "title": "Main Dashboard",
+      "route": "/dashboard",
+      "guard": "authenticated",
+      "components": [
+        { "type": "page_header", "title": "My Dashboard" },
+        { "type": "metric_row", "metrics": [
+          { "key": "total", "label": "Total Consultations", "icon": "📋" },
+          { "key": "requested", "label": "Requested", "icon": "🕐" },
+          { "key": "scheduled", "label": "Scheduled", "icon": "📅" },
+          { "key": "completed", "label": "Completed", "icon": "✅" },
+          { "key": "prescriptions", "label": "Prescriptions Available", "icon": "💊" }
+        ]},
+        { "type": "quick_actions", "actions": ["Book Consultation","My Consultations","Prescription","Sign Out"] }
+      ]
+    },
+    {
+      "id": "book_consultation",
+      "title": "Book Consultation",
+      "route": "/book",
+      "guard": "authenticated",
+      "components": [
+        { "type": "page_header", "title": "Book Online Consultation" },
+        { "type": "form", "id": "book_consultation_form", "fields": [
+          { "name": "form_patient_name", "label": "Patient Name", "type": "text_input", "required": true },
+          { "name": "form_age", "label": "Patient Age", "type": "number_input", "min": 1, "max": 120, "default": 30 },
+          { "name": "form_gender", "label": "Gender", "type": "selectbox", "options": ["Male","Female","Other"] },
+          { "name": "form_department", "label": "Department", "type": "selectbox", "options": ["General Medicine","Cardiology","Dermatology","Orthopedics","Pediatrics","Neurology"] },
+          { "name": "form_doctor", "label": "Doctor", "type": "selectbox", "options": ["Dr. Mehta","Dr. Sharma","Dr. Rao","Dr. Iyer","Dr. Khan"] },
+          { "name": "form_mode", "label": "Consultation Mode", "type": "selectbox", "options": ["Video Call","Audio Call","Chat"] },
+          { "name": "form_status", "label": "Initial Status", "type": "selectbox", "options": ["Requested","Scheduled","In Consultation","Completed","Cancelled"], "default_index": 0 },
+          { "name": "form_date", "label": "Consultation Date (YYYY-MM-DD)", "type": "text_input", "placeholder": "YYYY-MM-DD", "note": "Use text_input NOT date_input for Playwright compatibility" },
+          { "name": "form_time", "label": "Consultation Time (HH:MM)", "type": "text_input", "placeholder": "10:30" },
+          { "name": "form_symptoms", "label": "Symptoms / Chief Complaint", "type": "text_area" }
+        ]},
+        { "type": "button", "label": "Book Consultation", "variant": "primary", "action": "submit_booking" }
+      ]
+    },
+    {
+      "id": "my_consultations",
+      "title": "My Consultations",
+      "route": "/consultations",
+      "guard": "authenticated",
+      "components": [
+        { "type": "page_header", "title": "My Consultations" },
+        { "type": "filter_bar", "controls": [
+          { "name": "filter_status", "label": "Filter by Status", "type": "selectbox", "options": ["All","Requested","Scheduled","In Consultation","Completed","Cancelled"] },
+          { "name": "search_query", "label": "Search (patient name, doctor, or department)", "type": "text_input" }
+        ]},
+        { "type": "consultation_list", "per_item": [
+          { "type": "consultation_card", "fields": ["patient_name","age","gender","department","doctor","consultation_mode","consultation_status","date","time","symptoms"] },
+          { "type": "status_update_selectbox", "label": "Update Status", "key_template": "update_status_{id}" }
+        ]}
+      ]
+    },
+    {
+      "id": "prescription",
+      "title": "Prescription",
+      "route": "/prescription",
+      "guard": "authenticated",
+      "components": [
+        { "type": "page_header", "title": "Prescription & Medical Summary" },
+        { "type": "info_banner", "text": "⚠️ This is a demo prescription summary. Do not enter or use real patient data." },
+        { "type": "prescription_list", "group_by": "status", "groups": [
+          { "label": "Available Prescriptions", "filter": "completed" },
+          { "label": "Pending Prescriptions", "filter": "not_completed" }
+        ]}
+      ]
+    },
+    {
+      "id": "sign_out",
+      "title": "Sign Out",
+      "route": "/signout",
+      "guard": "authenticated",
+      "components": [
+        { "type": "page_header", "title": "Sign Out" },
+        { "type": "confirmation_panel", "message": "Ready to sign out?", "user_placeholder": "{current_user}" },
+        { "type": "button", "label": "🚪 Sign Out", "variant": "primary", "action": "sign_out" },
+        { "type": "security_note", "text": "You have safely ended your session." }
+      ]
+    }
+  ],
+  "navigation": {
+    "type": "sidebar_radio",
+    "items": ["Welcome","Dashboard","Book Consultation","My Consultations","Prescription","Sign Out"],
+    "guard": "authenticated_only"
+  },
+  "session_state_schema": {
+    "logged_in": { "type": "bool", "default": false },
+    "current_user": { "type": "string_or_null", "default": null },
+    "consultations": { "type": "list", "default": [] },
+    "_just_signed_out": { "type": "bool", "default": false }
+  }
+}

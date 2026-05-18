@@ -1,0 +1,18 @@
+{
+  "gate": "source_truth_approval_gate",
+  "stage": "source_truth_approval_gate",
+  "session": "hosp-consult-portal-20260507",
+  "timestamp": "2026-05-07T00:00:00Z",
+  "decision": "A",
+  "decision_label": "Approve Source Truth",
+  "human_approved": true,
+  "sources_confirmed": ["brd_text", "embedded_mockup_descriptions", "data_tables"],
+  "conflicts_confirmed": 0,
+  "assumptions_accepted": [
+    "no_actual_mockup_images_design_from_brd_descriptions",
+    "stack_override_approved_gate2",
+    "demo_disclaimer_on_all_pages",
+    "no_real_patient_data_sqlite_local"
+  ],
+  "gate_status": "PASSED"
+}

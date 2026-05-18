@@ -1,0 +1,63 @@
+schema_version: "1.0"
+policy: "additive_pattern_layer_no_overwrite"
+source_package: "antigravity-awesome-skills-main.zip"
+purpose: >
+  Curated local QA, evidence, workflow, and package hygiene patterns inspired by
+  Antigravity skills. Genesis remains the source of truth; these patterns only
+  add stricter evidence requirements and defensive checks.
+
+patterns:
+  - id: acceptance_evidence_matrix
+    antigravity_pattern: acceptance-orchestrator
+    genesis_stage: build_canonical_app_spec
+    output: acceptance_evidence_matrix.json
+    required_in_modes: ["production", "FullPipeline"]
+    upgrade: "Map every acceptance criterion to route/API/security/performance evidence."
+
+  - id: verification_before_completion
+    antigravity_pattern: verification-before-completion
+    genesis_stage: run_quality_gates
+    output: qa_evidence_manifest.json
+    required_in_modes: ["production", "FullPipeline"]
+    upgrade: "Every PASS claim must include command-backed or artifact-backed proof."
+
+  - id: ui_click_coverage
+    antigravity_pattern: e2e-testing/browser-automation
+    genesis_stage: run_quality_gates
+    output: ui_click_coverage_report.json
+    required_in_modes: ["production", "FullPipeline"]
+    upgrade: "Tie static route/control inventory to executed Playwright functional sanity evidence."
+
+  - id: api_negative_matrix
+    antigravity_pattern: api-security-testing
+    genesis_stage: run_quality_gates
+    output: api_negative_test_report.json
+    required_in_modes: ["production", "FullPipeline"]
+    upgrade: "Generate local defensive 400/401/403/404/invalid-payload cases for discovered APIs."
+
+  - id: runtime_security_abuse_cases
+    antigravity_pattern: broken-authentication/idor-testing/xss-html-injection
+    genesis_stage: run_quality_gates
+    output: security_abuse_case_report.json
+    required_in_modes: ["production", "FullPipeline"]
+    upgrade: "Convert offensive categories into safe local defensive auth and XSS checks."
+
+  - id: motion_runtime_invariants
+    antigravity_pattern: fixing-motion-performance
+    genesis_stage: run_quality_gates
+    output: motion_runtime_invariant_report.json
+    required_in_modes: ["production", "FullPipeline"]
+    upgrade: "Detect janky layout-property animation, expensive visual animation, and cleanup issues."
+
+  - id: package_cleanliness
+    antigravity_pattern: codebase-audit-pre-push
+    genesis_stage: package_team_installer
+    output: package_cleanliness_report.json
+    required_in_modes: ["FullPipeline"]
+    upgrade: "Block installer ZIPs that contain local junk, secrets, caches, generated apps, or traces."
+
+keep_out:
+  - "Do not import the full Antigravity ZIP."
+  - "Do not replace Genesis flow, gates, QAOS, installer, or orchestrator."
+  - "Do not make cloud/API-key/offensive skills mandatory."
+  - "Convert security material into safe local defensive validation only."

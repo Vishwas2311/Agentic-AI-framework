@@ -1,0 +1,16 @@
+{
+  "genesis_stage": "evaluate_design_quality",
+  "rejected": false,
+  "rejection_checks": {
+    "text_overlaps": false,
+    "primary_cta_hidden": false,
+    "desktop_feels_zoomed_out": false,
+    "operational_ui_trapped_in_narrow_container": false,
+    "auth_screen_unbalanced_whitespace": false,
+    "layout_profile_mismatch": false,
+    "motion_without_purpose": false,
+    "accessibility_critical_failure": false,
+    "generic_ui_for_domain": false
+  },
+  "verdict": "PASS - No visual rejections detected."
+}

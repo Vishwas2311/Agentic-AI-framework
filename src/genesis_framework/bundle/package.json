@@ -1,0 +1,33 @@
+{
+  "name": "nocode2procode-genesis",
+  "version": "1.0.0",
+  "description": "Genesis takes your existing Appian, Mendix, PowerApps, OutSystems, Figma, screenshots, BRDs, videos, or API specs Ã¢â‚¬â€ and generates a complete, deployable Next.js + FastAPI + Prisma application using Claude AI with a 46-stage governed pipeline.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vishwas2311/Agentic-AI-framework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vishwas2311/Agentic-AI-framework/issues"
+  },
+  "homepage": "https://github.com/Vishwas2311/Agentic-AI-framework#readme",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "@opentelemetry/auto-instrumentations-node": "^0.75.0",
+    "@opentelemetry/sdk-node": "^0.217.0",
+    "@playwright/test": "^1.59.1",
+    "pixelmatch": "^7.2.0",
+    "pngjs": "^7.0.0"
+  }
+}
+

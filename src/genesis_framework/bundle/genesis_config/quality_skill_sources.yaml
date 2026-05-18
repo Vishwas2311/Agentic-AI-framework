@@ -1,0 +1,90 @@
+schema_version: "1.0"
+policy: "local_skill_layer_no_mcp_no_api_keys"
+bundle: "skills/genesis-pro-quality"
+purpose: >
+  Curated local skill and prompt knowledge for Genesis. These entries improve
+  reasoning, QA discipline, design quality, browser testing, repair loops, and
+  package hygiene without requiring MCP servers or API keys.
+
+defaults:
+  requires_mcp: false
+  requires_api_key: false
+  import_policy: "summarized_curated_rules_only"
+  raw_package_in_installer: false
+
+sources:
+  - local_skill: "acceptance-proof"
+    source_package: "antigravity-awesome-skills-main.zip"
+    source_patterns: ["acceptance-orchestrator"]
+    genesis_stages: ["validate_inputs", "extract_brd_design_intent", "brd_understanding_gate", "build_canonical_app_spec"]
+    expected_artifacts: ["acceptance_evidence_matrix.json", "approved_brd_plan.json", "canonical_app_spec.json"]
+    risk_level: "low"
+    usage_policy: "Map requirements to proof; never replace Genesis gates."
+    requires_mcp: false
+    requires_api_key: false
+
+  - local_skill: "verification-and-qa-evidence"
+    source_package: "antigravity-awesome-skills-main.zip; agent-skills-main.zip; everything-claude-code-main.zip"
+    source_patterns: ["verification-before-completion", "test-engineer", "eval-harness"]
+    genesis_stages: ["run_quality_gates", "qa_result_approval_gate", "final_approval"]
+    expected_artifacts: ["qa_evidence_manifest.json", "qa_claims_audit.json", "final_approval_report.json"]
+    risk_level: "low"
+    usage_policy: "Require command-backed or artifact-backed proof for every PASS claim."
+    requires_mcp: false
+    requires_api_key: false
+
+  - local_skill: "browser-ui-dogfooding"
+    source_package: "gstack-main (1).zip; antigravity-awesome-skills-main.zip; agent-skills-main.zip"
+    source_patterns: ["browser-automation", "e2e-testing", "browser-testing-with-devtools"]
+    genesis_stages: ["record_runtime_evidence", "run_quality_gates", "run_visual_design_qa", "build_replay_dashboard"]
+    expected_artifacts: ["route_interaction_inventory.json", "ui_click_coverage_report.json", "functional_sanity_report.json", "console_error_report.json"]
+    risk_level: "low"
+    usage_policy: "Use local browser/runtime evidence; do not require Chrome DevTools MCP."
+    requires_mcp: false
+    requires_api_key: false
+
+  - local_skill: "api-security-negative-tests"
+    source_package: "antigravity-awesome-skills-main.zip; agent-skills-main.zip"
+    source_patterns: ["api-security-testing", "broken-authentication", "idor-testing", "xss-html-injection"]
+    genesis_stages: ["run_quality_gates", "qa_result_approval_gate", "final_approval"]
+    expected_artifacts: ["api_negative_test_report.json", "security_abuse_case_report.json", "security_review.json"]
+    risk_level: "medium"
+    usage_policy: "Convert security categories into safe local defensive tests only."
+    requires_mcp: false
+    requires_api_key: false
+
+  - local_skill: "accessibility-and-design-quality"
+    source_package: "ui-ux-pro-max-skill-main; antigravity-awesome-skills-main.zip; agent-skills-main.zip"
+    source_patterns: ["ui-ux-pro-max", "fixing-accessibility", "screen-reader-testing"]
+    genesis_stages: ["decide_design_strategy", "generate_design_system", "design_system_approval_gate", "evaluate_design_quality"]
+    expected_artifacts: ["design_decision_report.json", "visual_acceptance_criteria.md", "design_quality_score.json", "visual_rejection_report.json"]
+    risk_level: "low"
+    usage_policy: "Use as local design director and accessibility checklist, not as a cloud service."
+    requires_mcp: false
+    requires_api_key: false
+
+  - local_skill: "motion-performance"
+    source_package: "gsap-skills-main.zip; antigravity-awesome-skills-main.zip"
+    source_patterns: ["gsap-performance", "fixing-motion-performance"]
+    genesis_stages: ["decide_design_strategy", "generate_code", "run_quality_gates", "evaluate_design_quality"]
+    expected_artifacts: ["motion_plan.json", "motion_purpose_contract.json", "motion_runtime_invariant_report.json"]
+    risk_level: "low"
+    usage_policy: "Prefer transform/opacity, reduced motion, and purposeful animation."
+    requires_mcp: false
+    requires_api_key: false
+
+  - local_skill: "repair-and-package-hygiene"
+    source_package: "jcode-master; ruflo-main.zip; antigravity-awesome-skills-main.zip"
+    source_patterns: ["validation-manifest", "workflow-evidence", "codebase-audit-pre-push"]
+    genesis_stages: ["run_agent_repair_loop", "build_replay_dashboard", "deliver_github_pr", "learn_verified_patterns"]
+    expected_artifacts: ["fix_task.json", "package_cleanliness_report.json", "verified_memory_packets.jsonl"]
+    risk_level: "low"
+    usage_policy: "Use evidence cards and focused repair handoff; do not import alternate runtimes."
+    requires_mcp: false
+    requires_api_key: false
+
+keep_out:
+  - "Do not vendor raw ZIPs into the installer."
+  - "Do not call MCP/cloud tools from this local skill layer."
+  - "Do not replace Genesis QAOS, flow, gates, stack selection, or installer."
+  - "Do not import offensive security automation; use defensive local checks only."

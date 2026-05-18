@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LessonsContext",
+  "description": "Past-migration lessons loaded at Stage 1 and injected into code generation. Written to workspace/lessons_context.json.",
+  "type": "object",
+  "required": ["platform", "domain", "avoid", "reuse", "suggestions", "prompt_injection"],
+  "properties": {
+    "platform": {
+      "type": "string",
+      "description": "Source platform for this migration (e.g. powerapps, mendix, appian)"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Business domain (e.g. healthcare, finance, logistics)"
+    },
+    "avoid": {
+      "type": "array",
+      "description": "Past failures to avoid — injected as AVOID warnings into the LLM prompt",
+      "items": {
+        "type": "object",
+        "required": ["type", "platform", "domain", "what_happened", "avoid_in_future"],
+        "properties": {
+          "type": { "type": "string" },
+          "platform": { "type": "string" },
+          "domain": { "type": "string" },
+          "what_happened": { "type": "string" },
+          "root_cause": { "type": "string" },
+          "what_fixed_it": { "type": "string" },
+          "avoid_in_future": { "type": "boolean" },
+          "quality_score_before": { "type": ["number", "null"] },
+          "quality_score_after": { "type": ["number", "null"] },
+          "trust_level": { "type": "string" },
+          "migration_id": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "reuse": {
+      "type": "array",
+      "description": "Verified patterns to reuse — auto-applied when quality_score >= 0.80 and trust >= test_passed",
+      "items": {
+        "type": "object",
+        "required": ["source_construct", "target_construct", "trust_level", "quality_score"],
+        "properties": {
+          "source_construct": { "type": "string" },
+          "target_construct": { "type": "string" },
+          "platform": { "type": "string" },
+          "domain": { "type": "string" },
+          "stack": { "type": "string" },
+          "trust_level": {
+            "type": "string",
+            "enum": ["failed_before", "generated_only", "build_passed", "test_passed", "human_approved", "deployed_stable"]
+          },
+          "quality_score": { "type": "number", "minimum": 0, "maximum": 1 },
+          "times_used": { "type": "integer" },
+          "migration_id": { "type": "string" },
+          "timestamp": { "type": "string" }
+        }
+      }
+    },
+    "suggestions": {
+      "type": "array",
+      "description": "Lower-confidence patterns — shown to the agent as suggestions, not applied automatically",
+      "items": { "type": "object" }
+    },
+    "prompt_injection": {
+      "type": "string",
+      "description": "Pre-rendered markdown block injected into every LLM system prompt for this migration"
+    },
+    "deterministic_constraints": {
+      "type": "array",
+      "description": "Hard generation and QA constraints loaded from memory/lessons and enforced by deterministic framework code.",
+      "items": {
+        "type": "object",
+        "required": ["id", "constraint"],
+        "properties": {
+          "id": { "type": "string" },
+          "constraint": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

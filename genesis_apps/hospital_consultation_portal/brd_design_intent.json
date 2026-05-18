@@ -1,0 +1,113 @@
+{
+  "genesis_stage": "extract_brd_design_intent",
+  "source": "Hospital_Online_Consultation_Portal_BRD.docx",
+  "domain": "healthcare",
+  "app_title": "Hospital Online Consultation Portal",
+  "target_audience": {
+    "primary": "Patients (non-technical, all ages)",
+    "secondary": ["Hospital Admin Staff", "Doctors", "Customer Support", "Care Coordinators"]
+  },
+  "design_tone": "calm, trusted, medical, clean, professional, patient-friendly",
+  "brand_palette_extracted": {
+    "primary": "Teal/Cyan (#2BB5A0 approx)",
+    "secondary_dark": "Navy (#1B3A5C approx)",
+    "background": "Light blue-gray (#F0F4F8 approx)",
+    "card_bg": "White with rounded corners",
+    "status_scheduled": "Teal badge",
+    "status_completed": "Green badge",
+    "status_cancelled": "Red/gray badge",
+    "cta_primary": "Teal filled button",
+    "cta_secondary": "Dark teal filled button",
+    "signout_cta": "Red/coral filled button"
+  },
+  "logo_element": "Teal circle with white plus (+) cross medical icon",
+  "layout_pattern": "sidebar_left_plus_topbar_plus_content_area",
+  "sidebar_nav_items": ["Welcome", "Dashboard", "Book Consultation", "My Consultations", "Prescriptions", "Profile / Sign Out"],
+  "topbar_elements": ["logo + app title + page subtitle", "Demo Patient Portal badge (top-right)"],
+  "pages": [
+    {
+      "id": "login",
+      "name": "Login Page",
+      "layout": "split_screen",
+      "left_panel": "login_card_with_logo_title_patient_id_password_button_disclaimer",
+      "right_panel": "online_doctor_consultation_illustration",
+      "figure": "figure_2.png",
+      "accessibility_requirements": ["visible labels", "password masking", "demo disclaimer"],
+      "design_note": "Balanced split composition. Form panel left (~45%), illustration right (~55%). Clean card with rounded corners."
+    },
+    {
+      "id": "welcome",
+      "name": "Welcome Page",
+      "layout": "sidebar + hero_with_illustration + quick_action_buttons + info_cards",
+      "figure": "figure_3.png",
+      "components": ["greeting hero", "Book Consultation CTA", "View Consultations CTA", "Upcoming Consultations card", "Prescriptions card", "Support card", "illustration panel"],
+      "design_note": "Warm, guided landing. Illustration right of hero area. 3 secondary info cards below."
+    },
+    {
+      "id": "dashboard",
+      "name": "Main Dashboard",
+      "layout": "sidebar + topbar + metric_cards_row + action_cards_2x2_grid",
+      "figure": "figure_1.png",
+      "components": ["4 metric cards (Total, Scheduled, Completed, Prescriptions Available)", "4 quick action cards (Book New, My Consultations, View Prescriptions, Contact Support)"],
+      "design_note": "Portal dashboard with numeric metric cards in a 4-column row. Action cards in 2x2 grid below."
+    },
+    {
+      "id": "book_consultation",
+      "name": "Book Consultation",
+      "layout": "sidebar + topbar + single_wide_form_card",
+      "figure": "figure_4.png",
+      "components": ["Patient Name", "Patient Age", "Gender (dropdown)", "Department (dropdown)", "Doctor (dropdown)", "Mode (dropdown)", "Date", "Time", "Symptoms (textarea)", "Book Consultation button"],
+      "form_layout": "2-column grid for top 8 fields, full-width textarea for symptoms",
+      "design_note": "Clean form inside wide card. 4 fields per row x 2 rows, then symptoms full-width."
+    },
+    {
+      "id": "my_consultations",
+      "name": "My Consultations",
+      "layout": "sidebar + topbar + filter_bar + consultation_cards_list",
+      "figure": "figure_5.png",
+      "components": ["Search input", "Status Filter dropdown", "Department filter dropdown", "Consultation cards with: patient name, department, doctor, mode, date/time, status badge, Update button"],
+      "status_badges": ["Requested", "Scheduled (teal)", "In Consultation", "Completed (green)", "Cancelled"],
+      "design_note": "Data-dense list. Filter row pinned above card list. Status badge left of Update button."
+    },
+    {
+      "id": "prescriptions",
+      "name": "Prescriptions & Medical Summary",
+      "layout": "sidebar + topbar + prescription_status_badge + info_cards",
+      "figure": "figure_6.png",
+      "components": ["Prescription Status badge (Available for Completed / Pending otherwise)", "Doctor Advice card", "Medication Notes card", "Follow-up Recommendation card", "Download Placeholder button"],
+      "design_note": "Card-based summary layout. Demo disclaimer prominent."
+    },
+    {
+      "id": "signout",
+      "name": "Profile / Sign Out",
+      "layout": "sidebar + topbar + centered_confirmation_card",
+      "figure": "figure_7.png",
+      "components": ["Green checkmark circle", "Sign out confirmation text", "Sign Out Securely button (red/coral)"],
+      "design_note": "Single centered card with confirmation flow."
+    },
+    {
+      "id": "flow_diagram",
+      "name": "Patient Portal Flow",
+      "type": "user_flow_diagram",
+      "figure": "figure_8.png",
+      "flow": ["Login", "Welcome", "Dashboard", "Book", "Track", "Prescription", "Sign Out"]
+    }
+  ],
+  "accessibility_requirements": [
+    "All input fields must have visible labels",
+    "Buttons must have clear action names",
+    "Status labels must be readable",
+    "Search and filters must be easy to find",
+    "Password input must use masked type",
+    "Support Playwright tests using accessible locators"
+  ],
+  "security_privacy": {
+    "no_real_patient_data": true,
+    "demo_disclaimer_required": true,
+    "password_masked": true,
+    "no_persistent_storage": true
+  },
+  "visual_quality_baseline": "Professional mockups already show Next.js/React-level quality with sidebar nav, metric cards, status badges, and proper desktop layouts. BRD technical stack (Streamlit) does not match the visual fidelity of the embedded mockups.",
+  "brd_stack_conflict_detected": true,
+  "brd_stack_conflict_reason": "BRD Section 14 requests Streamlit. However, the embedded mockups (Figures 1–8) depict a sidebar-nav web application layout with metric cards, grid forms, status badges, and split-screen login that is consistent with a React/Next.js production web app, not a Streamlit prototype."
+}

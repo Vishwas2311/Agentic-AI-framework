@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "source_file": "Hospital_Online_Consultation_Portal_BRD.docx",
+  "analyzed_at": "2026-05-05",
+  "completeness_score": 0.94,
+  "primary_user": "Patient",
+  "all_users": ["Patient", "Hospital Admin Staff", "Doctors", "Customer Support Team", "Care Coordinators"],
+  "app_type": "demo_hospital_patient_portal",
+  "target_stack_declared": "Streamlit",
+  "pages": [
+    { "id": "login", "section": "5.1", "completeness": 1.0 },
+    { "id": "welcome", "section": "5.2", "completeness": 1.0 },
+    { "id": "dashboard", "section": "5.3", "completeness": 1.0 },
+    { "id": "book_consultation", "section": "5.4", "completeness": 1.0 },
+    { "id": "my_consultations", "section": "5.5", "completeness": 1.0 },
+    { "id": "prescription", "section": "5.6", "completeness": 1.0 },
+    { "id": "sign_out", "section": "5.7", "completeness": 1.0 }
+  ],
+  "functional_requirement_groups": 9,
+  "test_cases": 10,
+  "acceptance_criteria": 13,
+  "missing_items": [
+    { "item": "Mockup images (Figures 1–9)", "impact": "low", "strategy": "Generated from text descriptions" }
+  ],
+  "explicitly_out_of_scope": [
+    "Real database persistence",
+    "Real authentication",
+    "Real medical advice or prescriptions",
+    "Multi-role support beyond Patient"
+  ],
+  "demo_disclaimer_required": true
+}

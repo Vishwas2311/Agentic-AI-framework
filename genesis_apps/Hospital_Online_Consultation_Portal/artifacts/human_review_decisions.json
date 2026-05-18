@@ -1,0 +1,20 @@
+{
+  "genesis_version": "3.1.0",
+  "stage": "human_review_gate",
+  "timestamp": "2026-05-07T00:00:00Z",
+  "decisions": [
+    {
+      "id": "DECISION_001",
+      "topic": "Stack selection — BRD specifies Streamlit, portal is UI-heavy",
+      "options_presented": ["Polished Client Demo (Next.js + Tailwind + shadcn/ui + Motion)", "Exact BRD Streamlit Demo", "Production Pro-Code (Next.js + API Routes)"],
+      "human_choice": "Polished Client Demo",
+      "selected_stack": "nextjs_tailwind_shadcn_motion",
+      "delivery_mode": "client_demo_polished",
+      "approved_by": "human",
+      "approved_at": "2026-05-07T00:00:00Z"
+    }
+  ],
+  "unresolved_conflicts": [],
+  "confidence_override": null,
+  "gate_passed": true
+}

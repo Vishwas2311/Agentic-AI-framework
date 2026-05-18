@@ -1,0 +1,20 @@
+{
+  "genesis_stage": "decide_design_strategy",
+  "source_material": "brd_embedded_mockups",
+  "source_usage": "primary_visual_evidence",
+  "rebuild_mode": "modernized_rebuild_matching_mockups",
+  "magic_project_type": "website",
+  "magic_creation_type": "from_scratch",
+  "website_goal": "custom",
+  "ui_ux_pro_max_mode": "enterprise_density_healthcare_portal",
+  "motion_intensity": "subtle",
+  "layout_profiles_by_page": {
+    "login": "auth_split_screen",
+    "welcome": "portal_dashboard",
+    "dashboard": "portal_dashboard",
+    "book_consultation": "operational_form",
+    "my_consultations": "data_table_workspace",
+    "prescriptions": "operational_form",
+    "signout": "operational_form"
+  }
+}

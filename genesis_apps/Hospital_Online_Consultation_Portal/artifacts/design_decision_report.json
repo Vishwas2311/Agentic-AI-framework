@@ -1,0 +1,31 @@
+{
+  "genesis_version": "3.1.0",
+  "stage": "decide_design_strategy",
+  "timestamp": "2026-05-07T00:00:00Z",
+  "domain": "healthcare",
+  "design_director": "ui_ux_pro_max",
+  "mode": "modernized_rebuild_from_brd",
+  "source_material": "brd_text_requirements_plus_mockup_figure_references",
+  "improvement_rule": "Build cleaner, more accessible, more responsive UI than a basic Streamlit implementation. Preserve all BRD workflows and content hierarchy while upgrading visual quality to polished client-demo standard.",
+  "magic_selection": {
+    "project_type": "website",
+    "creation_type": "from_scratch",
+    "rationale": "No reference URL provided. Building from BRD text requirements and figure descriptions."
+  },
+  "ui_ux_pro_max_mode": "enterprise_density_calm_compact",
+  "motion_intensity": "subtle",
+  "motion_rationale": "Healthcare portal — enterprise dashboard mode. Subtle hover feedback, toast enter/exit, skeleton loading, collapsible nav only. No decorative motion.",
+  "layout_rationale": "7-page portal with sidebar nav. Dashboard and consultations use task_first_wide to avoid operational content trapped in narrow centered containers.",
+  "accessibility_commitment": "All inputs labeled, focus states visible, color contrast WCAG AA minimum, keyboard nav supported.",
+  "tool_selection": {
+    "source_material_reason": "BRD DOCX with text requirements and figure references — no screenshots or Figma provided",
+    "build_scope_reason": "Full 7-page portal application",
+    "layout_profile_reason": "Healthcare domain + patient portal = portal_dashboard profile for data screens, auth_split_screen for login",
+    "magic_project_type_reason": "Full application (website type in Magic terms)",
+    "magic_creation_type_reason": "from_scratch — no reference URL available",
+    "website_goal_reason": "custom portal — task_completion conversion pattern",
+    "ui_ux_pro_max_mode_reason": "Healthcare domain requires enterprise density, calm compact, trustworthy palette",
+    "motion_intensity_reason": "Healthcare + portal = subtle. No expressive motion on data tables.",
+    "qa_gate_reason": "Playwright E2E covering all 10 BRD test cases + design quality score required"
+  }
+}

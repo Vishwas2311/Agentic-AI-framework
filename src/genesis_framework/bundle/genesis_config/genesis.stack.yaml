@@ -1,0 +1,98 @@
+version: 3.1.0
+name: NoCode2ProCode Stack Governance
+
+principle: A BRD is source truth for product behavior, but not automatically final for architecture or UI quality. NoCode2ProCode must choose the stack that satisfies the user's delivery intent and quality gates.
+
+delivery_modes:
+  prototype_demo:
+    use_when: [user_requests_quick_demo, brd_explicitly_locks_streamlit, no_production_language]
+    allowed_stacks: [streamlit, gradio, simple_static]
+    approval_note: Functional demo approval only. Not product-grade unless design gates pass.
+  client_demo_polished:
+    use_when: [client_demo, polished_demo, hospital_client_ready, nontechnical_users]
+    allowed_stacks: [react_tailwind_shadcn, nextjs_tailwind, nextjs_tailwind_shadcn_motion]
+    approval_note: Requires design quality score and visual rejection gate.
+  production_procode:
+    use_when: [proper_software, production, pro_code, enterprise, scalable, deployable]
+    preferred_stacks: [nextjs_tailwind_shadcn_motion, react_tailwind_shadcn_plus_backend, nextjs_tailwind_plus_api, spring_boot_react, node_react, dotnet_angular]
+    approval_note: Prototype-only stacks are blocked unless the user explicitly overrides with human approval.
+  enterprise_migration:
+    use_when: [lowcode_migration, enterprise, roles_permissions, integrations, audit, compliance]
+    preferred_stacks: [spring_boot_react_postgres, dotnet_angular_sqlserver, node_react_postgres, nextjs_tailwind_shadcn_motion_plus_api]
+    approval_note: Must include permission parity, API contracts, deployment, observability, and premium UX gates.
+
+stack_categories:
+  prototype_or_demo:
+    - streamlit
+    - gradio
+    - notebook
+    - static_html_only
+  production_ui:
+    - react_tailwind_shadcn
+    - nextjs_tailwind
+    - nextjs_tailwind_shadcn_motion
+    - angular_material
+    - vue_tailwind
+  production_backend:
+    - java_spring_boot
+    - node_express_nest
+    - dotnet_webapi
+    - fastapi
+
+production_profiles:
+  nextjs_tailwind_shadcn_motion:
+    frontend: nextjs_14_app_router
+    styling: tailwind_css
+    component_system: shadcn_ui
+    motion_layer: motion_for_react
+    design_director: ui_ux_pro_max
+    component_generator: magic_21st
+    qa: [playwright, axe, visual_diff, design_quality_gate]
+    use_for: [ui_heavy_web_app, portal, dashboard, healthcare, client_demo_polished, production_procode]
+  nextjs_tailwind_shadcn_motion_plus_api:
+    frontend: nextjs_14_app_router
+    styling: tailwind_css
+    component_system: shadcn_ui
+    motion_layer: motion_for_react
+    backend: nextjs_route_handlers_or_external_api
+    design_director: ui_ux_pro_max
+    component_generator: magic_21st
+    qa: [playwright, axe, visual_diff, api_tests, design_quality_gate]
+    use_for: [production_procode, enterprise_migration]
+  react_tailwind_shadcn_plus_backend:
+    frontend: react
+    styling: tailwind_css
+    component_system: shadcn_ui
+    motion_layer: motion_for_react
+    backend: node_or_java_or_dotnet
+    design_director: ui_ux_pro_max
+    component_generator: magic_21st
+    qa: [playwright, axe, visual_diff, design_quality_gate]
+    use_for: [production_procode]
+
+conflict_rules:
+  brd_stack_conflicts_with_user_intent:
+    condition: BRD requests prototype stack but user asks proper software, production, pro-code, enterprise, or beyond expectation quality.
+    action: ask_or_document_upgrade_decision
+  brd_stack_is_streamlit:
+    condition: BRD says Use Streamlit.
+    action: create stack_decision_report.json and delivery_mode_decision.json before generation.
+  prototype_stack_selected_for_production:
+    condition: selected delivery mode is production_procode or enterprise_migration and selected stack is prototype_or_demo.
+    action: block_until_explicit_human_override
+  exact_brd_requested:
+    condition: user explicitly says exact BRD stack or do not change stack.
+    action: follow BRD stack but still run design quality gate.
+
+default_decision:
+  if_user_says_same_software: preserve_features_not_stack
+  if_user_says_same_location: output_path_only_not_stack_lock
+  if_user_says_proper_software: upgrade_to_production_procode
+  if_user_requests_ui_heavy_website_or_portal: prefer_nextjs_tailwind_shadcn_motion
+  if_unclear: ask_one_stack_question_before_generation
+
+required_outputs:
+  - stack_decision_report.json
+  - delivery_mode_decision.json
+  - brd_design_intent.json
+  - brd_mockup_inventory.json

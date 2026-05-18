@@ -1,0 +1,9 @@
+{
+  "project_type": "website",
+  "creation_type": "from_scratch",
+  "website_goal": "custom",
+  "source_evidence": [
+    "brd_extracted_images/figure_1.png to figure_8.png"
+  ],
+  "component_scope": "full_app_7_pages"
+}

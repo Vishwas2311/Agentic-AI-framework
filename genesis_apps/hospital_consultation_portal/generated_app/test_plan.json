@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "project": "Hospital Online Consultation Portal",
+  "test_framework_unit": "pytest",
+  "test_framework_ui": "Playwright",
+  "unit_test_file": "test_app.py",
+  "ui_test_file": "ui_test.py",
+  "test_cases": [
+    {
+      "id": "TC_001",
+      "name": "LOGIN",
+      "type": "ui",
+      "steps": ["Open app", "Verify login page", "Enter patient@example.com + patient123", "Click Login", "Verify Welcome page"],
+      "acceptance_criteria": ["AC-01", "AC-02"],
+      "expected": "Welcome page visible"
+    },
+    {
+      "id": "TC_002",
+      "name": "WELCOME",
+      "type": "ui",
+      "steps": ["Verify welcome message", "Verify Book Consultation button", "Verify My Consultations button"],
+      "acceptance_criteria": ["AC-02"],
+      "expected": "All elements visible"
+    },
+    {
+      "id": "TC_003",
+      "name": "BOOK_CONSULTATION",
+      "type": "ui",
+      "steps": ["Navigate to Book Consultation", "Fill all 10 fields", "Click Book Consultation", "Verify in My Consultations"],
+      "acceptance_criteria": ["AC-03", "AC-04"],
+      "expected": "Consultation booked and visible"
+    },
+    {
+      "id": "TC_004",
+      "name": "METRICS_AFTER_BOOKING",
+      "type": "ui",
+      "steps": ["Navigate to Dashboard", "Verify Total=1", "Verify Requested=1", "Verify Completed=0", "Verify Prescriptions=0"],
+      "acceptance_criteria": ["AC-08"],
+      "expected": "All metrics correct"
+    },
+    {
+      "id": "TC_005",
+      "name": "UPDATE_STATUS",
+      "type": "ui",
+      "steps": ["Navigate to My Consultations", "Change status Requested→Scheduled", "Verify badge shows Scheduled", "Verify Scheduled metric=1"],
+      "acceptance_criteria": ["AC-05", "AC-08"],
+      "expected": "Status updated, metrics correct"
+    },
+    {
+      "id": "TC_006",
+      "name": "COMPLETE_CONSULTATION",
+      "type": "ui",
+      "steps": ["Change status Scheduled→Completed", "Verify badge shows Completed", "Verify Completed=1", "Verify Prescriptions=1"],
+      "acceptance_criteria": ["AC-05", "AC-08", "AC-09"],
+      "expected": "Completed status, prescription available"
+    },
+    {
+      "id": "TC_007",
+      "name": "FILTER_COMPLETED",
+      "type": "ui",
+      "steps": ["Select filter: Completed", "Verify Rahul Sharma visible"],
+      "acceptance_criteria": ["AC-06"],
+      "expected": "Only Completed consultations shown"
+    },
+    {
+      "id": "TC_008",
+      "name": "SEARCH_BY_DOCTOR",
+      "type": "ui",
+      "steps": ["Reset filter to All", "Search 'Dr. Mehta'", "Verify Rahul Sharma visible"],
+      "acceptance_criteria": ["AC-07"],
+      "expected": "Search results correct"
+    },
+    {
+      "id": "TC_009",
+      "name": "PRESCRIPTION",
+      "type": "ui",
+      "steps": ["Navigate to Prescription", "Verify Available Prescriptions section", "Open expander", "Verify Prescription Status: Available"],
+      "acceptance_criteria": ["AC-09"],
+      "expected": "Prescription summary visible and correct"
+    },
+    {
+      "id": "TC_010",
+      "name": "SIGN_OUT",
+      "type": "ui",
+      "steps": ["Navigate to Sign Out", "Click Sign Out", "Verify signed-out message", "Verify login page visible"],
+      "acceptance_criteria": ["AC-10", "AC-11"],
+      "expected": "Session cleared, login page shown"
+    }
+  ],
+  "unit_test_coverage": [
+    "authenticate (valid, invalid, empty, whitespace)",
+    "book_consultation (append, fields, id, multiple)",
+    "filter_consultations (all, matching, non-matching, empty)",
+    "search_consultations (name, doctor, dept, case-insensitive, no-match, empty-query)",
+    "update_consultation_status_by_id (scheduled, completed, invalid-id, in-place)",
+    "get_metrics (empty, after-booking, after-scheduled, after-completed, prescriptions-match-completed)",
+    "get_prescription_summary (pending, available, demo-disclaimer)"
+  ]
+}

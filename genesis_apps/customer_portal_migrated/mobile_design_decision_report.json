@@ -1,0 +1,61 @@
+{
+  "schema_version": "3.1.0",
+  "source_type": "mobile_app_screenshot",
+  "domain": "healthcare mobile app",
+  "fidelity_mode": "modernized_fidelity",
+  "source_material": {
+    "kind": "uploaded_image",
+    "usage": "primary_visual_evidence",
+    "reference_url": null
+  },
+  "decision": {
+    "build_scope": "website",
+    "rebuild_mode": "modernized_rebuild",
+    "improve_by_default": true,
+    "improvement_guardrail": "Preserve source truth and requested fidelity while improving UX, accessibility, responsiveness, states, and polish."
+  },
+  "tool_sequence": [
+    "vision_model",
+    "ui_ux_pro_max",
+    "magic_21st",
+    "motion_after_rebuild",
+    "playwright_qa"
+  ],
+  "magic_selection": {
+    "project_type": "website",
+    "creation_type": "from_scratch",
+    "website_goal": "interactive_quiz",
+    "reference_url": null
+  },
+  "ui_ux_pro_max": {
+    "mode": "design_director",
+    "must_create": [
+      "DESIGN.md",
+      "design_tokens.json",
+      "component_registry.json",
+      "visual_acceptance_criteria.md"
+    ],
+    "must_persist": [
+      "design-system/MASTER.md",
+      "design-system/pages/{page_id}.md"
+    ]
+  },
+  "motion_plan": {
+    "intensity": "subtle",
+    "library": "motion",
+    "accessibility": [
+      "MotionConfig reducedMotion=user",
+      "useReducedMotion for bespoke motion"
+    ],
+    "bundle_policy": "Prefer LazyMotion and motion/react-m; load domMax only when layout/drag is required."
+  },
+  "quality_gates": [
+    "desktop_screenshot",
+    "mobile_screenshot",
+    "visual_diff",
+    "axe_accessibility",
+    "motion_reduced_mode_check",
+    "no_text_overlap",
+    "no_content_clipping"
+  ]
+}

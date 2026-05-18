@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nocode2procode.local/schemas/brd_design_intent.schema.json",
+  "title": "BRD Design Intent",
+  "type": "object",
+  "required": ["schema_version", "domain", "target_users", "page_design_expectations", "accessibility_requirements", "visual_acceptance_criteria"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "domain": { "type": "string" },
+    "target_users": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "page_design_expectations": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "mockup_references": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "accessibility_requirements": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "visual_acceptance_criteria": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "stack_requirements": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

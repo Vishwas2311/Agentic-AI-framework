@@ -1,0 +1,46 @@
+{
+  "genesis_stage": "brd_understanding_gate",
+  "source": "Hospital_Online_Consultation_Portal_BRD.docx",
+  "app_name": "Hospital Online Consultation Portal",
+  "domain": "healthcare",
+  "pages_understood": 7,
+  "mockups_understood": 8,
+  "features_extracted": [
+    "Secure login with session state",
+    "Welcome page with quick action CTAs",
+    "Dashboard with 4 metric cards (Total, Scheduled, Completed, Prescriptions)",
+    "Book consultation form (patient name, age, gender, department, doctor, mode, date, time, symptoms)",
+    "My Consultations list with filter (All/Requested/Scheduled/In Consultation/Completed/Cancelled) and search (patient/doctor/department)",
+    "Status update per consultation (Requested → Scheduled → Completed)",
+    "Prescription summary (Available for Completed, Pending otherwise)",
+    "Demo prescription fields: Doctor Advice, Medication Notes, Follow-up Recommendation",
+    "Sign out with session clear and login redirect"
+  ],
+  "data_model_extracted": {
+    "consultation": {
+      "id": "auto-generated",
+      "patient_name": "text",
+      "patient_age": "number",
+      "gender": ["Male", "Female", "Other"],
+      "department": ["General Medicine", "Cardiology", "Dermatology", "Orthopedics", "Pediatrics", "Neurology"],
+      "doctor": ["Dr. Mehta", "Dr. Sharma", "Dr. Rao", "Dr. Iyer", "Dr. Khan"],
+      "consultation_mode": ["Video Call", "Audio Call", "Chat"],
+      "consultation_status": ["Requested", "Scheduled", "In Consultation", "Completed", "Cancelled"],
+      "consultation_date": "date",
+      "consultation_time": "text",
+      "symptoms": "textarea",
+      "prescription_status": ["Pending", "Available"]
+    }
+  },
+  "sample_credentials": {
+    "patient_id_or_email": "patient@example.com",
+    "password": "patient123"
+  },
+  "test_cases_extracted": 10,
+  "acceptance_criteria_count": 13,
+  "brd_stack_requested": "streamlit",
+  "brd_stack_conflict": true,
+  "conflict_reason": "BRD Section 14 mandates Streamlit. However, all 7 embedded mockups depict a sidebar-nav React/Next.js-style web application with metric dashboards, data cards, status badges, and split-screen login. Streamlit cannot reproduce this layout without heavy custom component wrappers. The user invoked NoCode2ProCode (production pro-code pipeline), which per genesis policy blocks prototype-only stacks unless explicitly overridden.",
+  "confidence": 0.97,
+  "confidence_basis": "Full BRD text extracted, all 8 figures extracted and analyzed, all tables extracted, no ambiguity in business logic"
+}

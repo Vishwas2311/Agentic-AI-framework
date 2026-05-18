@@ -1,0 +1,24 @@
+{
+  "intensity": "standard",
+  "library": "motion",
+  "accessibility": [
+    "MotionConfig reducedMotion=user",
+    "useReducedMotion for bespoke motion"
+  ],
+  "bundle_policy": "Prefer LazyMotion and motion/react-m; load domMax only when layout/drag is required.",
+  "purpose_contract": {
+    "enabled": true,
+    "intensity": "standard",
+    "animations": [
+      {
+        "component": "product_grid_pricing_cart_reviews_checkout",
+        "trigger": "enter_or_state_change",
+        "purpose": "Improve orientation and perceived polish for the selected pattern.",
+        "duration_ms": 180,
+        "easing_or_spring": "easeOut_or_light_spring",
+        "reduced_motion_fallback": "opacity_or_instant_state_change",
+        "qa_assertion": "Animation does not delay primary task or hide content."
+      }
+    ]
+  }
+}

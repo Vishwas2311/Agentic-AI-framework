@@ -1,0 +1,152 @@
+version: 3.1.0
+name: Genesis Installation Plan
+
+install_modes:
+  auto_install_safe: Claude may install when running in the project workspace and package managers are available.
+  approval_required: Claude must ask before installing or changing the local/global environment.
+  manual_setup_required: Human must configure credentials, accounts, MCP auth, or infrastructure access.
+  enterprise_optional: Install only when the enterprise environment needs it.
+
+tools:
+  python_package:
+    install_mode: auto_install_safe
+    commands:
+      - python -m pip install -e ".[dev]"
+
+  playwright:
+    install_mode: approval_required
+    commands:
+      - npm install -D @playwright/test
+      - npx playwright install chromium
+    reason: Installs browser binaries and Node packages.
+
+  axe_core:
+    install_mode: auto_install_safe
+    commands:
+      - npm install -D @axe-core/playwright
+
+  pixelmatch:
+    install_mode: auto_install_safe
+    commands:
+      - npm install -D pixelmatch pngjs
+
+  motion_react:
+    install_mode: auto_install_safe
+    commands:
+      - npm install motion
+
+  magic_21st_mcp:
+    install_mode: manual_setup_required
+    reason: Requires 21st.dev Magic MCP setup, account access, and Claude MCP configuration.
+
+  ui_ux_pro_max_skill:
+    install_mode: manual_setup_required
+    reason: Requires UI/UX Pro Max skill installation/configuration in the active Claude environment.
+
+  semgrep:
+    install_mode: approval_required
+    commands:
+      - python -m pip install semgrep
+    reason: Security scanner, may be installed locally or globally depending environment.
+
+  gitleaks:
+    install_mode: approval_required
+    commands:
+      - winget install Gitleaks.Gitleaks
+    reason: System-level executable install.
+
+  syft:
+    install_mode: approval_required
+    commands:
+      - winget install Anchore.Syft
+    reason: System-level executable install.
+
+  grype:
+    install_mode: approval_required
+    commands:
+      - winget install Anchore.Grype
+    reason: System-level executable install.
+
+  trivy:
+    install_mode: approval_required
+    commands:
+      - winget install AquaSecurity.Trivy
+    reason: System-level executable install.
+
+  osv_scanner:
+    install_mode: approval_required
+    commands:
+      - winget install Google.OSV-Scanner
+    reason: System-level executable install.
+
+  openapi_generator:
+    install_mode: approval_required
+    commands:
+      - npm install -g @openapitools/openapi-generator-cli
+    reason: Global npm executable install.
+
+  asyncapi_generator:
+    install_mode: approval_required
+    commands:
+      - npm install -g @asyncapi/generator
+    reason: Global npm executable install.
+
+  figma_mcp:
+    install_mode: manual_setup_required
+    reason: Requires Figma account authorization and Claude MCP configuration.
+
+  github_mcp:
+    install_mode: manual_setup_required
+    reason: Requires GitHub authentication and scoped repository permissions.
+
+  firecrawl_mcp:
+    install_mode: manual_setup_required
+    reason: Requires Firecrawl server/API configuration.
+
+  context7_mcp:
+    install_mode: manual_setup_required
+    reason: Requires MCP server configuration.
+
+  e2b_mcp:
+    install_mode: manual_setup_required
+    reason: Requires E2B account/API key and sandbox configuration.
+
+  postgres_mcp:
+    install_mode: manual_setup_required
+    reason: Requires database credentials and must be configured read-only.
+
+  docker:
+    install_mode: manual_setup_required
+    reason: Requires Docker Desktop/system setup and can run containers.
+
+  kubernetes:
+    install_mode: manual_setup_required
+    reason: Requires cluster credentials and can affect infrastructure.
+
+  terraform:
+    install_mode: manual_setup_required
+    reason: Requires cloud credentials and can create/modify infrastructure.
+
+  datadog_mcp:
+    install_mode: enterprise_optional
+    reason: Enterprise APM add-on requiring Datadog account and tokens.
+
+  burp_mcp:
+    install_mode: enterprise_optional
+    reason: Advanced appsec add-on requiring Burp Suite setup/license.
+
+policy:
+  never_auto_install:
+    - docker
+    - kubernetes
+    - terraform
+    - figma_mcp
+    - github_mcp
+    - e2b_mcp
+    - postgres_mcp
+  ask_before:
+    - global npm installs
+    - winget installs
+    - browser binary installs
+    - security scanners
+    - cloud or infra tooling

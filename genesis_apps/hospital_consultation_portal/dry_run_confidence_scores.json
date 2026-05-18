@@ -1,0 +1,317 @@
+{
+  "schema_version": "3.1.0",
+  "project": "Hospital Online Consultation Portal",
+  "source_file": "Hospital_Online_Consultation_Portal_BRD.docx",
+  "generated_at": "2026-05-05",
+  "genesis_stage": "dry_run_estimate",
+  "overall_confidence": 0.93,
+  "overall_risk": "low",
+  "migration_viable": true,
+  "human_review_gates_required": 1,
+  "policy_gate": "pass",
+
+  "source_confidence": {
+    "score": 0.94,
+    "label": "High",
+    "notes": "BRD is complete and detailed. Only gap: mockup images (Figures 1–9) referenced but not included in docx.",
+    "completeness_by_section": {
+      "executive_summary": 1.0,
+      "business_goal": 1.0,
+      "target_users": 1.0,
+      "core_features": 1.0,
+      "page_designs_text": 1.0,
+      "page_mockup_images": 0.0,
+      "functional_requirements": 1.0,
+      "sample_credentials": 1.0,
+      "data_fields_dropdowns": 1.0,
+      "metrics": 1.0,
+      "happy_path_test_cases": 1.0,
+      "ui_requirements": 1.0,
+      "accessibility_requirements": 1.0,
+      "security_requirements": 1.0,
+      "technical_requirements": 1.0,
+      "expected_output_files": 1.0,
+      "acceptance_criteria": 1.0,
+      "demo_disclaimer": 1.0
+    }
+  },
+
+  "feature_confidence_scores": [
+    {
+      "feature_id": "F-01",
+      "name": "Patient Login with session_state",
+      "score": 0.97,
+      "risk": "low",
+      "notes": "Standard Streamlit pattern. Credentials defined: patient@example.com / patient123."
+    },
+    {
+      "feature_id": "F-02",
+      "name": "Welcome Page with quick actions",
+      "score": 0.95,
+      "risk": "low",
+      "notes": "Simple informational layout. CTAs map directly to Book Consultation and My Consultations."
+    },
+    {
+      "feature_id": "F-03",
+      "name": "Main Dashboard with 5 metric cards",
+      "score": 0.95,
+      "risk": "low",
+      "notes": "5 metrics clearly defined. Metric computation is simple counter logic."
+    },
+    {
+      "feature_id": "F-04",
+      "name": "Book Consultation form (10 fields)",
+      "score": 0.97,
+      "risk": "low",
+      "notes": "All 10 form fields explicitly specified. Dropdown values enumerated. Submit → append to session state list."
+    },
+    {
+      "feature_id": "F-05",
+      "name": "My Consultations list display",
+      "score": 0.95,
+      "risk": "low",
+      "notes": "All display fields defined. Card or table layout both viable."
+    },
+    {
+      "feature_id": "F-06",
+      "name": "Status filter (6 values + All)",
+      "score": 0.97,
+      "risk": "low",
+      "notes": "Filter values fully enumerated. Simple Python list comprehension filter."
+    },
+    {
+      "feature_id": "F-07",
+      "name": "Search by patient name, doctor, department",
+      "score": 0.97,
+      "risk": "low",
+      "notes": "Three search fields defined. Case-insensitive substring match is the natural implementation."
+    },
+    {
+      "feature_id": "F-08",
+      "name": "Status update (Requested → Scheduled → Completed)",
+      "score": 0.95,
+      "risk": "medium",
+      "notes": "State mutation in session_state requires index-based update. Double-repr issue risk if st.session_state is updated post-widget creation. Requires careful implementation."
+    },
+    {
+      "feature_id": "F-09",
+      "name": "Prescription section (conditional by status)",
+      "score": 0.93,
+      "risk": "low",
+      "notes": "Logic is clear: Available for Completed, Pending otherwise. Placeholder text only. Demo disclaimer required."
+    },
+    {
+      "feature_id": "F-10",
+      "name": "Sign out (clear session_state, return to login)",
+      "score": 0.97,
+      "risk": "low",
+      "notes": "Standard Streamlit pattern. st.session_state.clear() + rerun."
+    },
+    {
+      "feature_id": "F-11",
+      "name": "UI healthcare design theme",
+      "score": 0.85,
+      "risk": "medium",
+      "notes": "Mockup images (Figures 1–9) not provided. Text descriptions are sufficient for a reasonable design but human review of theme is recommended before full UI generation."
+    },
+    {
+      "feature_id": "F-12",
+      "name": "Unit tests (test_app.py)",
+      "score": 0.95,
+      "risk": "low",
+      "notes": "Logic functions are pure and unit-testable. ~15 test functions expected. Mocking st.session_state for logic-only tests is standard."
+    },
+    {
+      "feature_id": "F-13",
+      "name": "Playwright UI tests (ui_test.py, TC_001–TC_010)",
+      "score": 0.88,
+      "risk": "medium",
+      "notes": "Streamlit widget keys can be dynamic. Must use accessible locators (getByLabel, getByRole, getByText). Chained session test (TC_001 through TC_010) must run in a single browser session. Date field handling requires special care."
+    }
+  ],
+
+  "stage_readiness_scores": [
+    {
+      "stage": "validate_inputs",
+      "score": 0.97,
+      "ready": true,
+      "blockers": []
+    },
+    {
+      "stage": "dry_run_estimate",
+      "score": 0.97,
+      "ready": true,
+      "blockers": []
+    },
+    {
+      "stage": "discover_sources",
+      "score": 0.94,
+      "ready": true,
+      "blockers": []
+    },
+    {
+      "stage": "extract_native_ast",
+      "score": 0.90,
+      "ready": true,
+      "blockers": [],
+      "notes": "Source is a BRD text document — AST is a structured JSON extraction of requirements, not a platform AST."
+    },
+    {
+      "stage": "record_runtime_evidence",
+      "score": 0.0,
+      "ready": false,
+      "applicable": false,
+      "blockers": ["App does not exist yet — no runtime to record"],
+      "notes": "Stage not applicable for greenfield_from_spec mode. Skip."
+    },
+    {
+      "stage": "resolve_source_truth",
+      "score": 0.97,
+      "ready": true,
+      "blockers": [],
+      "notes": "Single source (BRD) — no conflicts to resolve."
+    },
+    {
+      "stage": "build_ulc_ir",
+      "score": 0.95,
+      "ready": true,
+      "blockers": []
+    },
+    {
+      "stage": "build_canonical_app_spec",
+      "score": 0.95,
+      "ready": true,
+      "blockers": []
+    },
+    {
+      "stage": "human_review_gate",
+      "score": 0.90,
+      "ready": true,
+      "blockers": [],
+      "required_decisions": [
+        {
+          "decision_id": "D-01",
+          "topic": "UI design theme selection",
+          "reason": "Mockup images (Figures 1–9) referenced in BRD not available. Generator will propose a healthcare design system. Human confirmation requested.",
+          "urgency": "before_ui_generation",
+          "risk_if_skipped": "low — generator will use healthcare domain defaults which are appropriate"
+        }
+      ]
+    },
+    {
+      "stage": "decide_design_strategy",
+      "score": 0.90,
+      "ready": true,
+      "blockers": []
+    },
+    {
+      "stage": "generate_design_system",
+      "score": 0.90,
+      "ready": true,
+      "blockers": []
+    },
+    {
+      "stage": "generate_code",
+      "score": 0.93,
+      "ready": true,
+      "blockers": []
+    },
+    {
+      "stage": "run_agent_repair_loop",
+      "score": 0.92,
+      "ready": true,
+      "blockers": []
+    },
+    {
+      "stage": "run_quality_gates",
+      "score": 0.91,
+      "ready": true,
+      "blockers": [],
+      "notes": "Requires E2B sandbox execution — not available in dry-run."
+    },
+    {
+      "stage": "run_visual_design_qa",
+      "score": 0.88,
+      "ready": true,
+      "blockers": [],
+      "notes": "No source screenshots to diff against — visual QA will validate generated UI against visual_acceptance_criteria.md instead."
+    },
+    {
+      "stage": "build_replay_dashboard",
+      "score": 0.95,
+      "ready": true,
+      "blockers": []
+    }
+  ],
+
+  "unsupported_items": [
+    {
+      "item_id": "U-01",
+      "description": "Mockup images (Figures 1–9) referenced in BRD",
+      "status": "not_provided",
+      "impact": "low",
+      "strategy": "Use text descriptions from BRD sections 5.1–5.8 as design evidence. Apply healthcare domain design defaults. Require human design review before full UI generation."
+    },
+    {
+      "item_id": "U-02",
+      "description": "Real database persistence",
+      "status": "explicitly_excluded",
+      "impact": "none",
+      "strategy": "Use st.session_state only per BRD Section 14. Acceptable for demo app."
+    },
+    {
+      "item_id": "U-03",
+      "description": "Real authentication/authorization system",
+      "status": "explicitly_excluded",
+      "impact": "none",
+      "strategy": "Demo credentials only (patient@example.com / patient123) per BRD Sections 7 and 13."
+    },
+    {
+      "item_id": "U-04",
+      "description": "Real medical advice, diagnosis, or prescription",
+      "status": "explicitly_excluded",
+      "impact": "none",
+      "strategy": "Placeholder text only. Demo disclaimer required per BRD Section 17."
+    },
+    {
+      "item_id": "U-05",
+      "description": "Doctor availability / schedule conflict detection",
+      "status": "not_specified",
+      "impact": "low",
+      "strategy": "Free-form date/time input with no conflict detection. Acceptable for demo app."
+    },
+    {
+      "item_id": "U-06",
+      "description": "Multi-role support (Admin, Doctor, Support, Care Coordinator)",
+      "status": "out_of_scope",
+      "impact": "none",
+      "strategy": "BRD explicitly states primary user role = Patient. Other roles listed in Section 3 but no requirements defined for them."
+    }
+  ],
+
+  "source_truth_conflicts": [],
+  "source_truth_conflict_count": 0,
+  "source_truth_conflict_blocking": false,
+
+  "policy_decisions": {
+    "pii_detected": false,
+    "phi_detected": false,
+    "protected_media_detected": false,
+    "raw_secrets_in_source": false,
+    "demo_disclaimer_present": true,
+    "confidence_threshold_met": true,
+    "confidence_threshold": 0.75,
+    "actual_confidence": 0.93
+  },
+
+  "recommendation": {
+    "proceed_with_migration": true,
+    "recommended_command": "/genesis-migrate",
+    "prerequisites": [
+      "No blocking prerequisites — all inputs are sufficient",
+      "Optional: provide mockup images (Figures 1–9) for higher-fidelity UI generation"
+    ],
+    "estimated_success_probability": 0.93,
+    "notes": "This is a high-confidence, low-risk greenfield Streamlit app from a complete BRD. Recommended to proceed immediately with /genesis-migrate."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "genesis_stage": "dry_run_estimate",
+  "total_pages": 7,
+  "total_components_estimated": 28,
+  "total_test_cases": 10,
+  "total_estimated_hours": 7.25,
+  "confidence": 0.94,
+  "unsupported_items": [],
+  "risk_flags": [
+    "Session state is in-memory React state \u2014 resets on page reload (by design for demo)"
+  ]
+}

@@ -1,0 +1,323 @@
+version: 3.1.0
+description: >
+  Canonical display format for all Genesis human-approval gates.
+  Every gate rendered to the user MUST follow the format defined here:
+  bold option heading + tag badges on same line + normal text description below.
+  DevOps deliverables block appears ONLY on Option A of the Stack Decision Gate.
+  Do not simplify, shorten, or collapse these formats into plain numbered lists.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GATE: BRD Understanding Gate (Stage 4)
+# ─────────────────────────────────────────────────────────────────────────────
+brd_understanding_gate:
+  title: "BRD Understanding Gate"
+  stage: 4
+  instruction: >
+    Show the full BRD extraction summary first (domain, screens, roles, features,
+    workflows, acceptance criteria, mockup evidence, confidence score, stack conflict).
+    Then present the gate question and all options A–F below it.
+    Bold each option letter and label. Tags on the same line. Description in normal text below.
+    Options E and F must always state they are wired at Stage 4 (pre-graph).
+  question: >
+    Please give one decision before Genesis proceeds to stack selection:
+  options:
+    - code: "A"
+      label: "Approve"
+      tags: ["Proceed Immediately"]
+      description: >
+        Understanding is correct. Use the extracted BRD plan as the source of truth
+        for all downstream planning, stack selection, and code generation.
+
+    - code: "B"
+      label: "Approve with assumptions"
+      tags: ["Proceed with Notes"]
+      description: >
+        Correct overall but something may have been missed. Genesis will carry the
+        assumption notes visibly into downstream stages so nothing is silently dropped.
+
+    - code: "C"
+      label: "Add missing evidence"
+      tags: ["Pause Pipeline"]
+      description: >
+        I want to add images, a logo, correct a feature, or provide business
+        clarification before Genesis continues. Pipeline pauses until evidence is added.
+
+    - code: "D"
+      label: "Edit BRD"
+      tags: ["Semantic Patch"]
+      description: >
+        I want to change something in what Genesis understood. Tell Genesis what to
+        change — it will apply a semantic patch and show the updated understanding
+        before proceeding.
+
+    - code: "E"
+      label: "Auto-close gaps (Claude + cross-reference)"
+      tags: ["Gap Engine", "70% Target", "Stage 4 Wired"]
+      description: >
+        Run the BRD gap-closing engine: cross-reference all artifacts and ask Claude
+        targeted questions per WARN/BLOCK item until average confidence reaches 70%.
+        Fully wired at Stage 4 — no semantic graph required.
+
+    - code: "F"
+      label: "Force 100% coverage (max confidence push)"
+      tags: ["Gap Engine", "95% Target", "Stage 4 Wired"]
+      description: >
+        Run the BRD gap-closing engine at maximum intensity — 95% confidence target,
+        looping across all screens, workflows, acceptance criteria, and security
+        constraints until all areas are evidence-backed or max iterations exhausted.
+        Fully wired at Stage 4 — no semantic graph required.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GATE: Stack Decision Gate (Stage 5)
+# ─────────────────────────────────────────────────────────────────────────────
+stack_decision_gate:
+  title: "Stack Decision Gate"
+  stage: 5
+  instruction: >
+    Show the stack conflict context first (what BRD requested vs what Genesis recommends,
+    app type, delivery intent). Then present all options A–E.
+    Bold each option letter and label. Tags on the same line as the label.
+    Description in normal text. DevOps deliverables block shown ONLY for Option A.
+    All other options get a concise description only — no deliverables block.
+  question: >
+    Which stack should Genesis use to build this application?
+  options:
+    - code: "A"
+      label: "Next.js + Tailwind + shadcn/ui + Framer Motion"
+      tags: ["RECOMMENDED", "Production Pro-Code", "Full DevOps Hand-Off Ready"]
+      description: >
+        Full production stack built for patient-facing hospital portals.
+        Next.js handles real page routing, Tailwind + shadcn/ui delivers the clean
+        healthcare-trusted UI the BRD describes, and Framer Motion adds purposeful
+        transitions. UI/UX Pro Max acts as design director. 21st.dev Magic generates
+        every component. Playwright tests run natively against real routes.
+      devops_deliverables:
+        containerisation:
+          - "Dockerfile (multi-stage optimised build) + .dockerignore"
+          - "docker-compose.yml (local dev) + docker-compose.prod.yml (staging + production)"
+          - "Non-root user, health-check endpoint, memory/CPU limits defined in container"
+        cicd_pipeline:
+          path: "/.github/workflows/"
+          files:
+            - "lint.yml — ESLint, TypeScript, Prettier"
+            - "test.yml — unit + integration tests, 80%+ coverage gate"
+            - "build.yml — Docker image build + registry push"
+            - "security.yml — SAST (Snyk), dependency audit, secrets scan"
+            - "e2e.yml — Playwright end-to-end browser tests"
+            - "performance.yml — Lighthouse CI, Core Web Vitals gate"
+            - "accessibility.yml — axe-core WCAG 2.1 AA check"
+            - "deploy.yml — staging + production deploy with rollback automation"
+        environment_secrets:
+          - ".env.local / .env.staging / .env.production / .env.example"
+          - "AWS Secrets Manager or HashiCorp Vault for credentials"
+          - "GitHub Secrets for CI/CD pipeline variables"
+          - "Startup-time environment variable validation (Zod schema)"
+        infrastructure_as_code:
+          path: "/terraform/"
+          files:
+            - "vpc.tf — VPC, subnets, security groups"
+            - "rds.tf — PostgreSQL with encryption at rest, Multi-AZ"
+            - "ecs.tf — ECS cluster for containerised app"
+            - "alb.tf — Application Load Balancer + health checks"
+            - "cdn.tf — CloudFront CDN with SSL/TLS"
+            - "iam.tf — roles + policies (least privilege)"
+            - "kms.tf — Key Management for encryption keys"
+            - "secrets.tf — Secrets Manager integration"
+            - "monitoring.tf — CloudWatch alarms + dashboards"
+            - "backend.tf — Terraform state (S3 + DynamoDB lock)"
+        security:
+          - "TLS 1.2+ enforced, Let's Encrypt with auto-renewal"
+          - "Security headers via next.config.js — HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy"
+          - "CSRF protection, SameSite cookies, HttpOnly + Secure flags"
+          - "Rate limiting — per IP, per user, per route"
+          - "WAF rules — SQL injection, XSS, bot control, IP reputation"
+          - "AES-256 encryption at rest, TLS 1.3 in transit"
+          - "OAuth 2.0 + PKCE, JWT with refresh tokens, MFA for staff"
+          - "RBAC, session timeout (15 min for sensitive pages)"
+          - "Dependency vulnerability scanning (Snyk + Dependabot)"
+        cdn_and_performance:
+          - "CloudFront CDN with edge caching"
+          - "Static assets cached 1 year (immutable, content-hashed filenames)"
+          - "Next.js Image optimisation — WebP/AVIF, lazy loading"
+          - "Bundle analyser, code splitting, tree-shaking, font optimisation"
+          - "Redis for server-side caching layer"
+        load_balancing_and_scaling:
+          - "ALB with health checks, cross-zone load balancing, connection draining"
+          - "ECS auto-scaling — CPU 70% threshold, min/max instance counts"
+          - "Stateless app design — sessions in Redis, no filesystem dependencies"
+          - "SIGTERM graceful shutdown handler"
+        database:
+          - "RDS PostgreSQL — Multi-AZ, encryption at rest, Enhanced Monitoring"
+          - "PgBouncer connection pooling"
+          - "Prisma Migrate for versioned, backward-compatible migrations"
+          - "Automated daily backups — 35-day retention, cross-region replication"
+          - "Point-in-Time Recovery (PITR) — 5-min RPO"
+          - "pgBackRest for large-volume physical backups"
+          - "Slow query logging + Index performance monitoring"
+        dns_and_domain:
+          - "Route53 — A, AAAA, CNAME, MX, TXT (SPF, DKIM, DMARC), CAA records"
+          - "Wildcard SSL or SAN certificate with auto-renewal"
+          - "DNSSEC signing"
+          - "Health-check based DNS failover"
+        monitoring_and_observability:
+          - "Datadog or New Relic APM — latency, error rate, throughput"
+          - "Structured JSON logging — ELK stack or CloudWatch Logs"
+          - "Log retention 6 years (HIPAA minimum)"
+          - "Sensitive data redaction from logs"
+          - "/health (liveness) + /health/ready (readiness) endpoints"
+          - "Alerts — high error rate, high latency, DB pool exhaustion, disk space, cert expiry"
+          - "Real-time dashboards — system health, business metrics, HIPAA compliance"
+        testing:
+          - "Unit tests — Jest, 80%+ coverage gate"
+          - "Integration tests — API endpoints, auth flows, DB interactions"
+          - "E2E tests — Playwright for all patient journeys"
+          - "Performance tests — k6 load testing, Lighthouse CI (score 90+)"
+          - "Accessibility tests — axe-core WCAG 2.1 AA"
+          - "Security tests — SAST, DAST, OWASP Top 10, annual penetration test"
+        hipaa_compliance:
+          - "PHI data mapping + data classification scheme"
+          - "Audit logs for all PHI access — immutable, encrypted, 6-year retention"
+          - "Business Associate Agreements (BAA) with all vendors"
+          - "HIPAA Security Risk Analysis (HRA) document"
+          - "Annual vulnerability assessment + penetration test"
+          - "Breach notification procedure (60-day reporting timeline)"
+          - "DR plan — RTO <= 15 min, RPO <= 5 min"
+        backup_and_disaster_recovery:
+          - "Daily automated backups — 7 daily, 4 weekly, 12 monthly, 7-year archive"
+          - "Cross-region S3 replication for long-term storage"
+          - "Monthly restore testing + quarterly DR drills"
+          - "Secondary region standby + automated DNS failover"
+        documentation:
+          - "README.md — setup, run, deploy"
+          - "ARCHITECTURE.md — system design + data flow diagrams"
+          - "DEPLOYMENT_RUNBOOK.md — step-by-step deploy + rollback guide"
+          - "INCIDENT_RESPONSE.md — alert handling + escalation"
+          - "DISASTER_RECOVERY_PLAN.md — failover + failback procedures"
+          - "HIPAA_COMPLIANCE.md — controls checklist + audit evidence"
+          - "SECURITY_POLICY.md — security standards + procedures"
+          - "CHANGELOG.md — version history + migration guides"
+          - "OpenAPI / Swagger spec for all API endpoints"
+
+    - code: "B"
+      label: "Streamlit → Next.js Hybrid Pilot"
+      tags: ["Hybrid Tech", "Dual Deliverable", "Sprint 1 Demo + Sprint 2 Production"]
+      description: >
+        Working Streamlit app delivered immediately for the hospital operations demo.
+        A parallel Next.js migration spec, component map, and CI/CD template generated
+        alongside it so the DevOps and engineering teams can begin the production build
+        next sprint without starting from scratch. Includes Dockerfile for Streamlit demo
+        and Next.js project scaffold for production sprint.
+
+    - code: "C"
+      label: "React + FastAPI + PostgreSQL"
+      tags: ["Full Stack", "API-First", "Hospital System Integration Ready"]
+      description: >
+        Decoupled frontend and backend with a real relational database.
+        React handles the portal UI, FastAPI serves a typed REST API with auto-generated
+        OpenAPI docs, and PostgreSQL stores consultations and prescriptions.
+        Includes docker-compose.yml (3-service stack), Alembic migrations, Kubernetes
+        manifests, and full CI/CD pipeline. Best if the portal must connect to real
+        hospital HIS or EHR systems.
+
+    - code: "D"
+      label: "Polished Streamlit"
+      tags: ["BRD Exact Match", "Demo Only", "Internal Showcase"]
+      description: >
+        Multi-page Streamlit app with custom CSS and session state.
+        Honors the BRD stack request exactly. Includes requirements.txt, Dockerfile,
+        and local run README.md. No CI/CD pipeline, no production deployment manifests,
+        no DevOps hand-off package. Suitable for internal hospital operations team demo only.
+
+    - code: "E"
+      label: "I will specify my own stack"
+      tags: ["Custom Override", "Manual Input"]
+      description: >
+        Tell Genesis the exact framework, language, database, and toolchain.
+        Genesis validates the choice against BRD requirements and generates all code,
+        tests, CI/CD pipeline, and deployment manifests matched to your specified
+        stack and target cloud.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GATE: Migration Output Mode Gate (Stage 7)
+# ─────────────────────────────────────────────────────────────────────────────
+migration_mode_gate:
+  title: "Migration Output Mode Gate"
+  stage: 7
+  instruction: >
+    Show the migration mode context (what is being built, who will use it, timeline).
+    Then present all options A–C. Bold each option letter and label. Tags on same line.
+    Description in normal text. Default to Option B (Hybrid Pilot) if user does not choose.
+  question: >
+    Which delivery mode should Genesis target for this migration?
+  options:
+    - code: "A"
+      label: "Production E2E App"
+      tags: ["Full Production", "Complete DevOps", "Deploy-Ready"]
+      description: >
+        Genesis builds the complete application end-to-end with all production
+        requirements — auth, routing, data layer, CI/CD, IaC, monitoring, testing,
+        and full DevOps hand-off package. Takes longer but the output is ready to
+        deploy to a live environment without further engineering work.
+
+    - code: "B"
+      label: "Hybrid Pilot App"
+      tags: ["RECOMMENDED DEFAULT", "Pilot Build", "Production Path Included"]
+      description: >
+        Genesis builds a working pilot app with core features complete and a
+        production upgrade path documented alongside it. Faster delivery.
+        The DevOps team receives the pilot plus a clear migration spec for
+        the full production build.
+
+    - code: "C"
+      label: "Local Demo App"
+      tags: ["Demo Only", "No DevOps", "Fastest Delivery"]
+      description: >
+        Genesis builds a locally runnable demo app — no CI/CD, no deployment
+        manifests, no production infrastructure. Suitable for internal stakeholder
+        demonstrations only. Not ready for any live environment.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# FORMAT RULES (enforced at every gate)
+# ─────────────────────────────────────────────────────────────────────────────
+format_rules:
+  - rule: bold_option_heading
+    description: >
+      Each option must start with the letter code and label in bold markdown.
+      Example: **A. Next.js + Tailwind + shadcn/ui + Framer Motion**
+
+  - rule: tags_on_same_line
+    description: >
+      Tags (category badges) must appear on the same line immediately after
+      the bold heading, wrapped in backticks.
+      Example: `RECOMMENDED` · `Production Pro-Code` · `DevOps Hand-Off Ready`
+
+  - rule: description_in_normal_text
+    description: >
+      The option description paragraph appears below the heading in normal
+      (non-bold) text. No further bold inside the description.
+
+  - rule: devops_block_option_a_only
+    description: >
+      The DevOps deliverables block (sub-sections with bullet lists) appears
+      ONLY under Option A of the Stack Decision Gate. All other options receive
+      description text only.
+
+  - rule: separator_between_options
+    description: >
+      A horizontal rule (---) must appear between each option to visually
+      separate them. Never run options together without a separator.
+
+  - rule: closing_question
+    description: >
+      Every gate must close with the decision prompt on its own line.
+      Example: Which stack? **(A / B / C / D / E)**
+
+  - rule: no_plain_numbered_lists
+    description: >
+      Never present gate options as plain numbered lists (1. 2. 3.).
+      Always use the lettered bold format defined above.
+
+  - rule: recommendation_tag_required
+    description: >
+      The Genesis-recommended option must always carry the RECOMMENDED or
+      RECOMMENDED DEFAULT tag so the user can identify it at a glance.

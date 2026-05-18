@@ -1,0 +1,90 @@
+{
+  "schema_version": "3.1.0",
+  "genesis_stage": "discover_sources",
+  "project": "Hospital Online Consultation Portal",
+  "generated_at": "2026-05-05",
+  "assets": [
+    {
+      "asset_id": "A-01",
+      "type": "image_reference",
+      "description": "Proposed patient dashboard direction (Figure 1)",
+      "source": "BRD Section 1 caption",
+      "available": false,
+      "strategy": "Generate from text description — hospital dashboard, calm medical aesthetic"
+    },
+    {
+      "asset_id": "A-02",
+      "type": "image_reference",
+      "description": "Login page mockup with secure patient access card (Figure 2)",
+      "source": "BRD Section 5.1 caption",
+      "available": false,
+      "strategy": "Generate from BRD text: centered login card, hospital logo placeholder, calm medical background"
+    },
+    {
+      "asset_id": "A-03",
+      "type": "image_reference",
+      "description": "Welcome page mockup with quick patient actions (Figure 3)",
+      "source": "BRD Section 5.2 caption",
+      "available": false,
+      "strategy": "Generate from BRD text: hero section, hospital message, online doctor illustration placeholder, CTA buttons"
+    },
+    {
+      "asset_id": "A-04",
+      "type": "image_reference",
+      "description": "Main dashboard mockup with metrics and quick actions (Figure 4)",
+      "source": "BRD Section 5.3 caption",
+      "available": false,
+      "strategy": "Generate from BRD text: 5 metric cards, quick action cards, patient greeting header"
+    },
+    {
+      "asset_id": "A-05",
+      "type": "image_reference",
+      "description": "Book consultation page mockup (Figure 5)",
+      "source": "BRD Section 5.4 caption",
+      "available": false,
+      "strategy": "Generate from BRD text: clean form card, 10 labeled fields, submit button"
+    },
+    {
+      "asset_id": "A-06",
+      "type": "image_reference",
+      "description": "Consultation tracking page mockup (Figure 6)",
+      "source": "BRD Section 5.5 caption",
+      "available": false,
+      "strategy": "Generate from BRD text: filter + search bar, consultation cards with status badges"
+    },
+    {
+      "asset_id": "A-07",
+      "type": "image_reference",
+      "description": "Prescription and medical summary mockup (Figure 7)",
+      "source": "BRD Section 5.6 caption",
+      "available": false,
+      "strategy": "Generate from BRD text: prescription status, doctor advice placeholder, demo disclaimer"
+    },
+    {
+      "asset_id": "A-08",
+      "type": "image_reference",
+      "description": "Sign out page mockup (Figure 8)",
+      "source": "BRD Section 5.7 caption",
+      "available": false,
+      "strategy": "Generate from BRD text: confirmation message, goodbye message, security note"
+    },
+    {
+      "asset_id": "A-09",
+      "type": "image_reference",
+      "description": "Patient portal flow diagram from login to sign out (Figure 9)",
+      "source": "BRD Section 5.8 caption",
+      "available": false,
+      "strategy": "Reconstruct flow from BRD Section 5.8 text: Login → Welcome → Dashboard → Book/Consult/Prescriptions → Sign Out"
+    }
+  ],
+  "asset_summary": {
+    "total_referenced": 9,
+    "available": 0,
+    "missing": 9,
+    "missing_impact": "low",
+    "impact_note": "All 9 assets are mockup images. Text descriptions in BRD Sections 5.1–5.8 are sufficient to generate appropriate UI. Human design review recommended after generation."
+  },
+  "licensed_assets": [],
+  "protected_assets": [],
+  "brand_assets": []
+}

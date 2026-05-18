@@ -1,0 +1,30 @@
+{
+  "pattern": "sidebar_topbar_metric_cards_filters_data_table_detail_panel",
+  "components_selected": [
+    "AppShell",
+    "Sidebar",
+    "TopHeader",
+    "MetricCard",
+    "ActionCard",
+    "ConsultationCard",
+    "StatusBadge",
+    "BookingForm",
+    "HospitalLogo",
+    "FilterBar"
+  ],
+  "shadcn_components": [
+    "Button",
+    "Card",
+    "CardHeader",
+    "CardContent",
+    "Input",
+    "Select",
+    "SelectTrigger",
+    "SelectContent",
+    "SelectItem",
+    "Textarea",
+    "Badge",
+    "Label",
+    "Separator"
+  ]
+}

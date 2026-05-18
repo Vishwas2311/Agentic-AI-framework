@@ -1,0 +1,106 @@
+{
+  "schema_version": "3.1.0",
+  "source_type": "website_url",
+  "domain": "ecommerce store",
+  "fidelity_mode": "modernized_fidelity",
+  "source_material": {
+    "kind": "url",
+    "usage": "primary_website_evidence_or_style_reference",
+    "reference_url": "https://example.com"
+  },
+  "decision": {
+    "build_scope": "component",
+    "rebuild_mode": "modernized_rebuild",
+    "improve_by_default": true,
+    "improvement_guardrail": "Preserve source truth and requested fidelity while improving UX, accessibility, responsiveness, states, and polish."
+  },
+  "tool_sequence": [
+    "firecrawl",
+    "playwright",
+    "ui_ux_pro_max",
+    "magic_21st",
+    "motion_after_rebuild",
+    "playwright_qa"
+  ],
+  "tool_selection_explanation": {
+    "source_material_reason": "Input is treated as url for primary_website_evidence_or_style_reference.",
+    "build_scope_reason": "Build scope is component because the detected/requested UI scope maps to that Magic project type.",
+    "magic_project_type_reason": "Use Magic component to avoid generating the wrong UI surface.",
+    "magic_creation_type_reason": "Use get_inspired; from_scratch means no URL flow, get_inspired means URL-derived evidence or inspiration.",
+    "website_goal_reason": "Use drive_sales to pick the right conversion/workflow pattern.",
+    "ui_ux_pro_max_mode_reason": "UI/UX Pro Max must improve the UI beyond the source while respecting fidelity and source truth.",
+    "motion_intensity_reason": "Use standard motion after UI rebuild only, with purpose and reduced-motion fallback.",
+    "qa_gate_reason": "Design quality, visual parity, accessibility, responsiveness, and motion purpose gates must approve the output."
+  },
+  "domain_style_pack": {
+    "name": "ecommerce",
+    "density": "balanced_conversion",
+    "motion": "standard",
+    "components": [
+      "product_grid",
+      "product_card",
+      "cart",
+      "checkout",
+      "reviews"
+    ]
+  },
+  "component_pattern_selection": {
+    "name": "drive_sales",
+    "pattern": "product_grid_pricing_cart_reviews_checkout",
+    "reason": "Best fit for product discovery and purchase conversion."
+  },
+  "magic_selection": {
+    "project_type": "component",
+    "creation_type": "get_inspired",
+    "website_goal": "drive_sales",
+    "reference_url": "https://example.com"
+  },
+  "ui_ux_pro_max": {
+    "mode": "design_director",
+    "must_create": [
+      "DESIGN.md",
+      "design_tokens.json",
+      "component_registry.json",
+      "visual_acceptance_criteria.md"
+    ],
+    "must_persist": [
+      "design-system/MASTER.md",
+      "design-system/pages/{page_id}.md"
+    ]
+  },
+  "motion_plan": {
+    "intensity": "standard",
+    "library": "motion",
+    "accessibility": [
+      "MotionConfig reducedMotion=user",
+      "useReducedMotion for bespoke motion"
+    ],
+    "bundle_policy": "Prefer LazyMotion and motion/react-m; load domMax only when layout/drag is required.",
+    "purpose_contract": {
+      "enabled": true,
+      "intensity": "standard",
+      "animations": [
+        {
+          "component": "product_grid_pricing_cart_reviews_checkout",
+          "trigger": "enter_or_state_change",
+          "purpose": "Improve orientation and perceived polish for the selected pattern.",
+          "duration_ms": 180,
+          "easing_or_spring": "easeOut_or_light_spring",
+          "reduced_motion_fallback": "opacity_or_instant_state_change",
+          "qa_assertion": "Animation does not delay primary task or hide content."
+        }
+      ]
+    }
+  },
+  "quality_gates": [
+    "desktop_screenshot",
+    "mobile_screenshot",
+    "visual_diff",
+    "axe_accessibility",
+    "motion_reduced_mode_check",
+    "no_text_overlap",
+    "no_content_clipping",
+    "design_quality_score",
+    "visual_rejection_gate"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "gate": "migration_mode_gate",
+  "genesis_stage": "migration_mode_gate",
+  "session": "hosp-consult-portal-20260507",
+  "timestamp": "2026-05-07T00:00:00Z",
+  "decision": "3",
+  "decision_label": "Hybrid Pilot App",
+  "migration_output_mode": "hybrid_pilot_app",
+  "selected_mode": "hybrid_pilot_app",
+  "stack": {
+    "frontend": "Next.js 14 App Router + Tailwind CSS + shadcn/ui + motion/react",
+    "backend": "Python FastAPI",
+    "database": "SQLite (local) — upgradeable to PostgreSQL",
+    "design_director": "UI/UX Pro Max",
+    "component_generator": "21st.dev Magic",
+    "qa": ["playwright", "axe", "visual_diff", "design_quality_gate"]
+  },
+  "rationale": "Matches BRD mockup visual fidelity. Runnable locally. Upgradeable to production. Client-demo ready.",
+  "run_script": "run_demo.ps1",
+  "localhost_target": "http://localhost:3000",
+  "human_approved": true,
+  "gate_status": "PASSED"
+}

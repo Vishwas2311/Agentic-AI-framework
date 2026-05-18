@@ -1,0 +1,12 @@
+{
+  "desktop_strategy": "sidebar_240px_fixed_plus_content_area_fills_remaining",
+  "mobile_strategy": "sidebar_collapses_to_hamburger_menu",
+  "login_desktop": "split_50_50_balanced",
+  "dashboard_desktop": "metric_cards_4col_action_cards_2col_on_1440px_plus",
+  "consultations_desktop": "card_list_full_width_with_filter_row_pinned_top",
+  "qa_flags_to_watch": [
+    "dashboard_feels_zoomed_out",
+    "narrow_operational_layout",
+    "miniaturized_form"
+  ]
+}

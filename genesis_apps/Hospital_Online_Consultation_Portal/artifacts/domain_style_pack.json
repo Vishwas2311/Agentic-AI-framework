@@ -1,0 +1,55 @@
+{
+  "genesis_version": "3.1.0",
+  "stage": "decide_design_strategy",
+  "domain": "healthcare",
+  "style_pack": "healthcare",
+  "density": "calm_compact",
+  "palette": "clean_trustworthy_accessible",
+  "motion_intensity": "subtle",
+  "design_rules": ["large_touch_targets", "strong_contrast", "privacy_first", "low_cognitive_load"],
+  "colors": {
+    "primary": "#0891b2",
+    "primary_dark": "#0e7490",
+    "primary_light": "#cffafe",
+    "background": "#f0f9ff",
+    "surface": "#ffffff",
+    "surface_secondary": "#f8fafc",
+    "border": "#e0f2fe",
+    "text_primary": "#0c4a6e",
+    "text_secondary": "#475569",
+    "text_muted": "#94a3b8",
+    "success": "#16a34a",
+    "success_bg": "#dcfce7",
+    "warning": "#d97706",
+    "warning_bg": "#fef9c3",
+    "error": "#dc2626",
+    "error_bg": "#fee2e2",
+    "info": "#0891b2",
+    "info_bg": "#cffafe"
+  },
+  "typography": {
+    "font_family": "Inter, system-ui, sans-serif",
+    "heading_weight": 600,
+    "body_weight": 400,
+    "label_weight": 500,
+    "scale": ["xs:0.75rem", "sm:0.875rem", "base:1rem", "lg:1.125rem", "xl:1.25rem", "2xl:1.5rem", "3xl:1.875rem", "4xl:2.25rem"]
+  },
+  "spacing": {
+    "touch_target_min": "44px",
+    "form_gap": "1.25rem",
+    "card_padding": "1.5rem",
+    "section_gap": "2rem"
+  },
+  "border_radius": {
+    "button": "0.5rem",
+    "card": "0.75rem",
+    "badge": "9999px",
+    "input": "0.5rem"
+  },
+  "shadows": {
+    "card": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+    "card_hover": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    "sidebar": "1px 0 0 0 #e0f2fe"
+  },
+  "components": ["patient_summary", "appointment_card", "forms", "alerts", "tables", "timeline", "metric_cards", "status_badges", "prescription_summary"]
+}

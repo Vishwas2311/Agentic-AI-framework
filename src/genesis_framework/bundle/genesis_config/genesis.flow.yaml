@@ -1,0 +1,498 @@
+﻿version: 3.1.0
+name: NoCode2ProCode by TrustEngines
+description: "Claude Code-native no-code, low-code, design, website, API, and database to production pro-code migration factory. Internal engine codename: Genesis."
+
+entrypoints:
+  genesis-migrate:
+    command_aliases:
+      - /nocode2procode-migrate
+      - /nocode2procode
+      - /build-procode
+      - /genesis-migrate
+      - /lowcode-migrate
+    stages:
+      - validate_inputs
+      - extract_brd_design_intent
+      - extract_brd_mockups
+      - brd_understanding_gate
+      - dry_run_estimate
+      - dry_run_estimate_gate
+      - discover_sources
+      - source_discovery_gate
+      - extract_native_ast
+      - build_application_understanding
+      - build_existing_app_architecture
+      - existing_app_architecture_gate
+      - decide_delivery_mode_and_stack
+      - stack_decision_gate
+      - migration_mode_gate
+      - build_semantic_graph
+      - extraction_confidence_gate
+      - record_runtime_evidence
+      - runtime_evidence_gate
+      - resolve_source_truth
+      - source_truth_approval_gate
+      - build_ulc_ir
+      - resolve_conflicts
+      - validate_ir
+      - ir_validation_gate
+      - build_canonical_app_spec
+      - canonical_spec_approval_gate
+      - human_review_gate
+      - decide_design_strategy
+      - build_visual_fidelity_contract
+      - generate_design_system
+      - design_system_approval_gate
+      - generate_code
+      - generated_app_approval_gate
+      - run_agent_repair_loop
+      - run_quality_gates
+      - run_visual_design_qa
+      - evaluate_design_quality
+      - qa_result_approval_gate
+      - build_replay_dashboard
+      - deploy_staging
+      - local_run_gate
+      - final_approval
+      - pr_delivery_gate
+      - deliver_github_pr
+      - learn_verified_patterns
+
+stages:
+  validate_inputs:
+    objective: Confirm required source inputs, credentials, target stack, compliance profile, and output location.
+    skill: platform-adapter-skill
+    produces:
+      - migration_manifest.json
+      - runtime_session.json
+      - session_events.jsonl
+      - provider_routing_plan.json
+      - memory_retrieval_plan.json
+      - memory_context.json
+    gates:
+      - credentials_present_or_marked_optional
+      - target_stack_supported
+
+  extract_brd_design_intent:
+    objective: Extract BRD design expectations, target users, domain tone, page-level mockup references, accessibility requirements, and visual acceptance criteria.
+    skill: source-truth-skill
+    produces:
+      - brd_design_intent.json
+
+  extract_brd_mockups:
+    objective: Extract embedded BRD images/mockups and inventory workspace/{project}/inputs/images plus workspace/{project}/inputs/videos as visual/runtime reference evidence for visual lock generation.
+    skill: source-truth-skill
+    produces:
+      - brd_mockup_inventory.json
+      - visual_reference_inventory.json
+      - brd_extracted_images/
+
+  brd_understanding_gate:
+    objective: Show what Genesis understood from BRD/raw evidence, ask for approval/edit/more evidence, and freeze the approved BRD plan before technology selection.
+    skill: source-truth-skill
+    produces:
+      - brd_understanding_report.json
+      - brd_understanding_summary.md
+      - brd_understanding_gate.json
+      - brd_edit_request.json
+      - brd_semantic_patch_report.json
+      - approved_brd_plan.json
+
+  decide_delivery_mode_and_stack:
+    objective: Decide prototype demo vs polished client demo vs production pro-code, and lock the final known or custom stack after existing application architecture approval.
+    skill: generator-skill
+    produces:
+      - stack_decision_report.json
+      - delivery_mode_decision.json
+
+  stack_decision_gate:
+    objective: Show Genesis technology stack selection to the human, capture approve/override/prototype/reject notes, and require a complete custom stack contract before generation.
+    skill: compliance-skill
+    produces:
+      - stack_decision_gate.json
+      - stack_decision_human_notes.json
+      - stack_decision_patch_instructions.json
+      - approved_stack_decision_report.json
+      - human_gate_context.json
+
+  migration_mode_gate:
+    objective: Ask or infer whether the run should generate a Production E2E App, Local Demo App, or Hybrid Pilot App before planning and generation continue.
+    skill: compliance-skill
+    produces:
+      - migration_mode_decision.json
+      - migration_mode_options.md
+
+  dry_run_estimate:
+    objective: Estimate effort, risk, confidence, cost, and unsupported items before generation.
+    skill: qa-skill
+    produces:
+      - estimation_report.md
+      - effort_matrix.json
+      - dry_run_confidence_scores.json
+
+  dry_run_estimate_gate:
+    objective: Show effort matrix, confidence scores, and risk flags to the human before source discovery continues. Options to proceed, reduce scope, accept risks, or cancel and reconfigure.
+    skill: compliance-skill
+    produces:
+      - dry_run_estimate_gate.json
+      - dry_run_estimate_human_notes.json
+      - dry_run_estimate_patch_instructions.json
+      - approved_dry_run_context.json
+      - human_gate_context.json
+
+  discover_sources:
+    objective: Gather source metadata, design data, API contracts, DB schemas, assets, and runtime entry points.
+    skill: platform-adapter-skill
+    produces:
+      - source_baseline.json
+      - asset_inventory.json
+      - agent_execution_plan.json
+      - swarm_topology.json
+
+  source_discovery_gate:
+    objective: Show the discovered source inventory to the human, capture approve/add-files/remove/reconfigure notes, and freeze the approved source set before native AST extraction continues.
+    skill: compliance-skill
+    produces:
+      - source_discovery_gate.json
+      - source_discovery_human_notes.json
+      - source_discovery_patch_instructions.json
+      - approved_asset_inventory.json
+      - human_gate_context.json
+
+  extract_native_ast:
+    objective: Convert native source exports and design inputs into normalized AST files through the universal source adapter registry.
+    skill: platform-adapter-skill
+    produces:
+      - platform_ast.json
+      - design_ast.json
+      - website_ast.json
+      - api_ast.json
+      - db_ast.json
+      - document_intent.json
+      - source_adapter_contracts.json
+
+  build_application_understanding:
+    objective: Reverse-engineer page-wise, button-wise, control-wise, workflow-wise, data-wise, and integration-wise application understanding from native ASTs, raw source, screenshots, videos, documents, APIs, and databases.
+    skill: ir-builder-skill
+    produces:
+      - page_inventory.json
+      - component_inventory.json
+      - event_handler_map.json
+      - workflow_graph.json
+      - data_binding_map.json
+      - integration_map.json
+
+  build_existing_app_architecture:
+    objective: Reconstruct the complete existing application architecture with evidence, confidence, missing evidence, visual-only/source-only mismatches, migration risks, and human-readable documentation.
+    skill: ir-builder-skill
+    produces:
+      - application_architecture.json
+      - existing_app_architecture.md
+      - architecture_confidence_report.json
+      - architecture_risk_report.json
+
+  existing_app_architecture_gate:
+    objective: Show screens, buttons, workflows, data, integrations, risks, missing evidence, and conflicts before final stack selection.
+    skill: compliance-skill
+    produces:
+      - existing_app_architecture_gate.json
+      - existing_app_architecture_human_notes.json
+      - existing_app_architecture_patch_instructions.json
+      - approved_application_architecture.json
+      - human_gate_context.json
+
+  build_semantic_graph:
+    objective: Build the semantic evidence graph from extracted ASTs — run symbolic execution, screen flow detection, component linking, graph link prediction, and BRD confidence gating before source truth resolution.
+    skill: ir-builder-skill
+    produces:
+      - semantic_graph.json
+      - navigation_graph.json
+      - extraction_confidence_report.json
+      - extraction_gate_display.txt
+      - generation_plans.json
+
+  extraction_confidence_gate:
+    objective: Show the BRD extraction confidence gate (PROCEED/WARN/BLOCK) with per-screen confidence table. Options to proceed, auto-close gaps via BRDGapCloser, force 100% coverage, or add more evidence before runtime capture continues.
+    skill: compliance-skill
+    produces:
+      - extraction_confidence_gate.json
+      - extraction_confidence_human_notes.json
+      - extraction_confidence_patch_instructions.json
+      - brd_gap_closure_report.json
+      - updated_semantic_graph.json
+      - human_gate_context.json
+
+  record_runtime_evidence:
+    objective: Capture source runtime behavior with Playwright, Firecrawl, network traces, screenshots, and role sessions.
+    skill: source-truth-skill
+    produces:
+      - browser_runtime_plan.json
+      - runtime_capture_contract.json
+      - runtime_evidence.json
+      - privacy_scan_report.json
+      - asset_license_report.json
+
+  runtime_evidence_gate:
+    objective: Show runtime capture results to the human, capture approve/request-more/waive/add-manual notes, and freeze the approved runtime evidence set before source truth resolution continues.
+    skill: compliance-skill
+    produces:
+      - runtime_evidence_gate.json
+      - runtime_evidence_human_notes.json
+      - runtime_evidence_patch_instructions.json
+      - approved_runtime_evidence.json
+      - human_gate_context.json
+
+  resolve_source_truth:
+    objective: Decide authoritative source when export, runtime, DB, API docs, screenshots, Figma, website, and human input disagree.
+    skill: source-truth-skill
+    produces:
+      - source_truth_report.json
+      - source_conflict_report.json
+
+  source_truth_approval_gate:
+    objective: Show source-truth decisions and conflicts, capture approve/correct/add-evidence/reject notes, and pass approved truth context into IR building without changing the pipeline order.
+    skill: compliance-skill
+    produces:
+      - source_truth_approval_gate.json
+      - source_truth_human_notes.json
+      - source_truth_patch_instructions.json
+      - source_truth_semantic_patch_report.json
+      - approved_source_truth_report.json
+      - human_gate_context.json
+
+  build_ulc_ir:
+    objective: Build ULC-IR, UI-IR, security IR, integration IR, design IR, and deployment IR.
+    skill: ir-builder-skill
+    produces:
+      - ulc_ir/
+      - design_ir/
+
+  resolve_conflicts:
+    objective: Resolve name clashes, circular dependencies, orphan references, duplicate APIs, role conflicts, schema collisions, and design conflicts.
+    skill: ir-builder-skill
+    produces:
+      - conflict_resolution_report.json
+
+  validate_ir:
+    objective: Validate all IR artifacts against schemas and confidence rules.
+    skill: ir-builder-skill
+    produces:
+      - ir_validation_report.json
+      - confidence_scores.json
+
+  ir_validation_gate:
+    objective: Show the validated ULC-IR summary to the human, capture approve/reject-rebuild/accept-issues/add-corrections notes, and pass the approved IR into canonical app spec building.
+    skill: compliance-skill
+    produces:
+      - ir_validation_gate.json
+      - ir_validation_human_notes.json
+      - ir_validation_patch_instructions.json
+      - approved_ir_validation_report.json
+      - human_gate_context.json
+
+  build_canonical_app_spec:
+    objective: Freeze final domain, workflow, UI, API, security, deployment, observability, and test specs.
+    skill: generator-skill
+    produces:
+      - canonical_app_spec.json
+      - acceptance_evidence_matrix.json
+      - migration_contract.json
+
+  canonical_spec_approval_gate:
+    objective: Show the canonical app spec, capture approve/add/remove/edit notes, and freeze an approved canonical spec for design and generation while preserving the fixed pipeline sequence.
+    skill: compliance-skill
+    produces:
+      - canonical_spec_approval_gate.json
+      - canonical_spec_human_notes.json
+      - canonical_spec_patch_instructions.json
+      - canonical_spec_semantic_patch_report.json
+      - approved_canonical_app_spec.json
+      - human_gate_context.json
+
+  human_review_gate:
+    objective: Ask for decisions only on unresolved conflicts, risky auth/data, protected media, low confidence, or deployment-sensitive choices.
+    skill: compliance-skill
+    produces:
+      - human_review_decisions.json
+
+  decide_design_strategy:
+    objective: Select UI/UX Pro Max mode, 21st.dev Magic project/creation/goal choices, component strategy, and Motion intensity from user intent and evidence.
+    skill: design-system-skill
+    produces:
+      - design_decision_report.json
+      - magic_selection.json
+      - motion_plan.json
+      - ui_ux_pro_max_brief.md
+      - tool_selection_explanation.md
+      - domain_style_pack.json
+      - component_pattern_selection.json
+      - motion_purpose_contract.json
+
+  build_visual_fidelity_contract:
+    objective: Convert screenshots, Figma, Stitch, or website evidence into a testable visual lock spec before UI generation.
+    skill: design-system-skill
+    produces:
+      - visual_layout_tree.json
+      - component_mapping.json
+      - visual_lock_spec.json
+
+  generate_design_system:
+    objective: Use UI/UX Pro Max to produce design direction, DESIGN.md, tokens, component rules, and visual acceptance criteria.
+    skill: design-system-skill
+    produces:
+      - DESIGN.md
+      - design_tokens.json
+      - component_registry.json
+      - visual_acceptance_criteria.md
+
+  design_system_approval_gate:
+    objective: Show design tokens, component plan, and UX criteria, capture approve/style-change/UX/reject notes, and pass approved design context to code generation without skipping later stages.
+    skill: compliance-skill
+    produces:
+      - design_system_approval_gate.json
+      - design_system_human_notes.json
+      - design_system_patch_instructions.json
+      - design_system_semantic_patch_report.json
+      - approved_design_system_plan.json
+      - human_gate_context.json
+
+  generate_code:
+    objective: Deterministically generate backend, frontend, database, API, tests, deploy, observability, and docs from the canonical spec.
+    skill: generator-skill
+    produces:
+      - generated_app/
+      - generated_file_manifest.json
+
+  generated_app_approval_gate:
+    objective: Show generated frontend/backend/database/test/docs output to the user, capture approve/reject/add-input notes, and pass those notes to the fixed repair and QA sequence.
+    skill: compliance-skill
+    produces:
+      - generated_app_review_report.json
+      - generated_app_review_summary.md
+      - generated_app_approval_gate.json
+      - generated_app_human_notes.json
+      - generated_app_patch_instructions.json
+      - generated_app_semantic_patch_report.json
+
+  run_agent_repair_loop:
+    objective: Use Claude Code subagents for scoped repair and polish after deterministic generation.
+    skill: generator-skill
+    produces:
+      - agent_patch_log.jsonl
+      - agent_cost_report.json
+
+  run_quality_gates:
+    objective: Run build, unit, API, contract, integration, security, SBOM, vulnerability, compliance, and secret scans.
+    skill: qa-skill
+    produces:
+      - code_quality_report.json
+      - test_report.json
+      - security_review_report.md
+      - performance_report.json
+      - performance_report.md
+      - runtime_performance_report.json
+      - qa_evidence_manifest.json
+      - qa_claims_audit.json
+      - runtime_launch_report.json
+      - route_interaction_inventory.json
+      - acceptance_evidence_matrix.json
+      - functional_sanity_report.json
+      - functional_report.json
+      - ui_click_coverage_report.json
+      - ui_report.json
+      - component_render_report.json
+      - negative_test_report.json
+      - api_negative_test_report.json
+      - api_report.json
+      - security_abuse_case_report.json
+      - security_runtime_report.json
+      - console_error_report.json
+      - ui_runtime_invariant_report.json
+      - motion_runtime_invariant_report.json
+      - performance_validation_report.json
+      - compliance_report.md
+      - eu_ai_act_report.md
+
+  run_visual_design_qa:
+    objective: Compare source design/runtime screenshots to generated UI across breakpoints and accessibility rules.
+    skill: qa-skill
+    produces:
+      - visual_parity_score.json
+      - design_qa_report.md
+      - accessibility_report.json
+
+  evaluate_design_quality:
+    objective: Score visual fidelity, UX, accessibility, responsiveness, motion, and component reuse; reject weak UI and create polish tasks.
+    skill: qa-skill
+    produces:
+      - design_quality_score.json
+      - visual_rejection_report.json
+      - before_after_improvement_report.md
+      - ui_polish_tasklist.json
+
+  qa_result_approval_gate:
+    objective: Show QA, security, visual, and design-quality results, capture approve/reject/add-test/repair notes, and pass QA decisions into replay and final approval without changing stage order.
+    skill: compliance-skill
+    produces:
+      - qa_result_approval_gate.json
+      - qa_result_human_notes.json
+      - qa_result_repair_instructions.json
+      - qa_result_semantic_patch_report.json
+      - qa_result_review_summary.json
+      - human_gate_context.json
+
+  build_replay_dashboard:
+    objective: Build the side-by-side Genesis replay dashboard with confidence, unsupported items, source truth, test, and evidence status.
+    skill: qa-skill
+    produces:
+      - genesis_replay_dashboard.html
+
+  deploy_staging:
+    objective: Deploy to configured staging target after policy approval.
+    skill: deployment-skill
+    produces:
+      - deployment_report.md
+      - staging_url.json
+
+  local_run_gate:
+    objective: Generate local startup instructions from run scripts, start commands, and generated stack artifacts. Ask the human to run the application locally, then report whether it works, has UI issues, or fails to start. Repair-triggered if broken.
+    skill: compliance-skill
+    produces:
+      - local_run_gate.json
+      - local_run_instructions.md
+      - local_run_human_notes.json
+      - local_run_patch_instructions.json
+      - approved_local_run_context.json
+      - human_gate_context.json
+
+  final_approval:
+    objective: Confirm build, tests, visual, security, compliance, SBOM, deployment, evidence, and human approvals.
+    skill: compliance-skill
+    produces:
+      - approval.json
+      - final_migration_confidence_report.md
+
+  pr_delivery_gate:
+    objective: Show final approval state to the human before GitHub PR creation. Options to approve PR, customize PR settings (branch/title/reviewers), hold delivery, or export archive only.
+    skill: compliance-skill
+    produces:
+      - pr_delivery_gate.json
+      - pr_delivery_human_notes.json
+      - pr_delivery_patch_instructions.json
+      - approved_delivery_context.json
+      - human_gate_context.json
+
+  deliver_github_pr:
+    objective: Create branch, PR, issues, and delivery report.
+    skill: deployment-skill
+    produces:
+      - github_delivery_report.md
+
+  learn_verified_patterns:
+    objective: Save only verified mappings, fixes, prompts, templates, and failure cases with trust status.
+    skill: source-truth-skill
+    produces:
+      - verified_migration_patterns.json
+      - verified_ui_patterns.json
+      - verified_memory_packet.json
+      - migration_learning_report.json

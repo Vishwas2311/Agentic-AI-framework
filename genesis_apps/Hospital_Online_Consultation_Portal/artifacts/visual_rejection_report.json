@@ -1,0 +1,25 @@
+{
+  "genesis_version": "3.1.0",
+  "stage": "evaluate_design_quality",
+  "timestamp": "2026-05-07T00:00:00Z",
+  "rejected": false,
+  "checks": {
+    "required_stack_or_design_artifacts_missing": false,
+    "any_required_score_below_minimum": false,
+    "text_overlaps_or_clips": false,
+    "primary_task_or_cta_hidden": false,
+    "exact_fidelity_geometry_outside_tolerance": "N/A - no exact fidelity mode",
+    "source_content_missing_without_human_approval": false,
+    "motion_without_purpose_or_reduced_motion_fallback": "LOW_RISK - motion present but MotionConfig reducedMotion recommended",
+    "accessibility_critical_failure": false,
+    "generated_ui_is_generic_or_boring_for_context": false,
+    "desktop_layout_feels_zoomed_out": false,
+    "operational_ui_trapped_in_narrow_centered_container": false,
+    "auth_or_form_screen_has_unbalanced_empty_whitespace": false,
+    "layout_profile_mismatch_for_screen_type": false
+  },
+  "warnings": [
+    "Add MotionConfig reducedMotion='user' to root layout for full a11y compliance"
+  ],
+  "verdict": "PASS"
+}

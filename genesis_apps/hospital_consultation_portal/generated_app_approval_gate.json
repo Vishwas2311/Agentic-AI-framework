@@ -1,0 +1,15 @@
+{
+  "gate": "generated_app_approval_gate",
+  "stage": "generated_app_approval_gate",
+  "session": "hosp-consult-portal-20260507",
+  "timestamp": "2026-05-07T00:00:00Z",
+  "decision": "A",
+  "decision_label": "Approve Generated App",
+  "human_approved": true,
+  "pages_confirmed": 7,
+  "components_confirmed": 8,
+  "tests_confirmed": 10,
+  "build_status": "PASSED",
+  "typescript_status": "PASSED",
+  "gate_status": "PASSED"
+}

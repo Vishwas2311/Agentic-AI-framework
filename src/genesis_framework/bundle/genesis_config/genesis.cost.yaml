@@ -1,0 +1,15 @@
+version: 3.1.0
+budgets:
+  max_llm_tokens_per_run: 2000000
+  max_usd_per_run: 500
+  max_firecrawl_pages: 500
+  max_playwright_sessions: 50
+  max_e2b_minutes: 240
+  max_agent_repair_iterations: 5
+  max_visual_diff_runs: 10
+actions:
+  on_budget_warning: require_human_ack
+  on_budget_exceeded: pause_pipeline
+reports:
+  - agent_cost_report.json
+  - llm_cost_dashboard.json

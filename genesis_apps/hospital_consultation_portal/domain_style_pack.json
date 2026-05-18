@@ -1,0 +1,33 @@
+{
+  "domain": "healthcare",
+  "density": "calm_compact",
+  "palette": "clean_trustworthy_accessible",
+  "colors": {
+    "primary": "#2BB5A0",
+    "primary_dark": "#1D8A77",
+    "navy": "#1B3A5C",
+    "bg": "#F0F4F8",
+    "card": "#FFFFFF",
+    "status_scheduled": "#2BB5A0",
+    "status_completed": "#22C55E",
+    "status_requested": "#F59E0B",
+    "status_in_consultation": "#3B82F6",
+    "status_cancelled": "#EF4444",
+    "signout_danger": "#EF4444"
+  },
+  "components": [
+    "patient_summary",
+    "appointment_card",
+    "forms",
+    "alerts",
+    "tables",
+    "timeline"
+  ],
+  "motion": "subtle",
+  "rules": [
+    "large_touch_targets",
+    "strong_contrast",
+    "privacy_first",
+    "low_cognitive_load"
+  ]
+}

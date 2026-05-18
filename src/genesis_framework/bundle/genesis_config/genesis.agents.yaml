@@ -1,0 +1,297 @@
+version: 3.1.0
+
+orchestrator_owned_stages:
+  - brd_understanding_gate
+  - dry_run_estimate
+  - dry_run_estimate_gate
+  - source_discovery_gate
+  - build_application_understanding
+  - build_existing_app_architecture
+  - existing_app_architecture_gate
+  - decide_delivery_mode_and_stack
+  - stack_decision_gate
+  - migration_mode_gate
+  - extraction_confidence_gate
+  - runtime_evidence_gate
+  - source_truth_approval_gate
+  - ir_validation_gate
+  - canonical_spec_approval_gate
+  - decide_design_strategy
+  - build_visual_fidelity_contract
+  - design_system_approval_gate
+  - generated_app_approval_gate
+  - evaluate_design_quality
+  - qa_result_approval_gate
+  - build_replay_dashboard
+  - local_run_gate
+  - pr_delivery_gate
+
+agents:
+  solution_intake_agent:
+    role: source_intake
+    mission: Classify migration inputs, identify source types, and build the input baseline before extraction.
+    owns:
+      - input_intake_manifest.json
+      - source_baseline.json
+    allowed_stages:
+      - validate_inputs
+      - discover_sources
+
+  powerapps_extractor_agent:
+    role: platform_extractor
+    mission: Extract Power Platform and Power Apps exports, Power Fx formulas, canvas screens, and data source bindings into normalized AST artifacts.
+    owns:
+      - platform_ast.json
+      - powerfx_translation.json
+      - screen_flow_map.json
+    allowed_stages:
+      - extract_native_ast
+      - build_semantic_graph
+
+  mendix_extractor_agent:
+    role: platform_extractor
+    mission: Extract Mendix MPK/mpr exports including domain models, microflows, nanoflows, pages, security roles, and custom Java actions into normalized AST artifacts.
+    owns:
+      - mendix_ast.json
+      - mendix_microflow_graph.json
+      - mendix_entity_map.json
+    allowed_stages:
+      - extract_native_ast
+      - build_semantic_graph
+    rules:
+      - Parse XML-based mpr structure using Mendix Model SDK schema.
+      - Detect exclusiveSplit branching and convert to conditional logic.
+      - Flag custom Java actions as manual migration targets.
+      - Confidence: high — use full static extraction before runtime fallback.
+
+  appian_extractor_agent:
+    role: platform_extractor
+    mission: Extract Appian deployment package exports including records, interfaces, process models, rules, constants, and integrations into normalized AST artifacts.
+    owns:
+      - appian_ast.json
+      - appian_process_graph.json
+      - appian_record_map.json
+    allowed_stages:
+      - extract_native_ast
+      - build_semantic_graph
+    rules:
+      - Parse SAIL components and translate using sail_translator.
+      - Map Appian records to database entities with relationships.
+      - Process models map to backend workflow logic.
+      - Flag partial capabilities (process_models, rules, integrations) for human review.
+
+  outsystems_extractor_agent:
+    role: platform_extractor
+    mission: Extract OutSystems OAP/OML packages using static parsing and runtime evidence capture for screens, entities, server actions, and integrations.
+    owns:
+      - outsystems_ast.json
+      - outsystems_entity_map.json
+      - outsystems_runtime_evidence.json
+    allowed_stages:
+      - extract_native_ast
+      - record_runtime_evidence
+      - build_semantic_graph
+    rules:
+      - HIGH RISK platform — always require runtime evidence to supplement static extraction.
+      - Flag proprietary_semantics for manual review before generation.
+      - Do not proceed to generation without human_review_gate approval.
+      - Screens and actions are runtime-only — capture via Playwright before planning.
+
+  figma_extractor_agent:
+    role: design_extractor
+    mission: Extract Figma frames, components, design tokens, layout structures, and interaction flows via Figma MCP into structured design AST artifacts.
+    owns:
+      - figma_ast.json
+      - figma_design_tokens.json
+      - figma_component_registry.json
+      - figma_interaction_map.json
+    allowed_stages:
+      - discover_sources
+      - extract_native_ast
+      - generate_design_system
+    rules:
+      - Use Figma MCP for frame and node extraction — do not manually parse Figma URLs.
+      - Map Figma tokens to design_tokens.json for UI/UX Pro Max consumption.
+      - Partial interactions require runtime evidence or design annotation to resolve.
+      - Confidence: high for frames/components — partial for tokens and interactions.
+
+  website_extractor_agent:
+    role: website_extractor
+    mission: Normalize website URLs, pages, and supporting web evidence into structured website AST artifacts.
+    owns:
+      - website_ast.json
+    allowed_stages:
+      - discover_sources
+      - extract_native_ast
+
+  document_extractor_agent:
+    role: document_extractor
+    mission: Extract migration intent, BRD expectations, notes, and mockup references from business documents and text files.
+    owns:
+      - brd_design_intent.json
+      - brd_mockup_inventory.json
+      - document_intent.json
+    allowed_stages:
+      - extract_brd_design_intent
+      - extract_brd_mockups
+      - extract_native_ast
+
+  runtime_evidence_agent:
+    role: runtime_capture
+    mission: Capture or recommend runtime evidence such as screenshots, network traces, role sessions, and walkthrough flows.
+    owns:
+      - runtime_evidence.json
+      - browser_runtime_plan.json
+      - runtime_capture_contract.json
+      - privacy_scan_report.json
+      - asset_license_report.json
+    allowed_stages:
+      - record_runtime_evidence
+
+  swarm_coordinator_agent:
+    role: swarm_coordinator
+    mission: Build the execution plan for extractor, planner, generator, QA, and delivery agents so the migration can run in structured waves. Rebalances the topology at generation and repair stages.
+    owns:
+      - agent_execution_plan.json
+      - swarm_topology.json
+      - wave_schedule.json
+    allowed_stages:
+      - discover_sources
+      - build_canonical_app_spec
+      - generate_code
+      - run_agent_repair_loop
+
+  source_truth_agent:
+    role: source_truth_resolver
+    mission: Resolve conflicts across export, runtime, API, DB, website, and design evidence before generation.
+    owns:
+      - source_truth_report.json
+      - source_conflict_report.json
+      - confidence_scores.json
+      - migration_contract.json
+    allowed_stages:
+      - resolve_source_truth
+      - validate_ir
+
+  migration_brd_agent:
+    role: migration_planner
+    mission: Turn extracted evidence into a migration brief, IR, and canonical app specification before code generation.
+    owns:
+      - canonical_app_spec.json
+      - ulc_ir/
+      - design_ir/
+    allowed_stages:
+      - build_ulc_ir
+      - resolve_conflicts
+      - build_canonical_app_spec
+      - human_review_gate
+
+  memory_curator_agent:
+    role: verified_memory_curator
+    mission: Retrieve relevant prior migration patterns before planning and save only trustworthy memory packets after approval and QA.
+    owns:
+      - memory_retrieval_plan.json
+      - memory_context.json
+      - verified_memory_packet.json
+      - migration_learning_report.json
+    allowed_stages:
+      - validate_inputs
+      - learn_verified_patterns
+
+  ui_ux_pro_max:
+    role: design_director
+    mission: Define the product experience before component/code generation.
+    owns:
+      - DESIGN.md
+      - design_tokens.json
+      - component_registry.json
+      - visual_acceptance_criteria.md
+    allowed_stages:
+      - generate_design_system
+      - run_visual_design_qa
+      - run_agent_repair_loop
+    rules:
+      - Use domain context before choosing style.
+      - Keep enterprise apps dense, calm, and task-focused.
+      - Use Framer Motion only for purposeful animation.
+      - Produce testable visual acceptance criteria.
+
+  backend_agent:
+    role: backend_builder
+    mission: Generate FastAPI routes, Prisma schema, database migrations, authentication logic, data bindings, validation models, and integration contracts from the canonical app spec.
+    owns:
+      - backend/
+      - integration_contracts/
+      - prisma/schema.prisma
+      - alembic/
+    allowed_stages:
+      - generate_code
+      - run_agent_repair_loop
+    rules:
+      - Generate from canonical_app_spec.json — never from raw prompt memory.
+      - Inject acl_rules, validation_schemas, and data_bindings from gap generators.
+      - All routes must have Pydantic models and OpenAPI docs.
+      - Run pytest before marking backend DONE.
+
+  frontend_agent:
+    role: frontend_builder
+    mission: Generate Next.js pages, React components, React Query hooks, Tailwind styling, shadcn/ui primitives, and Motion animations from the canonical app spec and design tokens.
+    owns:
+      - frontend/
+      - frontend/components/
+      - frontend/hooks/
+      - frontend/styles/
+    allowed_stages:
+      - generate_code
+      - run_agent_repair_loop
+    rules:
+      - Consume design_tokens.json and component_registry.json from ui_ux_pro_max before generating.
+      - Use shadcn/ui and 21st.dev Magic for component patterns.
+      - All pages must be responsive and pass WCAG 2.1 AA.
+      - Run visual QA before marking frontend DONE.
+
+  test_repair_agent:
+    role: test_repair
+    owns:
+      - tests/
+      - test_report.json
+    allowed_stages:
+      - run_agent_repair_loop
+      - run_quality_gates
+
+  security_agent:
+    role: security_reviewer
+    owns:
+      - security_review_report.md
+      - compliance_report.md
+      - eu_ai_act_report.md
+    allowed_stages:
+      - run_quality_gates
+      - final_approval
+
+  deploy_agent:
+    role: deploy_builder
+    owns:
+      - deploy/
+      - .github/
+      - deployment_report.md
+    allowed_stages:
+      - generate_code
+      - deploy_staging
+      - deliver_github_pr
+
+  documentation_agent:
+    role: documentation_writer
+    owns:
+      - docs/
+      - README.md
+      - ARCHITECTURE.md
+    allowed_stages:
+      - generate_code
+      - deliver_github_pr
+
+defaults:
+  patch_size: small
+  isolated_worktree: true
+  receive_raw_secrets: false
+  must_run_tests_before_merge: true

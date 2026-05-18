@@ -1,0 +1,20 @@
+{
+  "genesis_version": "3.1.0",
+  "stage": "decide_design_strategy",
+  "pattern": "dashboard",
+  "pattern_template": "sidebar_topbar_metric_cards_filters_data_table_detail_panel",
+  "use_for": ["portal", "dashboard", "records", "consultations"],
+  "components": {
+    "navigation": "left_sidebar_with_icon_labels",
+    "header": "sticky_topbar_with_patient_greeting",
+    "dashboard": ["metric_cards_4up", "quick_action_cards_4up"],
+    "forms": ["labeled_form_card", "two_column_on_desktop"],
+    "data": ["consultation_card_list", "status_filter_bar", "search_input"],
+    "badges": "colored_status_badges",
+    "prescription": ["prescription_card", "doctor_advice_placeholder", "medication_placeholder"],
+    "auth": "split_screen_with_branding_panel",
+    "feedback": ["toast_notifications", "empty_states", "loading_skeletons"]
+  },
+  "shadcn_components": ["Button", "Input", "Select", "Badge", "Card", "CardHeader", "CardContent", "CardFooter", "Separator", "Label", "Textarea", "Alert"],
+  "custom_components": ["MetricCard", "ConsultationCard", "StatusBadge", "NavSidebar", "PageHeader", "EmptyState"]
+}

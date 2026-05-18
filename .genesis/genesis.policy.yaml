@@ -1,0 +1,139 @@
+version: 3.1.0
+engine: Genesis Policy Gate
+implementation: OPA/Rego or Cedar compatible policy rules
+
+approval_blockers:
+  missing_stack_decision_report: block_final_approval
+  missing_delivery_mode_decision: block_final_approval
+  missing_brd_design_intent: block_final_approval_for_brd_sources
+  missing_design_decision_report: block_final_approval
+  missing_design_quality_score: block_final_approval
+  missing_visual_rejection_report: block_final_approval
+  missing_before_after_improvement_report: block_final_approval
+  functional_tests_without_design_gate: cannot_mark_approved
+  production_mode_using_prototype_stack: block_generation
+
+brd_stack_policy:
+  brd_is_behavior_source_truth: true
+  brd_stack_is_not_final_without_decision: true
+  streamlit_requires_explicit_mode:
+    - exact_brd_streamlit_demo
+    - streamlit_with_strict_design_quality
+  proper_software_defaults_to: production_procode
+  same_software_means: preserve_features_and_workflows_not_necessarily_stack
+
+rules:
+  - id: no_raw_secrets_to_agents
+    effect: deny
+    reason: Agents receive scoped tokens or brokered access, never raw credentials.
+    when:
+      secret_exposure: true
+
+  - id: mcp_calls_require_stage_allowlist
+    effect: deny
+    reason: MCP tools may only run when listed for the active stage.
+    when:
+      tool_not_allowed_for_stage: true
+
+  - id: destructive_tools_blocked_by_default
+    effect: deny
+    reason: Destructive actions require explicit human approval and deploy-stage scope.
+    when:
+      tool_permission: destructive
+
+  - id: deploy_requires_human_approval
+    effect: require_approval
+    when:
+      stage: deploy_staging
+
+  - id: low_confidence_requires_review
+    effect: require_approval
+    when:
+      confidence_below: 0.75
+
+  - id: protected_media_requires_review
+    effect: require_approval
+    when:
+      protected_media_detected: true
+
+  - id: pii_requires_masking
+    effect: deny
+    reason: PII/PHI/financial data must be masked before being stored in evidence or prompts.
+    when:
+      unmasked_sensitive_data_detected: true
+
+  - id: generated_code_must_pass_sandbox
+    effect: deny
+    reason: Generated code cannot be delivered until sandbox build and tests complete.
+    when:
+      e2b_sandbox_passed: false
+
+  - id: sbom_required_before_pr
+    effect: deny
+    when:
+      stage: deliver_github_pr
+      sbom_generated: false
+
+  - id: source_truth_conflict_blocks_generation
+    effect: require_approval
+    when:
+      unresolved_critical_source_conflict: true
+
+  - id: brd_stack_conflict_requires_decision
+    effect: require_approval
+    reason: BRD technical stack cannot silently override NoCode2ProCode delivery quality intent.
+    when:
+      brd_stack_conflicts_with_user_delivery_intent: true
+
+  - id: design_quality_artifacts_required_for_approval
+    effect: deny
+    reason: Final approval requires design strategy, design quality score, visual rejection report, and before/after improvement report.
+    when:
+      final_approval_requested_without_design_quality_artifacts: true
+
+  - id: streamlit_requires_strict_theme_or_explicit_demo_mode
+    effect: require_approval
+    reason: Streamlit is acceptable for exact BRD demos, but product-grade UI requires explicit mode and design quality gates.
+    when:
+      target_stack: streamlit
+      delivery_mode_not_explicit: true
+
+  - id: prototype_stack_blocked_for_production
+    effect: deny
+    reason: Production or enterprise runs may not silently use Streamlit, Gradio, notebooks, or static-only prototype stacks.
+    when:
+      selected_delivery_mode_in:
+        - production_procode
+        - enterprise_migration
+      target_stack_in:
+        - streamlit
+        - gradio
+        - notebook
+        - static_html_only
+
+  - id: premium_web_profile_required_for_ui_heavy_production
+    effect: require_approval
+    reason: UI-heavy production portals and dashboards should use the premium web profile unless a justified alternative is documented.
+    when:
+      selected_delivery_mode: production_procode
+      ui_heavy_surface_detected: true
+      selected_target_stack_not_in:
+        - nextjs_tailwind_shadcn_motion
+        - nextjs_tailwind_shadcn_motion_plus_api
+        - react_tailwind_shadcn_plus_backend
+
+approval_channels:
+  human_review_console: true
+  cli_prompt: true
+  github_pr_comment: optional
+
+audit:
+  log_file: policy_decision_log.jsonl
+  include:
+    - timestamp
+    - stage
+    - tool
+    - agent
+    - decision
+    - reason
+    - evidence_ref

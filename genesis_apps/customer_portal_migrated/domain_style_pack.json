@@ -1,0 +1,12 @@
+{
+  "name": "ecommerce",
+  "density": "balanced_conversion",
+  "motion": "standard",
+  "components": [
+    "product_grid",
+    "product_card",
+    "cart",
+    "checkout",
+    "reviews"
+  ]
+}

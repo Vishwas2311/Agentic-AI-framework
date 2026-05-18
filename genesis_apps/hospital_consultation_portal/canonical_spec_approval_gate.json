@@ -1,0 +1,16 @@
+{
+  "gate": "canonical_spec_approval_gate",
+  "stage": "canonical_spec_approval_gate",
+  "session": "hosp-consult-portal-20260507",
+  "timestamp": "2026-05-07T00:00:00Z",
+  "decision": "A",
+  "decision_label": "Approve App Spec",
+  "human_approved": true,
+  "spec_version": "1.0.0",
+  "pages_confirmed": 7,
+  "test_cases_confirmed": 10,
+  "acceptance_criteria_confirmed": 13,
+  "stack_confirmed": "nextjs_14_app_router + tailwind + shadcn_ui + fastapi",
+  "delivery_mode_confirmed": "hybrid_pilot_app",
+  "gate_status": "PASSED"
+}

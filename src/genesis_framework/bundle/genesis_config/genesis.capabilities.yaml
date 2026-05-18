@@ -1,0 +1,179 @@
+version: 3.1.0
+status_values: [supported, partial, runtime-only, manual, unsupported, blocked]
+
+platforms:
+  mendix:
+    extractor: Mendix Model SDK
+    confidence: high
+    agent: mendix_extractor_agent
+    capabilities:
+      domain_models: supported
+      pages: supported
+      microflows: supported
+      nanoflows: supported
+      security: partial
+      custom_java: manual
+
+  powerapps:
+    extractor: Power Platform CLI / Git integration / Src/*.pa.yaml + Power Fx
+    confidence: medium
+    agent: powerapps_extractor_agent
+    capabilities:
+      screens: supported
+      formulas: partial
+      data_sources: supported
+      custom_connectors: partial
+      component_libraries: partial
+      navigate_graph: supported
+      on_select_events: supported
+
+  appian:
+    extractor: Deployment API package export
+    confidence: medium
+    agent: appian_extractor_agent
+    capabilities:
+      records: supported
+      interfaces: partial
+      process_models: partial
+      rules: partial
+      integrations: partial
+      sail_translation: supported
+
+  outsystems:
+    extractor: OAP/OML + APIs + runtime evidence
+    confidence: low
+    high_risk: true
+    agent: outsystems_extractor_agent
+    capabilities:
+      entities: partial
+      screens: runtime-only
+      actions: runtime-only
+      integrations: partial
+      proprietary_semantics: manual
+
+  figma:
+    extractor: Figma MCP
+    confidence: high
+    capabilities:
+      frames: supported
+      nodes: supported
+      components: supported
+      tokens: partial
+      interactions: partial
+    agent: figma_extractor_agent
+
+  screenshot:
+    extractor: pytesseract OCR + Claude Vision (3-layer pipeline)
+    confidence: medium
+    capabilities:
+      component_detection: supported
+      text_extraction: supported
+      screen_purpose_inference: supported
+      layout_structure: partial
+      color_tokens: partial
+      interaction_flows: unsupported
+    agent: runtime_evidence_agent
+
+  video:
+    extractor: Frame sampling + Farneback optical flow + Whisper + Claude Vision
+    confidence: medium
+    capabilities:
+      frame_sampling: supported
+      scene_detection: supported
+      optical_flow: supported
+      whisper_transcription: supported
+      keyframe_extraction: supported
+      interaction_replay: partial
+      audio_annotation: partial
+    agent: runtime_evidence_agent
+
+  brd:
+    extractor: NER + SRL + Claude extraction pipeline
+    confidence: high
+    capabilities:
+      entity_extraction: supported
+      action_extraction: supported
+      role_extraction: supported
+      screen_extraction: supported
+      field_extraction: supported
+      rule_extraction: supported
+      api_extraction: supported
+      confidence_gating: supported
+      mockup_inventory: supported
+    agent: document_extractor_agent
+
+  database:
+    extractor: Schema introspection + Prisma generator + migration diff
+    confidence: high
+    capabilities:
+      entity_mapping: supported
+      relationship_inference: supported
+      prisma_schema_generation: supported
+      alembic_migrations: supported
+      validation_rules: supported
+      seed_data: partial
+    agent: backend_agent
+
+  website:
+    extractor: Firecrawl + Playwright
+    confidence: medium
+    capabilities:
+      content: supported
+      dom: supported
+      css: partial
+      interactions: runtime-only
+      backend_logic: unsupported
+
+pipeline_runtime:
+  migration_session:
+    capabilities:
+      session_start: supported
+      session_resume: partial
+      session_registry: supported
+      stage_checkpoints: supported
+
+  swarm_execution:
+    capabilities:
+      agent_stage_assignment: supported
+      owned_output_planning: supported
+      live_parallel_workers: partial
+      conflict_notifications: partial
+
+  verified_memory:
+    capabilities:
+      retrieval_plans: supported
+      packet_writeback: supported
+      vector_search: partial
+      graph_links: partial
+
+  browser_runtime:
+    capabilities:
+      provider_neutral_plan: supported
+      live_capture: partial
+      network_trace_contract: supported
+      authenticated_sessions: runtime-only
+
+  deployment:
+    capabilities:
+      github_pr_delivery: supported
+      docker_compose: supported
+      github_actions_ci: supported
+      kubernetes_manifests: supported
+      staging_deploy: partial
+      cloud_provision: manual
+      sbom_generation: supported
+      compliance_report: supported
+    agent: deploy_agent
+
+  intelligence_pipeline:
+    capabilities:
+      semantic_graph: supported
+      component_linking: supported
+      multi_source_resolver: supported
+      screen_flow_detection: supported
+      symbolic_executor: supported
+      graph_link_prediction: supported
+      constitutional_ai_gating: supported
+      multi_agent_debate: supported
+      brd_confidence_gate: supported
+      evidence_gated_generation: supported

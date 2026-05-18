@@ -1,0 +1,8 @@
+name: apps
+purpose: User-facing Genesis applications and service entrypoints.
+owners:
+  - cli
+  - api
+  - dashboard
+status: scaffold
+

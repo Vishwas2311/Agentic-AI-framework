@@ -1,0 +1,22 @@
+{
+  "genesis_stage": "extract_native_ast",
+  "source_platform": "brd_docx",
+  "pages": [
+    "login",
+    "welcome",
+    "dashboard",
+    "book_consultation",
+    "my_consultations",
+    "prescriptions",
+    "signout"
+  ],
+  "data_entities": [
+    "consultation"
+  ],
+  "business_rules": [
+    "login_required_before_dashboard",
+    "status_lifecycle_requested_scheduled_completed",
+    "prescription_available_only_when_completed",
+    "metrics_live_update_on_state_change"
+  ]
+}

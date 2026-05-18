@@ -1,0 +1,18 @@
+{
+  "gate": "brd_understanding_gate",
+  "stage": "brd_understanding_gate",
+  "session": "hosp-consult-portal-20260507",
+  "timestamp": "2026-05-07T00:00:00Z",
+  "decision": "A",
+  "decision_label": "Approve",
+  "human_approved": true,
+  "confidence": 0.97,
+  "pages_confirmed": 7,
+  "features_confirmed": 15,
+  "test_cases_confirmed": 10,
+  "acceptance_criteria_confirmed": 13,
+  "stack_conflict_noted": true,
+  "missing_mockup_images_noted": true,
+  "approved_brd_source": "migration_inputs/raw_data/Hospital_Online_Consultation_Portal_BRD.docx",
+  "gate_status": "PASSED"
+}

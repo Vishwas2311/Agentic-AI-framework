@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://genesis.local/schemas/canonical_app_spec.schema.json",
+  "title": "Genesis Canonical App Spec",
+  "type": "object",
+  "required": ["schema_version", "app", "target_stack", "domain_spec", "ui_spec", "api_spec", "test_oracle_spec"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "app": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "target_stack": { "type": "string" },
+    "domain_spec": { "type": "object" },
+    "workflow_spec": { "type": "object" },
+    "api_spec": { "type": "object" },
+    "ui_spec": { "type": "object" },
+    "security_spec": { "type": "object" },
+    "deployment_spec": { "type": "object" },
+    "observability_spec": { "type": "object" },
+    "test_oracle_spec": { "type": "object" },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}
+

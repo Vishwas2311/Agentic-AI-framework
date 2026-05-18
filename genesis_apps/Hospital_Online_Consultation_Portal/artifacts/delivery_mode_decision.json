@@ -1,0 +1,15 @@
+{
+  "genesis_version": "3.1.0",
+  "stage": "decide_delivery_mode_and_stack",
+  "timestamp": "2026-05-07T00:00:00Z",
+  "delivery_mode": "client_demo_polished",
+  "delivery_mode_rationale": "User selected Polished Client Demo at human review gate. BRD target: hospital operations team demonstration with real hospital client feel.",
+  "allowed_stacks": ["react_tailwind_shadcn", "nextjs_tailwind", "nextjs_tailwind_shadcn_motion"],
+  "selected_stack": "nextjs_tailwind_shadcn_motion",
+  "quality_gates_required": ["design_quality_score", "visual_rejection_report", "before_after_improvement_report"],
+  "prototype_mode": false,
+  "production_mode": false,
+  "demo_quality_mode": true,
+  "features_scope": "all_brd_features",
+  "human_confirmed": true
+}

@@ -1,0 +1,17 @@
+{
+  "gate": "design_system_approval_gate",
+  "stage": "design_system_approval_gate",
+  "session": "hosp-consult-portal-20260507",
+  "timestamp": "2026-05-07T00:00:00Z",
+  "decision": "A",
+  "decision_label": "Approve Design",
+  "human_approved": true,
+  "tokens_confirmed": true,
+  "layout_profiles_confirmed": true,
+  "vac_count_confirmed": 18,
+  "motion_intensity_confirmed": "subtle",
+  "stack_confirmed": "nextjs_14_app_router + tailwind + shadcn_ui + fastapi",
+  "design_md_rewrite_approved": true,
+  "note": "DESIGN.md to be rewritten for Next.js + shadcn/ui, removing Streamlit references",
+  "gate_status": "PASSED"
+}

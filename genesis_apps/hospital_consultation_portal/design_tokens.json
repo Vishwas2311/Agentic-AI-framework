@@ -1,0 +1,44 @@
+{
+  "color": {
+    "primary": "#2BB5A0",
+    "primary_dark": "#1D8A77",
+    "navy": "#1B3A5C",
+    "background": "#F0F4F8",
+    "card": "#FFFFFF",
+    "border": "#E5E7EB",
+    "status_requested": {
+      "bg": "#FEF3C7",
+      "text": "#92400E"
+    },
+    "status_scheduled": {
+      "bg": "#CCFBF1",
+      "text": "#0F766E"
+    },
+    "status_completed": {
+      "bg": "#DCFCE7",
+      "text": "#15803D"
+    },
+    "status_cancelled": {
+      "bg": "#FEE2E2",
+      "text": "#B91C1C"
+    },
+    "danger": "#EF4444"
+  },
+  "typography": {
+    "font_family": "Inter, system-ui, sans-serif",
+    "size_sm": "14px",
+    "size_base": "16px"
+  },
+  "spacing": {
+    "sidebar_width": "240px",
+    "content_max_width": "1400px"
+  },
+  "border_radius": {
+    "md": "12px",
+    "lg": "16px"
+  },
+  "motion": {
+    "duration_entrance": "300ms",
+    "easing_entrance": "ease-out"
+  }
+}

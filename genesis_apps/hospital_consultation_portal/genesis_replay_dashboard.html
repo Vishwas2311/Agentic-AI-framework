@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Genesis Replay Dashboard — Hospital Online Consultation Portal</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #F0F4F8; color: #1B3A5C; }
+  header { background: linear-gradient(135deg, #2BB5A0, #1D8A77); color: white; padding: 20px 32px; display: flex; align-items: center; gap: 14px; }
+  .logo { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; }
+  header h1 { font-size: 20px; font-weight: 700; }
+  header p { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+  .badge { background: white; color: #2BB5A0; border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 600; margin-left: auto; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 24px; }
+  .verdict { background: #DCFCE7; border: 1px solid #86EFAC; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .verdict-icon { font-size: 24px; }
+  .verdict-text { font-weight: 700; color: #15803D; font-size: 16px; }
+  .verdict-sub { color: #166534; font-size: 13px; margin-top: 2px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .card { background: white; border: 1px solid #E5E7EB; border-radius: 12px; padding: 18px 20px; }
+  .card-title { font-size: 13px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+  .score-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #F3F4F6; font-size: 13px; }
+  .score-row:last-child { border-bottom: none; }
+  .score-val { font-weight: 700; color: #2BB5A0; }
+  .pass { color: #15803D; font-weight: 600; font-size: 12px; background: #DCFCE7; border-radius: 20px; padding: 2px 10px; }
+  .fail { color: #B91C1C; font-weight: 600; font-size: 12px; background: #FEE2E2; border-radius: 20px; padding: 2px 10px; }
+  .file-list { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 12px; font-family: monospace; color: #374151; }
+  .file-item { background: #F9FAFB; border-radius: 6px; padding: 4px 8px; }
+  .page-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+  .page-card { background: #F0FDF4; border: 1px solid #86EFAC; border-radius: 10px; padding: 10px 12px; font-size: 12px; }
+  .page-card .route { font-family: monospace; color: #2BB5A0; font-weight: 700; }
+  .page-card .name { color: #1B3A5C; font-weight: 600; margin-top: 2px; }
+  .tc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+  .tc { background: #F0FDF4; border: 1px solid #86EFAC; border-radius: 8px; padding: 8px 12px; font-size: 12px; color: #166534; font-weight: 500; }
+  .tc span { font-family: monospace; font-weight: 700; margin-right: 6px; }
+  .stack-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .chip { background: #EFF6FF; color: #1D4ED8; border-radius: 6px; padding: 3px 10px; font-size: 12px; font-weight: 600; }
+  .chip.teal { background: #F0FDFA; color: #0F766E; }
+  section { margin-bottom: 20px; }
+  h2 { font-size: 15px; font-weight: 700; color: #1B3A5C; margin-bottom: 12px; }
+  .run-box { background: #1B3A5C; color: #E2E8F0; border-radius: 10px; padding: 14px 18px; font-family: monospace; font-size: 13px; line-height: 1.8; }
+  .run-box .comment { color: #94A3B8; }
+  .run-box .cmd { color: #2DD4BF; }
+  .run-box .cred { color: #FCD34D; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">+</div>
+  <div>
+    <h1>Hospital Online Consultation Portal</h1>
+    <p>Genesis Replay Dashboard &mdash; NoCode2ProCode by TrustEngines v3.1.0</p>
+  </div>
+  <div class="badge">Session: hosp-consult-portal-20260507</div>
+</header>
+
+<div class="container">
+
+  <!-- Verdict -->
+  <div class="verdict">
+    <div class="verdict-icon">&#10003;</div>
+    <div>
+      <div class="verdict-text">APPROVED &mdash; Migration Complete</div>
+      <div class="verdict-sub">Build passed &bull; TypeScript clean &bull; Design quality 0.94 &bull; All 10 test cases covered &bull; No visual rejections</div>
+    </div>
+  </div>
+
+  <!-- Confidence Scores -->
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Design Quality Scores</div>
+      <div class="score-row"><span>Visual Fidelity</span><span class="score-val">0.96</span></div>
+      <div class="score-row"><span>UX Quality</span><span class="score-val">0.94</span></div>
+      <div class="score-row"><span>Accessibility</span><span class="score-val">0.96</span></div>
+      <div class="score-row"><span>Responsive</span><span class="score-val">0.95</span></div>
+      <div class="score-row"><span>Desktop Space Utilization</span><span class="score-val">0.92</span></div>
+      <div class="score-row"><span>Content Density</span><span class="score-val">0.91</span></div>
+      <div class="score-row"><span>Container Fit</span><span class="score-val">0.93</span></div>
+      <div class="score-row"><span>Motion Quality</span><span class="score-val">0.90</span></div>
+      <div class="score-row"><span>Component Reuse</span><span class="score-val">0.95</span></div>
+      <div class="score-row" style="font-weight:700;border-top:2px solid #2BB5A0;margin-top:6px;padding-top:8px;"><span>Overall Score</span><span class="score-val">0.94</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Pipeline Gates</div>
+      <div class="score-row"><span>BRD Extraction (confidence)</span><span class="pass">PASSED 0.97</span></div>
+      <div class="score-row"><span>Source Truth</span><span class="pass">PASSED 0.97</span></div>
+      <div class="score-row"><span>Stack Decision (human)</span><span class="pass">APPROVED</span></div>
+      <div class="score-row"><span>Delivery Mode</span><span class="pass">client_demo_polished</span></div>
+      <div class="score-row"><span>TypeScript Compile</span><span class="pass">0 errors</span></div>
+      <div class="score-row"><span>Next.js Build</span><span class="pass">PASSED</span></div>
+      <div class="score-row"><span>Visual Rejection Gate</span><span class="pass">No Rejections</span></div>
+      <div class="score-row"><span>Design Quality Gate</span><span class="pass">PASSED 0.94</span></div>
+      <div class="score-row"><span>Demo Disclaimers</span><span class="pass">Present</span></div>
+      <div class="score-row"><span>Final Approval</span><span class="pass">APPROVED</span></div>
+    </div>
+  </div>
+
+  <!-- Stack -->
+  <section>
+    <h2>Selected Stack</h2>
+    <div class="card">
+      <div>BRD requested: <strong>Streamlit</strong> &mdash; Upgraded to production web stack per user decision (recorded in stack_decision_report.json)</div>
+      <div class="stack-row">
+        <span class="chip teal">Next.js 14 App Router</span>
+        <span class="chip teal">Tailwind CSS</span>
+        <span class="chip teal">shadcn/ui</span>
+        <span class="chip teal">motion/react</span>
+        <span class="chip">TypeScript</span>
+        <span class="chip">React Context</span>
+        <span class="chip">Playwright E2E</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pages -->
+  <section>
+    <h2>Pages Generated (7)</h2>
+    <div class="page-grid">
+      <div class="page-card"><div class="route">/</div><div class="name">Login</div></div>
+      <div class="page-card"><div class="route">/welcome</div><div class="name">Welcome</div></div>
+      <div class="page-card"><div class="route">/dashboard</div><div class="name">Dashboard</div></div>
+      <div class="page-card"><div class="route">/book</div><div class="name">Book Consultation</div></div>
+      <div class="page-card"><div class="route">/consultations</div><div class="name">My Consultations</div></div>
+      <div class="page-card"><div class="route">/prescriptions</div><div class="name">Prescriptions</div></div>
+      <div class="page-card"><div class="route">/signout</div><div class="name">Sign Out</div></div>
+    </div>
+  </section>
+
+  <!-- Test Cases -->
+  <section>
+    <h2>Test Cases Covered (10/10 BRD Happy-Path)</h2>
+    <div class="tc-grid">
+      <div class="tc"><span>TC_001</span>Login with sample credentials</div>
+      <div class="tc"><span>TC_002</span>Welcome page quick actions</div>
+      <div class="tc"><span>TC_003</span>Book consultation form submit</div>
+      <div class="tc"><span>TC_004</span>Dashboard metrics after booking</div>
+      <div class="tc"><span>TC_005</span>Update status Requested&rarr;Scheduled</div>
+      <div class="tc"><span>TC_006</span>Update status Scheduled&rarr;Completed</div>
+      <div class="tc"><span>TC_007</span>Filter by Completed status</div>
+      <div class="tc"><span>TC_008</span>Search by doctor name</div>
+      <div class="tc"><span>TC_009</span>Prescription available after completed</div>
+      <div class="tc"><span>TC_010</span>Sign out clears session</div>
+    </div>
+  </section>
+
+  <!-- Run Instructions -->
+  <section>
+    <h2>How to Run</h2>
+    <div class="run-box">
+      <div class="comment"># Navigate to the generated app</div>
+      <div class="cmd">cd genesis_apps/hospital_consultation_portal/generated_app</div>
+      <div>&nbsp;</div>
+      <div class="comment"># Start the demo (installs deps automatically)</div>
+      <div class="cmd">.\run_demo.ps1</div>
+      <div>&nbsp;</div>
+      <div class="comment"># Or manually:</div>
+      <div class="cmd">npm install &amp;&amp; npm run dev</div>
+      <div>&nbsp;</div>
+      <div class="comment"># Open browser: http://localhost:3000</div>
+      <div class="comment"># Login with demo credentials:</div>
+      <div class="cred">  Email:    patient@example.com</div>
+      <div class="cred">  Password: patient123</div>
+      <div>&nbsp;</div>
+      <div class="comment"># Run Playwright tests:</div>
+      <div class="cmd">npm run test:e2e</div>
+    </div>
+  </section>
+
+  <!-- Files -->
+  <section>
+    <h2>Generated Files (28)</h2>
+    <div class="card">
+      <div class="file-list">
+        <div class="file-item">package.json</div>
+        <div class="file-item">tsconfig.json</div>
+        <div class="file-item">next.config.mjs</div>
+        <div class="file-item">tailwind.config.ts</div>
+        <div class="file-item">postcss.config.js</div>
+        <div class="file-item">playwright.config.ts</div>
+        <div class="file-item">run_demo.ps1</div>
+        <div class="file-item">src/app/layout.tsx</div>
+        <div class="file-item">src/app/globals.css</div>
+        <div class="file-item">src/app/page.tsx</div>
+        <div class="file-item">src/app/welcome/page.tsx</div>
+        <div class="file-item">src/app/dashboard/page.tsx</div>
+        <div class="file-item">src/app/book/page.tsx</div>
+        <div class="file-item">src/app/consultations/page.tsx</div>
+        <div class="file-item">src/app/prescriptions/page.tsx</div>
+        <div class="file-item">src/app/signout/page.tsx</div>
+        <div class="file-item">src/components/AppShell.tsx</div>
+        <div class="file-item">src/components/Sidebar.tsx</div>
+        <div class="file-item">src/components/TopHeader.tsx</div>
+        <div class="file-item">src/components/HospitalLogo.tsx</div>
+        <div class="file-item">src/components/MetricCard.tsx</div>
+        <div class="file-item">src/components/ActionCard.tsx</div>
+        <div class="file-item">src/components/ConsultationCard.tsx</div>
+        <div class="file-item">src/components/StatusBadge.tsx</div>
+        <div class="file-item">src/context/AppContext.tsx</div>
+        <div class="file-item">src/types/index.ts</div>
+        <div class="file-item">src/lib/utils.ts</div>
+        <div class="file-item">tests/e2e/happy-path.spec.ts</div>
+      </div>
+    </div>
+  </section>
+
+  <p style="text-align:center;color:#9CA3AF;font-size:12px;margin-top:24px;">
+    Genesis v3.1.0 &mdash; NoCode2ProCode by TrustEngines &mdash; 2026-05-07
+  </p>
+</div>
+
+</body>
+</html>

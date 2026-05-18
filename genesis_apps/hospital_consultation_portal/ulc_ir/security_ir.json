@@ -1,0 +1,33 @@
+{
+  "schema_version": "3.1.0",
+  "ir_type": "SECURITY_IR",
+  "project": "Hospital Online Consultation Portal",
+  "generated_at": "2026-05-05",
+  "auth": {
+    "type": "demo_credential_check",
+    "credentials": { "email": "patient@example.com", "password": "patient123", "sensitivity": "demo_only" },
+    "session_type": "streamlit_session_state",
+    "persistence": "browser_session_only",
+    "real_auth_required": false
+  },
+  "data_classification": {
+    "phi": false,
+    "pii": false,
+    "real_medical_data": false,
+    "demo_system": true,
+    "disclaimer_required": true,
+    "disclaimer_text": "Demo system. Do not enter real patient data."
+  },
+  "input_validation": {
+    "patient_name": "non_empty_string",
+    "age": "integer_1_to_120",
+    "date": "string_yyyy_mm_dd_format_preferred",
+    "password_display": "never_plaintext"
+  },
+  "security_exclusions": [
+    "Real database storage — not applicable (demo, in-memory only)",
+    "RBAC — not applicable (single demo user role)",
+    "Encryption at rest — not applicable (session only)",
+    "Audit logging — not applicable (demo scope)"
+  ]
+}

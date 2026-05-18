@@ -1,0 +1,51 @@
+version: 3.1.0
+quality_gates:
+  code_quality:
+    java: [checkstyle, pmd, spotbugs, openrewrite]
+    typescript: [eslint, prettier, tsc]
+    codemods: [ts-morph, jscodeshift]
+  api_contracts:
+    generation: [openapi-generator, asyncapi-generator]
+    testing: [pact, schemathesis]
+  integration:
+    tools: [testcontainers]
+  browser_visual:
+    tools: [playwright, pixelmatch, blazediff, percy]
+    compare:
+      - pixel_diff
+      - geometry_diff
+      - perceptual_similarity
+      - bounding_box_diff
+      - responsive_breakpoint_diff
+  accessibility:
+    tools: [axe-core]
+  design_quality:
+    required_scores:
+      visual_fidelity_score: 0.90
+      ux_quality_score: 0.88
+      accessibility_score: 0.95
+      responsive_score: 0.92
+      motion_quality_score: 0.85
+      component_reuse_score: 0.80
+      overall_design_quality_score: 0.90
+    reject_when:
+      - any_required_score_below_minimum
+      - text_overlaps_or_clips
+      - source_content_missing_without_approval
+      - motion_without_purpose
+      - generic_or_boring_for_context
+  load:
+    tools: [k6, locust]
+  security:
+    tools: [semgrep, codeql, gitleaks, owasp-zap]
+  sbom_supply_chain:
+    tools: [syft, grype, trivy, osv-scanner]
+approval_thresholds:
+  minimum_overall_confidence: 0.80
+  minimum_visual_parity: 0.90
+  minimum_design_quality: 0.90
+  maximum_geometry_deviation_px: 8
+  maximum_unexplained_pixel_diff_ratio: 0.03
+  minimum_permission_parity: 1.00
+  critical_security_findings_allowed: 0
+  high_security_findings_allowed: 0

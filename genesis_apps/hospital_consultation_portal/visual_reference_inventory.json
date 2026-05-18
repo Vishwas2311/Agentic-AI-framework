@@ -1,0 +1,78 @@
+{
+  "genesis_stage": "extract_brd_mockups",
+  "source_docx": "migration_inputs/raw_data/Hospital_Online_Consultation_Portal_BRD.docx",
+  "visual_references": [
+    {
+      "ref_id": "VR-001",
+      "type": "brd_embedded_mockup",
+      "file": "brd_extracted_images/figure_1.png",
+      "screen": "dashboard",
+      "role": "primary_visual_lock_seed",
+      "fidelity_class": "high",
+      "use_in_stages": ["build_visual_fidelity_contract", "generate_design_system", "run_visual_design_qa"]
+    },
+    {
+      "ref_id": "VR-002",
+      "type": "brd_embedded_mockup",
+      "file": "brd_extracted_images/figure_2.png",
+      "screen": "login",
+      "role": "primary_visual_lock_seed",
+      "fidelity_class": "high",
+      "use_in_stages": ["build_visual_fidelity_contract", "generate_design_system", "run_visual_design_qa"]
+    },
+    {
+      "ref_id": "VR-003",
+      "type": "brd_embedded_mockup",
+      "file": "brd_extracted_images/figure_3.png",
+      "screen": "welcome",
+      "role": "primary_visual_lock_seed",
+      "fidelity_class": "high",
+      "use_in_stages": ["build_visual_fidelity_contract", "generate_design_system", "run_visual_design_qa"]
+    },
+    {
+      "ref_id": "VR-004",
+      "type": "brd_embedded_mockup",
+      "file": "brd_extracted_images/figure_4.png",
+      "screen": "book_consultation",
+      "role": "primary_visual_lock_seed",
+      "fidelity_class": "high",
+      "use_in_stages": ["build_visual_fidelity_contract", "generate_design_system", "run_visual_design_qa"]
+    },
+    {
+      "ref_id": "VR-005",
+      "type": "brd_embedded_mockup",
+      "file": "brd_extracted_images/figure_5.png",
+      "screen": "my_consultations",
+      "role": "primary_visual_lock_seed",
+      "fidelity_class": "high",
+      "use_in_stages": ["build_visual_fidelity_contract", "generate_design_system", "run_visual_design_qa"]
+    },
+    {
+      "ref_id": "VR-006",
+      "type": "brd_embedded_mockup",
+      "file": "brd_extracted_images/figure_6.png",
+      "screen": "prescriptions",
+      "role": "primary_visual_lock_seed",
+      "fidelity_class": "high",
+      "use_in_stages": ["build_visual_fidelity_contract", "generate_design_system", "run_visual_design_qa"]
+    },
+    {
+      "ref_id": "VR-007",
+      "type": "brd_embedded_mockup",
+      "file": "brd_extracted_images/figure_7.png",
+      "screen": "signout",
+      "role": "primary_visual_lock_seed",
+      "fidelity_class": "high",
+      "use_in_stages": ["build_visual_fidelity_contract", "generate_design_system", "run_visual_design_qa"]
+    },
+    {
+      "ref_id": "VR-008",
+      "type": "user_flow_diagram",
+      "file": "brd_extracted_images/figure_8.png",
+      "screen": "all",
+      "role": "ux_flow_reference",
+      "fidelity_class": "flow_only",
+      "use_in_stages": ["build_ulc_ir", "build_canonical_app_spec"]
+    }
+  ]
+}

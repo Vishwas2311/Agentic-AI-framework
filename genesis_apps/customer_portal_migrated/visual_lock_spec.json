@@ -1,0 +1,33 @@
+{
+  "schema_version": "3.1.0",
+  "mode": "exact_fidelity",
+  "screens": [
+    {
+      "screen_id": "login",
+      "source_refs": [],
+      "must_match": {
+        "layout": true,
+        "spacing": true,
+        "typography": true,
+        "colors": true,
+        "component_positions": true,
+        "visible_content": true
+      },
+      "allowed_changes": {
+        "modernize_icons": false,
+        "improve_accessibility": true,
+        "improve_responsiveness": true
+      },
+      "blocked_changes": {
+        "change_navigation_model": true,
+        "change_primary_layout": true,
+        "remove_visible_content": true
+      },
+      "thresholds": {
+        "minor_spacing_tolerance_px": 8,
+        "max_unexplained_pixel_diff_ratio": 0.03,
+        "min_visual_parity_score": 0.9
+      }
+    }
+  ]
+}

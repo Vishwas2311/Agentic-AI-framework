@@ -1,0 +1,136 @@
+{
+  "genesis_stage": "build_canonical_app_spec",
+  "spec_version": "1.0.0",
+  "app_name": "Hospital Online Consultation Portal",
+  "domain": "healthcare",
+  "delivery_mode": "client_demo_polished",
+  "stack": {
+    "framework": "nextjs_14_app_router",
+    "styling": "tailwind_css",
+    "components": "shadcn_ui",
+    "motion": "motion_react",
+    "language": "typescript",
+    "state": "react_usestate_usereducer",
+    "data_persistence": "in_memory_react_state",
+    "testing": "playwright"
+  },
+  "design": {
+    "director": "ui_ux_pro_max",
+    "component_generator": "21st_magic",
+    "motion_intensity": "subtle",
+    "layout_profile": "portal_dashboard",
+    "domain_style_pack": "healthcare",
+    "color_primary": "#2BB5A0",
+    "color_background": "#F0F4F8",
+    "color_text_primary": "#1B3A5C",
+    "color_card_bg": "#FFFFFF",
+    "logo": "teal_circle_plus_cross"
+  },
+  "pages": [
+    {
+      "id": "login",
+      "route": "/",
+      "name": "Login",
+      "layout": "auth_split_screen",
+      "components": [
+        "LoginCard",
+        "HospitalLogo",
+        "PatientIdInput",
+        "PasswordInput",
+        "LoginButton",
+        "DemoDisclaimer",
+        "DoctorIllustration"
+      ],
+      "auth_required": false,
+      "test_cases": [
+        "TC_001_LOGIN"
+      ]
+    },
+    {
+      "id": "welcome",
+      "route": "/welcome",
+      "name": "Welcome",
+      "layout": "portal_dashboard",
+      "auth_required": true,
+      "test_cases": [
+        "TC_002_WELCOME"
+      ]
+    },
+    {
+      "id": "dashboard",
+      "route": "/dashboard",
+      "name": "Dashboard",
+      "layout": "portal_dashboard",
+      "auth_required": true,
+      "test_cases": [
+        "TC_004_METRICS_AFTER_BOOKING"
+      ]
+    },
+    {
+      "id": "book_consultation",
+      "route": "/book",
+      "name": "Book Consultation",
+      "layout": "operational_form",
+      "auth_required": true,
+      "test_cases": [
+        "TC_003_BOOK_CONSULTATION"
+      ]
+    },
+    {
+      "id": "my_consultations",
+      "route": "/consultations",
+      "name": "My Consultations",
+      "layout": "data_table_workspace",
+      "auth_required": true,
+      "test_cases": [
+        "TC_005_UPDATE_STATUS",
+        "TC_006_COMPLETE_CONSULTATION",
+        "TC_007_FILTER_COMPLETED",
+        "TC_008_SEARCH_BY_DOCTOR"
+      ]
+    },
+    {
+      "id": "prescriptions",
+      "route": "/prescriptions",
+      "name": "Prescriptions",
+      "layout": "operational_form",
+      "auth_required": true,
+      "test_cases": [
+        "TC_009_PRESCRIPTION"
+      ]
+    },
+    {
+      "id": "signout",
+      "route": "/signout",
+      "name": "Sign Out",
+      "layout": "operational_form",
+      "auth_required": true,
+      "test_cases": [
+        "TC_010_SIGN_OUT"
+      ]
+    }
+  ],
+  "state_model": {
+    "session": {
+      "isLoggedIn": "boolean",
+      "patientEmail": "string"
+    },
+    "consultations": "Consultation[]"
+  },
+  "demo_credentials": {
+    "patient_id_or_email": "patient@example.com",
+    "password": "patient123"
+  },
+  "test_cases": [
+    "TC_001_LOGIN",
+    "TC_002_WELCOME",
+    "TC_003_BOOK_CONSULTATION",
+    "TC_004_METRICS_AFTER_BOOKING",
+    "TC_005_UPDATE_STATUS",
+    "TC_006_COMPLETE_CONSULTATION",
+    "TC_007_FILTER_COMPLETED",
+    "TC_008_SEARCH_BY_DOCTOR",
+    "TC_009_PRESCRIPTION",
+    "TC_010_SIGN_OUT"
+  ]
+}

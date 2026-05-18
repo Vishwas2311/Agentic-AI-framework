@@ -1,0 +1,9 @@
+{
+  "login": "auth_split_screen",
+  "welcome": "portal_dashboard",
+  "dashboard": "portal_dashboard",
+  "book_consultation": "operational_form",
+  "my_consultations": "data_table_workspace",
+  "prescriptions": "operational_form",
+  "signout": "operational_form"
+}

@@ -1,0 +1,124 @@
+version: 3.1.0
+tool_policy: stage_allowlist
+
+tool_tiers:
+  read:
+    - context7
+    - figma_mcp
+    - firecrawl
+    - postgres_readonly
+    - github_readonly
+  write:
+    - local_workspace
+    - github_branch
+  deploy:
+    - docker
+    - kubernetes
+    - terraform
+  secret:
+    - vault
+    - aws_secrets_manager
+  destructive:
+    - database_write
+    - cloud_delete
+    - infra_destroy
+
+stages:
+  validate_inputs:
+    allowed_tools: [local_workspace, vault, aws_secrets_manager]
+    denied_tools: [docker, kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  extract_brd_design_intent:
+    allowed_tools: [local_workspace, context7]
+    denied_tools: [docker, kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  extract_brd_mockups:
+    allowed_tools: [local_workspace, vision_model]
+    denied_tools: [docker, kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  decide_delivery_mode_and_stack:
+    allowed_tools: [local_workspace, context7]
+    denied_tools: [docker, kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  discover_sources:
+    allowed_tools: [local_workspace, figma_mcp, firecrawl, playwright, postgres_readonly, context7]
+    denied_tools: [docker, kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  extract_native_ast:
+    allowed_tools: [local_workspace, figma_mcp, postgres_readonly, context7]
+    denied_tools: [kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  record_runtime_evidence:
+    allowed_tools: [playwright, firecrawl, local_workspace]
+    denied_tools: [database_write, cloud_delete, infra_destroy]
+
+  resolve_source_truth:
+    allowed_tools: [local_workspace, context7]
+    denied_tools: [docker, kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  build_ulc_ir:
+    allowed_tools: [local_workspace, context7]
+    denied_tools: [docker, kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  decide_design_strategy:
+    allowed_tools: [local_workspace, context7, magic_21st, figma_mcp, firecrawl, playwright]
+    denied_tools: [kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  generate_design_system:
+    allowed_tools: [local_workspace, figma_mcp, context7, magic_21st, playwright]
+    denied_tools: [kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  build_visual_fidelity_contract:
+    allowed_tools: [local_workspace, figma_mcp, playwright, firecrawl, vision_model, context7]
+    denied_tools: [kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  generate_code:
+    allowed_tools: [local_workspace, context7, e2b, magic_21st]
+    denied_tools: [kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  run_agent_repair_loop:
+    allowed_tools: [local_workspace, context7, e2b, playwright]
+    denied_tools: [kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  run_quality_gates:
+    allowed_tools: [local_workspace, e2b, playwright]
+    cli_tools:
+      - eslint
+      - prettier
+      - tsc
+      - pytest
+      - mvn
+      - gradle
+      - semgrep
+      - codeql
+      - gitleaks
+      - syft
+      - grype
+      - trivy
+      - osv-scanner
+      - zap
+    denied_tools: [kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  run_visual_design_qa:
+    allowed_tools: [local_workspace, playwright, vision_model]
+    cli_tools:
+      - pixelmatch
+      - blazediff
+      - axe
+      - lighthouse
+    denied_tools: [kubernetes, terraform, database_write, cloud_delete, infra_destroy]
+
+  deploy_staging:
+    allowed_tools: [docker, kubernetes, terraform, github_branch]
+    requires_human_approval: true
+    denied_tools: [database_write, cloud_delete, infra_destroy]
+
+  deliver_github_pr:
+    allowed_tools: [github_branch, github_pr, jira, linear, slack]
+    requires_human_approval: false
+
+defaults:
+  unknown_tool: deny
+  unknown_stage: deny
+  raw_shell_for_destructive_actions: deny
+  expose_raw_secret_to_agent: deny

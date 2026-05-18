@@ -1,0 +1,76 @@
+schema_version: "1.0"
+policy: "local_openhands_patterns_only_no_runtime_no_mcp_no_api_keys"
+bundle: "skills/genesis-openhands-dev-quality"
+purpose: >
+  Curated OpenHands-derived local development-agent patterns for Genesis:
+  repo onboarding, setup/runtime lifecycle, action-observation trajectory,
+  security confirmation, code review, and test-fix discipline. Genesis remains
+  the migration source of truth; this layer never imports the OpenHands runtime.
+
+defaults:
+  requires_mcp: false
+  requires_api_key: false
+  import_policy: "summarized_curated_rules_only"
+  do_not_import_runtime: true
+  raw_package_in_installer: false
+
+sources:
+  - local_skill: "openhands-repo-onboarding-patterns"
+    source_file: "skills/onboarding.md; skills/add_repo_inst.md"
+    genesis_stages: ["validate_inputs", "discover_sources", "extract_native_ast", "build_application_understanding"]
+    expected_artifacts: ["source_baseline.json", "asset_inventory.json", "application_architecture.json", "test_oracle.json"]
+    usage_policy: "Use repository/source understanding checklist; Genesis source-truth stages remain authoritative."
+    requires_mcp: false
+    requires_api_key: false
+    do_not_import_runtime: true
+
+  - local_skill: "openhands-code-review-discipline"
+    source_file: "skills/code-review.md"
+    genesis_stages: ["generate_code", "generated_app_approval_gate", "pr_delivery_gate"]
+    expected_artifacts: ["generated_app_review_report.json", "generated_app_approval_gate.json", "github_delivery_report.md"]
+    usage_policy: "Add file-backed code review discipline; do not treat review text as QA proof."
+    requires_mcp: false
+    requires_api_key: false
+    do_not_import_runtime: true
+
+  - local_skill: "openhands-test-fix-discipline"
+    source_file: "skills/fix_test.md; skills/update_test.md"
+    genesis_stages: ["run_agent_repair_loop", "run_quality_gates", "qa_result_approval_gate"]
+    expected_artifacts: ["fix_task.json", "qa_evidence_manifest.json", "qa_claims_audit.json"]
+    usage_policy: "Repair from exact failing observations; do not weaken tests without approved BRD/canonical-spec evidence."
+    requires_mcp: false
+    requires_api_key: false
+    do_not_import_runtime: true
+
+  - local_skill: "openhands-setup-runtime-lifecycle"
+    source_file: "openhands/app_server/app_conversation/app_conversation_service_base.py; openhands/app_server/runtime/sandbox/sandbox_service.py"
+    genesis_stages: ["run_quality_gates", "local_run_gate", "final_approval"]
+    expected_artifacts: ["runtime_launch_report.json", "qa_evidence_manifest.json", "localhost_url.json"]
+    usage_policy: "Use lifecycle/status model only; do not import OpenHands runtime or make Docker mandatory."
+    requires_mcp: false
+    requires_api_key: false
+    do_not_import_runtime: true
+
+  - local_skill: "openhands-action-observation-trajectory"
+    source_file: ".openhands/microagents/glossary.md; openhands/events/*"
+    genesis_stages: ["run_quality_gates", "build_replay_dashboard", "final_approval", "learn_verified_patterns"]
+    expected_artifacts: ["migration_trajectory.jsonl", "migration_trajectory.zip", "action_observation_audit.json", "active_skill_context.json"]
+    usage_policy: "Record meaningful action/observation evidence; final approval cannot rely on unsupported PASS claims."
+    requires_mcp: false
+    requires_api_key: false
+    do_not_import_runtime: true
+
+  - local_skill: "openhands-security-confirmation"
+    source_file: "skills/security.md; openhands/security/*"
+    genesis_stages: ["run_agent_repair_loop", "run_quality_gates", "local_run_gate", "pr_delivery_gate", "final_approval"]
+    expected_artifacts: ["action_risk_report.json", "security_review.json", "security_runtime_report.json"]
+    usage_policy: "Classify risky actions locally and require approval for high-risk actions; use defensive checks only."
+    requires_mcp: false
+    requires_api_key: false
+    do_not_import_runtime: true
+
+keep_out:
+  - "Do not vendor OpenHands runtime, app server, sandbox, enterprise content, or full dependency tree."
+  - "Do not import flarglebargle.md or irrelevant joke/test skills."
+  - "Do not replace Genesis flow, gates, QAOS, stack selection, or installer."
+  - "Do not require Docker/Kubernetes/OpenHands runtime unless selected Genesis stack requires them."

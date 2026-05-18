@@ -1,0 +1,23 @@
+{
+  "genesis_version": "3.1.0",
+  "stage": "decide_design_strategy",
+  "principle": "UI must feel correctly composed for the viewport — not merely technically responsive",
+  "desktop_strategy": "operational_product_task_first",
+  "pages": {
+    "login": "split_screen_40_60_composition — left branding 40%, right form 60% capped at 480px, vertically centered",
+    "welcome": "hero_centered_capped_max_1200px — warm hero + two action buttons",
+    "dashboard": "sidebar_240px_plus_main_fills_remaining — metric row 4col on lg, 2col on md, 1col on sm",
+    "book": "sidebar_240px_plus_form_card_centered_max_760px — responsive two-col form on lg",
+    "consultations": "sidebar_240px_plus_full_width_list — filter bar sticky, list fills width",
+    "prescriptions": "sidebar_240px_plus_cards_max_900px — one prescription card per completed consultation",
+    "signout": "centered_card_max_480px — minimal, focused"
+  },
+  "breakpoints": {
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px",
+    "2xl": "1536px"
+  },
+  "rejection_flags": ["excessive_unused_whitespace", "narrow_operational_layout", "miniaturized_form_on_desktop", "dashboard_composition_feels_zoomed_out"]
+}

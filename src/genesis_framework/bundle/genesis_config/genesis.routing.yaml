@@ -1,0 +1,142 @@
+﻿version: 3.1.0
+name: Genesis Tool and Model Routing
+
+principle: Route by evidence type and active stage. Do not ask the user to choose tools unless policy requires approval.
+
+source_routing:
+  input_directory_present:
+    tools: [local_workspace]
+    stages: [validate_inputs, discover_sources]
+    prompt: config/prompts/platform_adapters/source_inventory.md
+
+  figma_url_present:
+    tools: [figma_mcp]
+    stages: [discover_sources, extract_native_ast, generate_design_system]
+    prompt: config/prompts/design/figma_to_ui.md
+
+  website_url_present:
+    tools: [firecrawl, playwright]
+    stages: [discover_sources, record_runtime_evidence, decide_design_strategy]
+    prompt: config/prompts/design/website_to_ui.md
+
+  screenshot_present:
+    tools: [vision_model, local_workspace]
+    stages: [extract_native_ast, decide_design_strategy, build_visual_fidelity_contract, generate_design_system]
+    prompt: config/prompts/design/screenshot_to_ui.md
+
+  video_present:
+    tools: [vision_model, local_workspace]
+    stages: [discover_sources, record_runtime_evidence, resolve_source_truth]
+    prompt: config/prompts/platform_adapters/video_runtime.md
+
+  xml_present:
+    tools: [local_workspace, context7]
+    stages: [extract_native_ast, resolve_source_truth]
+    prompt: config/prompts/platform_adapters/xml.md
+
+  workflow_xml_present:
+    tools: [local_workspace, context7]
+    stages: [extract_native_ast, build_ulc_ir]
+    prompt: config/prompts/platform_adapters/xml.md
+
+  structured_file_present:
+    tools: [local_workspace, context7]
+    stages: [discover_sources, extract_native_ast]
+    prompt: config/prompts/platform_adapters/structured.md
+
+  data_input_present:
+    tools: [local_workspace, postgres_readonly]
+    stages: [discover_sources, extract_native_ast, build_ulc_ir]
+    prompt: config/prompts/platform_adapters/database.md
+
+  archive_input_present:
+    tools: [local_workspace]
+    stages: [discover_sources, extract_native_ast]
+    prompt: config/prompts/platform_adapters/archive.md
+
+  component_request:
+    tools: [magic_21st, local_workspace, context7]
+    stages: [decide_design_strategy, generate_design_system, generate_code]
+    prompt: config/prompts/design/magic_selector.md
+
+  website_request:
+    tools: [magic_21st, firecrawl, playwright, local_workspace, context7]
+    stages: [decide_design_strategy, build_visual_fidelity_contract, generate_design_system]
+    prompt: config/prompts/design/magic_selector.md
+
+  motion_needed:
+    tools: [context7, local_workspace]
+    stages: [decide_design_strategy, generate_design_system, generate_code, run_visual_design_qa]
+    prompt: config/prompts/design/motion_director.md
+
+  openapi_present:
+    tools: [local_workspace, context7]
+    stages: [extract_native_ast, build_ulc_ir, generate_code]
+    prompt: config/prompts/generation/api_contracts.md
+
+  db_connection_present:
+    tools: [postgres_readonly]
+    stages: [discover_sources, extract_native_ast]
+    prompt: config/prompts/platform_adapters/database.md
+
+  powerapps_export_present:
+    tools: [local_workspace, context7]
+    stages: [extract_native_ast]
+    prompt: config/prompts/platform_adapters/powerapps.md
+
+  mendix_export_present:
+    tools: [local_workspace, context7]
+    stages: [extract_native_ast]
+    prompt: config/prompts/platform_adapters/mendix.md
+
+  appian_export_present:
+    tools: [local_workspace, context7]
+    stages: [extract_native_ast]
+    prompt: config/prompts/platform_adapters/appian.md
+
+  outsystems_export_present:
+    tools: [local_workspace, playwright, context7]
+    stages: [extract_native_ast, record_runtime_evidence]
+    prompt: config/prompts/platform_adapters/outsystems.md
+
+model_routing:
+  high_reasoning:
+    use_for:
+      - source_truth
+      - workflow_semantics
+      - conflict_resolution
+      - architecture_planning
+      - security_review
+
+  fast_generation:
+    use_for:
+      - boilerplate
+      - reports
+      - test_skeletons
+      - deterministic_template_expansion
+
+  vision_capable:
+    use_for:
+      - screenshot_to_ui
+      - visual_diff_explanation
+      - design_extraction
+      - visual_lock_spec_generation
+
+  embedding:
+    use_for:
+      - verified_memory_search
+      - pattern_retrieval
+      - prior_migration_reuse
+
+clarifying_question_policy:
+  ask_only_when:
+    - source_missing
+    - target_stack_missing
+    - credential_reference_missing
+    - low_confidence
+    - source_truth_conflict
+    - deployment_approval_required
+    - compliance_profile_missing
+    - protected_media_or_license_risk
+  otherwise: continue_with_documented_assumptions
+

@@ -1,0 +1,23 @@
+version: 3.1.0
+deployment_modes:
+  local:
+    tools: [docker, docker-compose]
+    human_approval_required: false
+  staging_kubernetes:
+    tools: [docker, helm, kubernetes]
+    human_approval_required: true
+  aws_ecs:
+    tools: [docker, terraform]
+    human_approval_required: true
+  gcp_cloud_run:
+    tools: [docker, terraform]
+    human_approval_required: true
+  azure_container_apps:
+    tools: [docker, terraform]
+    human_approval_required: true
+post_deploy_checks:
+  - smoke_test
+  - health_endpoint
+  - browser_login_flow
+  - visual_regression
+  - baseline_load_test

@@ -1,0 +1,5 @@
+name: evidence
+purpose: Evidence graph artifacts, traceability samples, runtime screenshots, API evidence, DB parity evidence.
+status: scaffold
+chain: source artifact -> AST -> IR -> canonical spec -> generated file -> test -> evidence -> approval
+

@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "app_title": "Hospital Online Consultation Portal",
+  "tech_stack": "Streamlit (Python 3.x)",
+  "entry_point": "app.py",
+  "logic_module": "consultation_logic.py",
+  "session_state_contract": {
+    "logged_in": { "type": "bool", "default": false, "description": "True after successful authentication" },
+    "current_user": { "type": "string | null", "default": null, "description": "Authenticated user email" },
+    "consultations": { "type": "list[Consultation]", "default": [], "description": "All booked consultations for the session" },
+    "_just_signed_out": { "type": "bool", "default": false, "description": "Transient flag — shows signed-out message on login page, cleared immediately" }
+  },
+  "consultation_schema": {
+    "id": { "type": "string", "format": "uuid_8char", "generated": true },
+    "patient_name": { "type": "string", "required": true },
+    "age": { "type": "integer", "min": 1, "max": 120 },
+    "gender": { "type": "enum", "values": ["Male", "Female", "Other"] },
+    "department": { "type": "enum", "values": ["General Medicine", "Cardiology", "Dermatology", "Orthopedics", "Pediatrics", "Neurology"] },
+    "doctor": { "type": "enum", "values": ["Dr. Mehta", "Dr. Sharma", "Dr. Rao", "Dr. Iyer", "Dr. Khan"] },
+    "consultation_mode": { "type": "enum", "values": ["Video Call", "Audio Call", "Chat"] },
+    "consultation_status": { "type": "enum", "values": ["Requested", "Scheduled", "In Consultation", "Completed", "Cancelled"] },
+    "date": { "type": "string", "format": "YYYY-MM-DD" },
+    "time": { "type": "string", "format": "HH:MM" },
+    "symptoms": { "type": "string", "nullable": true }
+  },
+  "demo_credentials": { "email": "patient@example.com", "password": "patient123" },
+  "demo_disclaimer": "Demo system. Do not enter real patient data.",
+  "navigation": {
+    "pre_login": ["login"],
+    "post_login": ["Welcome", "Dashboard", "Book Consultation", "My Consultations", "Prescription", "Sign Out"]
+  },
+  "key_implementation_notes": [
+    "Date field uses st.text_input NOT st.date_input (Playwright compatibility)",
+    "Status updates use consultation UUID — not list index — to survive filter/search",
+    "All Playwright tests run in a single browser session (single test function)"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "session_id": "hosp-consult-portal-20260507",
+  "genesis_version": "3.1.0",
+  "started_at": "2026-05-07T00:00:00Z",
+  "operator": "nocode2procode-migrate skill",
+  "source_input": "migration_inputs/raw_data/Hospital_Online_Consultation_Portal_BRD.docx",
+  "source_type": "brd_docx",
+  "current_stage": "brd_understanding_gate",
+  "stages_completed": ["validate_inputs", "extract_brd_design_intent", "extract_brd_mockups"],
+  "brd_stack_conflict": true,
+  "stack_decision_required": true,
+  "agent_tools_active": ["local_workspace", "context7", "vision_model"],
+  "cost_estimate_usd_so_far": 0.0,
+  "policy_flags": ["brd_stack_conflicts_with_user_delivery_intent"],
+  "next_action": "HUMAN_APPROVAL: brd_understanding_gate then delivery_mode_decision"
+}

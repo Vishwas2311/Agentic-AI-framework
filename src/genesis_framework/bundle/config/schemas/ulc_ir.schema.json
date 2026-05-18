@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://genesis.local/schemas/ulc_ir.schema.json",
+  "title": "Universal Low-Code IR",
+  "type": "object",
+  "required": ["schema_version", "domain_ir", "ui_ir", "integration_ir", "security_ir"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "domain_ir": { "type": "object" },
+    "workflow_ir": { "type": "object" },
+    "ui_ir": { "type": "object" },
+    "integration_ir": { "type": "object" },
+    "security_ir": { "type": "object" },
+    "design_ir": { "type": "object" },
+    "deployment_ir": { "type": "object" },
+    "unsupported_items": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  }
+}
+
